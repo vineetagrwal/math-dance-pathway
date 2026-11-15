@@ -3,64 +3,273 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>From Marsh Creek to Top STEM Universities: Math &amp; Dance Pathway</title>
+<title>The Complete Math Competition Pathway: 6th Grade to Top STEM Universities</title>
 <style>
   :root {
     --primary: #1e3a8a;
     --secondary: #0f766e;
-    --accent: #9333ea;
+    --accent: #d97706;
+    --purple: #7c3aed;
     --bg: #f8fafc;
     --card: #ffffff;
     --text: #1e293b;
     --muted: #64748b;
     --border: #e2e8f0;
   }
+  * {
+    box-sizing: border-box;
+  }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--bg);
     color: var(--text);
-    line-height: 1.5;
+    line-height: 1.55;
     margin: 0;
     padding: 20px;
   }
   .container {
-    max-width: 980px;
+    max-width: 1020px;
     margin: 0 auto;
   }
   header {
-    background: linear-gradient(135deg, #1e3a8a, #0f766e, #9333ea);
+    background: linear-gradient(135deg, #1e3a8a, #0f766e);
     color: white;
-    padding: 28px 32px;
+    padding: 32px 36px;
     border-radius: 12px;
-    margin-bottom: 24px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   }
   header h1 {
-    margin: 0 0 8px 0;
-    font-size: 1.7rem;
+    margin: 0 0 10px 0;
+    font-size: 1.8rem;
+    line-height: 1.25;
   }
   header p {
     margin: 0;
-    opacity: 0.92;
+    opacity: 0.94;
+    font-size: 1.02rem;
+    max-width: 820px;
+  }
+  /* Countdown & Stats Bar */
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: #0f172a;
+    color: white;
+    padding: 14px 22px;
+    border-radius: 10px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .countdown-wrap {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .countdown-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #38bdf8;
+  }
+  .timer-digits {
+    display: flex;
+    gap: 8px;
+    font-weight: 700;
     font-size: 1rem;
   }
-  .highlight-box {
-    background: #ede9fe;
-    border: 1px solid #ddd6fe;
-    border-left: 6px solid var(--accent);
-    padding: 18px 22px;
-    border-radius: 8px;
+  .timer-digits div {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .timer-digits span {
+    background: #1e293b;
+    border: 1px solid #334155;
+    padding: 4px 9px;
+    border-radius: 6px;
+    min-width: 40px;
+    text-align: center;
+    color: #f8fafc;
+  }
+  .visitor-badge {
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    background: #1e293b;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid #334155;
+  }
+  .visitor-badge strong {
+    color: #38bdf8;
+  }
+
+  /* Quick Navigation Pills */
+  .nav-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
     margin-bottom: 24px;
   }
-  .highlight-box h3 {
-    margin: 0 0 8px 0;
-    color: #6b21a8;
+  .nav-pills a {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--primary);
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: all 0.15s ease;
   }
+  .nav-pills a:hover {
+    background: #e0e7ff;
+    border-color: #c7d2fe;
+  }
+
+  /* Section Cards */
+  .section-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  h2 {
+    margin-top: 0;
+    font-size: 1.32rem;
+    color: var(--primary);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 8px;
+  }
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.05rem;
+    color: #0f172a;
+  }
+
+  /* 3-Step Execution Flow */
+  .flow-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 14px;
+  }
+  .flow-step {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--primary);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .flow-step:nth-child(2) { border-top-color: var(--secondary); }
+  .flow-step:nth-child(3) { border-top-color: var(--accent); }
+  .step-num {
+    display: inline-block;
+    background: #e0e7ff;
+    color: #1e3a8a;
+    font-weight: 700;
+    font-size: 0.78rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .flow-step:nth-child(2) .step-num { background: #ccfbf1; color: #115e59; }
+  .flow-step:nth-child(3) .step-num { background: #fef3c7; color: #92400e; }
+
+  /* School Registration Highlight Box */
+  .school-box {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-left: 6px solid var(--accent);
+  }
+  .school-box h2 {
+    color: #92400e;
+    border-bottom-color: #fde68a;
+  }
+  .cost-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .cost-item {
+    background: white;
+    border: 1px solid #fde68a;
+    padding: 12px 14px;
+    border-radius: 6px;
+  }
+  .cost-item .label {
+    font-size: 0.8rem;
+    color: #92400e;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .cost-item .val {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: 2px;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    margin-top: 12px;
+  }
+  th, td {
+    text-align: left;
+    padding: 11px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th {
+    background-color: #f1f5f9;
+    font-weight: 600;
+    color: #0f172a;
+  }
+  .pill-reg {
+    display: inline-block;
+    background: #fef3c7;
+    color: #92400e;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    margin-bottom: 4px;
+  }
+  .resource-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .resource-links a {
+    background: #e0e7ff;
+    color: #1e3a8a;
+    padding: 4px 9px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .resource-links a:hover {
+    background: #c7d2fe;
+  }
+
+  /* Multi-Stage Roadmap */
   .roadmap {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
   }
   .stage {
     background: var(--card);
@@ -68,12 +277,11 @@
     border-left: 6px solid var(--primary);
     border-radius: 8px;
     padding: 18px 22px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
   .stage:nth-child(2) { border-left-color: #2563eb; }
   .stage:nth-child(3) { border-left-color: #0f766e; }
-  .stage:nth-child(4) { border-left-color: #9333ea; }
-
+  .stage:nth-child(4) { border-left-color: #7c3aed; }
   .stage-header {
     display: flex;
     justify-content: space-between;
@@ -112,73 +320,45 @@
     margin-bottom: 4px;
     color: #0f172a;
   }
-  .section-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 22px;
-    margin-bottom: 24px;
+
+  /* Community Playbook */
+  .community-box {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-left: 6px solid #16a34a;
   }
-  h2 {
-    margin-top: 0;
-    font-size: 1.3rem;
-    color: var(--primary);
-    border-bottom: 2px solid var(--border);
-    padding-bottom: 8px;
+  .community-box h2 {
+    color: #166534;
+    border-bottom-color: #bbf7d0;
   }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.88rem;
-    margin-top: 12px;
+
+  /* Email Template Box */
+  .email-template {
+    background: #f8fafc;
+    border: 1px dashed #94a3b8;
+    border-radius: 8px;
+    padding: 16px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.85rem;
+    color: #334155;
+    white-space: pre-wrap;
+    margin-top: 10px;
   }
-  th, td {
-    text-align: left;
-    padding: 10px 10px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
-  }
-  th {
-    background-color: #f8fafc;
+  .copy-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 0.84rem;
     font-weight: 600;
-    color: #0f172a;
+    cursor: pointer;
+    margin-top: 10px;
   }
-  .pill-reg {
-    display: inline-block;
-    background: #fef3c7;
-    color: #92400e;
-    font-weight: 600;
-    padding: 2px 7px;
-    border-radius: 4px;
-    font-size: 0.78rem;
+  .copy-btn:hover {
+    background: #1d4ed8;
   }
-  .resource-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
-  }
-  .resource-links a {
-    background: #e0e7ff;
-    color: #1e3a8a;
-    padding: 4px 10px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 0.82rem;
-    font-weight: 600;
-  }
-  .resource-links a:hover {
-    background: #c7d2fe;
-  }
-  .school-talk {
-    background: #fffbeb;
-    border: 1px solid #fde68a;
-    border-left: 6px solid #d97706;
-  }
-  .school-talk h2 {
-    color: #92400e;
-    border-bottom-color: #fde68a;
-  }
+
   ul {
     margin: 8px 0 0 0;
     padding-left: 20px;
@@ -186,10 +366,16 @@
   li {
     margin-bottom: 6px;
   }
+  a.inline-link {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
   @media print {
     body { background: white; padding: 0; }
-    .stage, .section-card, .highlight-box { break-inside: avoid; box-shadow: none; }
-    .resource-links a { border: 1px solid #cbd5e1; }
+    .nav-pills, .copy-btn, .top-bar { display: none; }
+    .stage, .section-card { break-inside: avoid; box-shadow: none; }
   }
 </style>
 </head>
@@ -197,69 +383,184 @@
 
 <div class="container">
   <header>
-    <h1>The Dual-Excellence Pathway: 6th Grade to MIT, Stanford, Princeton &amp; Caltech</h1>
-    <p>A step-by-step roadmap, contest calendar, and free mock test resources balancing Math Competitions (AMC, MOEMS, Math Kangaroo) with Dance — tailored for Marsh Creek 6th Grade Center in Downingtown, PA.</p>
+    <h1>Math Competition Readiness Hub: 6th Grade to Top STEM Universities</h1>
+    <p>An open parent &amp; student guide covering early school test-site registration, weekly preparation habits, free mock test archives, and the long-term pathway from middle school contests to MIT, Stanford, Princeton, and Caltech.</p>
   </header>
 
-  <div class="highlight-box">
-    <h3>Why Math + Dance is a Powerful Admissions &amp; Cognitive Combo</h3>
-    <p>Top STEM universities (MIT, Caltech, Princeton, Stanford) look for deep intellectual spikes paired with authentic, sustained creative and physical commitments. Dance develops exceptional <strong>spatial reasoning, rhythm, discipline, and kinetic memory</strong>—reinforcing advanced geometry, multivariable thinking, and composure under timed competition pressure.</p>
+  <!-- Live Countdown & Visitor Counter Bar -->
+  <div class="top-bar">
+    <div class="countdown-wrap">
+      <div class="countdown-title">⏳ Next Major Benchmark — AMC 8 Exam (Jan 21, 2027):</div>
+      <div class="timer-digits" id="countdown">
+        <div><span id="days">--</span>d</div>
+        <div><span id="hours">--</span>h</div>
+        <div><span id="mins">--</span>m</div>
+        <div><span id="secs">--</span>s</div>
+      </div>
+    </div>
+    <div class="visitor-badge">
+      Hub Visits: <strong id="visit-count">--</strong>
+    </div>
   </div>
 
-  <!-- Contest Specs & Mock Test Links Table -->
-  <div class="section-card">
-    <h2>2026–2027 Contest Mechanics &amp; Free Mock Test Resources</h2>
-    <p style="font-size:0.9rem; color:#475569; margin-top:0;">Use these exact formats, dates, and direct links to free practice tests and past exam archives:</p>
+  <!-- Quick Section Navigation -->
+  <nav class="nav-pills">
+    <a href="#getting-started">1. End-to-End Playbook</a>
+    <a href="#school-hosting">2. Registering Your School as a Test Site</a>
+    <a href="#mock-tests">3. Contest Calendar &amp; Free Mock Tests</a>
+    <a href="#pathway">4. Grade 6–12 University Pathway</a>
+    <a href="#community">5. Building a Local Math Circle</a>
+  </nav>
+
+  <!-- Section 1: End-to-End Execution Playbook -->
+  <div id="getting-started" class="section-card">
+    <h2>1. The Parent &amp; Student Readiness Playbook (3 Phases)</h2>
+    <p style="margin-top:0; color:#475569;">Whether your student is just discovering problem-solving or aiming for national Olympiads, success follows a clear three-phase annual cycle:</p>
+    <div class="flow-grid">
+      <div class="flow-step">
+        <span class="step-num">Phase 1: Fall (Sept – Nov)</span>
+        <h3>Secure Testing Sites Early</h3>
+        <p style="font-size:0.9rem; margin:0;">Confirm whether your child's school hosts <b>MOEMS</b>, <b>AMC 8</b>, and <b>MATHCOUNTS</b>. If not, partner with a teacher to register the school before deadlines or reserve a seat at an accredited external test center (such as an AoPS Academy or local university).</p>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">Phase 2: Fall – Winter</span>
+        <h3>Build Problem-Solving Habits</h3>
+        <p style="font-size:0.9rem; margin:0;">Move beyond school speed-drills. Dedicate 3–4 hours per week to creative problem-solving (Prealgebra, Counting, Number Theory, Geometry) using free past exam archives and weekly peer study sessions.</p>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">Phase 3: Jan – May</span>
+        <h3>Compete, Review &amp; Level Up</h3>
+        <p style="font-size:0.9rem; margin:0;">Sit for <b>AMC 8</b> (Jan), <b>MATHCOUNTS</b> (Feb), and <b>Math Kangaroo</b> (Mar). Pick up contest booklets afterward to re-solve missed problems—turning every exam into a stepping stone toward AMC 10 and AIME.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: How to Get Your School Registered as a Test Site -->
+  <div id="school-hosting" class="section-card school-box">
+    <h2>2. How to Have Your Child's School Become an Official Test Site</h2>
+    <p style="margin-top:0;">Many elementary and middle schools do not automatically administer MAA (AMC) or MOEMS exams simply because no parent or faculty member has championed them yet. <strong>Important MAA Rule:</strong> Parents cannot register a school directly—a school employee (Math Teacher, Department Chair, Gifted Coordinator, or Principal) must serve as the official <em>Competition Manager</em>.</p>
+
+    <div class="cost-grid">
+      <div class="cost-item">
+        <div class="label">AMC 8 School Registration</div>
+        <div class="val">$75 Host Fee + $25 / 10 Students</div>
+      </div>
+      <div class="cost-item">
+        <div class="label">New Host School Deadline</div>
+        <div class="val">January 5, 2027 (Regular)</div>
+      </div>
+      <div class="cost-item">
+        <div class="label">AMC 8 Exam Window</div>
+        <div class="val">January 21–27, 2027 (40 mins)</div>
+      </div>
+      <div class="cost-item">
+        <div class="label">External Center Backup</div>
+        <div class="val"><a href="https://maa.org/student-programs/amc/" target="_blank" class="inline-link">MAA Official Site Finder</a></div>
+      </div>
+    </div>
+
+    <h3>4 Steps for Parents to Help Their School Host:</h3>
+    <ul>
+      <li><strong>Step 1 — Approach a Faculty Champion:</strong> Reach out to your child's math teacher, gifted/enrichment specialist, or principal early in the fall (or at least 3 weeks before the Jan 5 AMC 8 deadline).</li>
+      <li><strong>Step 2 — Keep the Ask Simple:</strong> Explain that administering the AMC 8 or MOEMS takes only a single 45–60 minute after-school or lunch block, and offer to coordinate parent volunteers to help proctor or cover the modest registration fee via the PTA/PTO if needed.</li>
+      <li><strong>Step 3 — Official Registration Portal:</strong> Direct the school's Competition Manager to register online at the <a href="https://maa.org/amcreg/" target="_blank" class="inline-link">MAA AMC Registration Portal</a> (for AMC 8/10/12), <a href="https://moems.org/" target="_blank" class="inline-link">MOEMS.org</a> (for Grades 4–8 monthly rounds), or <a href="https://www.mathcounts.org/" target="_blank" class="inline-link">MATHCOUNTS.org</a> (for Grades 6–8).</li>
+      <li><strong>Step 4 — External Testing Center Backup:</strong> If your school cannot host this year, use the <a href="https://maa.org/student-programs/amc/" target="_blank" class="inline-link">MAA AMC Locations Directory</a> or register individually for <a href="https://mathkangaroo.org/mks/" target="_blank" class="inline-link">Math Kangaroo</a> (by Dec 31) at a nearby university, math circle, or AoPS Academy testing center.</li>
+    </ul>
+
+    <div style="margin-top: 16px;">
+      <strong>Ready-to-Send Email Template for Your School's Math Chair or Principal:</strong>
+      <div class="email-template" id="email-text">Subject: Hosting AMC 8 / Middle School Math Contests at [School Name]
+
+Dear [Teacher/Principal Name],
+
+I am reaching out as a parent of a [Grade]-grade student at [School Name] to ask if our school plans to host the MAA AMC 8 (Jan 21–27, 2027) or MOEMS math competitions this academic year.
+
+These contests are wonderful, low-stress ways to build creative problem-solving confidence in middle schoolers—and only require a single 45-to-60-minute session. If the school is not yet registered, the MAA regular registration deadline for new host schools is January 5, 2027 ($75 school fee + $25 per 10 students at maa.org/amcreg).
+
+I would be happy to help coordinate logistics, recruit parent proctors, or work with our PTA to support the registration fee if a faculty member is willing to serve as the Competition Manager. Thank you for considering this opportunity for our students!
+
+Best regards,
+[Your Name]
+[Your Phone Number]</div>
+      <button class="copy-btn" onclick="copyEmail()">Copy Email Template</button>
+    </div>
+  </div>
+
+  <!-- Section 3: Contest Specs & Free Mock Test Links Table -->
+  <div id="mock-tests" class="section-card">
+    <h2>3. Contest Mechanics, Deadlines &amp; Free Mock Test Resources</h2>
+    <p style="font-size:0.9rem; color:#475569; margin-top:0;">Start preparation early using official past problems and timed practice archives—no expensive tutoring required to get started:</p>
     <table>
       <thead>
         <tr>
           <th>Contest</th>
-          <th>Target Level &amp; Format</th>
-          <th>2026–27 Dates</th>
-          <th>Free Mock Tests &amp; Practice Archives</th>
+          <th>Target Grades &amp; Format</th>
+          <th>Annual Schedule &amp; Deadlines</th>
+          <th>Free Mock Tests &amp; Study Archives</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>AMC 8</strong><br><span style="color:#64748b;font-size:0.8rem;">MAA Middle School</span></td>
-          <td>Grades 6–8<br><strong>25 MCQs in 40 mins</strong></td>
-          <td><span class="pill-reg">Reg: Late Nov</span><br>Contest: <strong>Jan 21, 2027</strong></td>
+          <td><strong>MOEMS</strong><br><span style="color:#64748b;font-size:0.8rem;">Math Olympiads (Div E &amp; M)</span></td>
+          <td>Grades 4–6 (Div E) &amp; 6–8 (Div M)<br><strong>5 open-ended problems in 30 mins</strong> (5 monthly rounds)</td>
+          <td><span class="pill-reg">School Reg: Mid-Oct</span><br>Rounds: Nov, Dec, Jan, Feb, Mar</td>
           <td>
             <div class="resource-links">
-              <a href="https://artofproblemsolving.com/wiki/index.php/AMC_8_Problems_and_Solutions" target="_blank">AoPS AMC 8 Wiki Archive</a>
-              <a href="https://www.competitionmath.com/amc-8-practice/" target="_blank">Competition Math Practice</a>
+              <a href="https://moems.org/sample-questions/" target="_blank">MOEMS Sample Questions</a>
             </div>
           </td>
         </tr>
         <tr>
-          <td><strong>Math Kangaroo</strong><br><span style="color:#64748b;font-size:0.8rem;">International Logic</span></td>
-          <td>Grades 1–12<br>Grades 5–12: <strong>30 MCQs in 75 mins</strong></td>
-          <td><span class="pill-reg">Reg: Dec 31 deadline</span><br>Contest: <strong>Mar 18, 2027</strong></td>
+          <td><strong>AMC 8</strong><br><span style="color:#64748b;font-size:0.8rem;">MAA Middle School Benchmark</span></td>
+          <td>Grades 6–8 (max)<br><strong>25 MCQs in 40 mins</strong><br><em>Rec: Prealgebra+</em></td>
+          <td><span class="pill-reg">New School Reg: Jan 5, 2027</span><br>Window: <strong>Jan 21–27, 2027</strong></td>
           <td>
             <div class="resource-links">
-              <a href="https://mathkangaroo.org/mks/practice/" target="_blank">Official Math Kangaroo Practice</a>
+              <a href="https://artofproblemsolving.com/wiki/index.php/AMC_8_Problems_and_Solutions" target="_blank">AoPS AMC 8 Past Exams</a>
+              <a href="https://www.competitionmath.com/amc-8-practice/" target="_blank">Timed AMC 8 Practice</a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>MATHCOUNTS</strong><br><span style="color:#64748b;font-size:0.8rem;">School &rarr; State &rarr; Nationals</span></td>
+          <td>Grades 6–8<br>Sprint (40m), Target, Team &amp; Countdown Rounds</td>
+          <td><span class="pill-reg">School Reg: Fall</span><br>Chapter (Feb) &rarr; State (Mar)</td>
+          <td>
+            <div class="resource-links">
+              <a href="https://www.mathcounts.org/resources/past-competitions" target="_blank">Official Past Competitions</a>
+              <a href="https://artofproblemsolving.com/alcumus" target="_blank">AoPS Alcumus (Free Adaptive)</a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Math Kangaroo</strong><br><span style="color:#64748b;font-size:0.8rem;">International Visual Logic</span></td>
+          <td>Grades 1–12 (separate test/grade)<br>Grades 5–12: <strong>30 MCQs in 75 mins</strong></td>
+          <td><span class="pill-reg">Reg: Sept 15 – Dec 31</span><br>(Late: Jan 1 – Feb 1)<br>Exam: <strong>Mar 18, 2027</strong></td>
+          <td>
+            <div class="resource-links">
+              <a href="https://mathkangaroo.org/mks/practice/" target="_blank">Official Practice Questions</a>
               <a href="https://www.mathkangaroo.in/math-kangaroo-sample-papers/" target="_blank">Sample Papers Archive</a>
             </div>
           </td>
         </tr>
         <tr>
-          <td><strong>Math League</strong><br><span style="color:#64748b;font-size:0.8rem;">Contests &amp; Olympiads</span></td>
+          <td><strong>Math League</strong><br><span style="color:#64748b;font-size:0.8rem;">Speed &amp; Accuracy Contests</span></td>
           <td>Grades 4–12<br><strong>30 MCQs in 30 mins</strong></td>
           <td>Monthly contests (Nov – Feb)</td>
           <td>
             <div class="resource-links">
-              <a href="https://mathleague.com/index.php/annual-contests/help-and-resources/previous-contests" target="_blank">Official Math League Past Contests</a>
-              <a href="https://artofproblemsolving.com/community/c3330_math_league" target="_blank">AoPS Math League Community</a>
+              <a href="https://mathleague.com/index.php/annual-contests/help-and-resources/previous-contests" target="_blank">Past Contests Archive</a>
             </div>
           </td>
         </tr>
         <tr>
-          <td><strong>MOEMS</strong><br><span style="color:#64748b;font-size:0.8rem;">Div E &amp; M</span></td>
-          <td>Grades 4–8<br><strong>5 open-ended in 30 mins</strong></td>
-          <td>Rounds: Nov 19, Dec 17, Jan 14, Feb 11, Mar 11</td>
+          <td><strong>AMC 10 / 12</strong><br><span style="color:#64748b;font-size:0.8rem;">Gateway to AIME &amp; USAMO</span></td>
+          <td>AMC 10 (&le;10th) / AMC 12 (&le;12th)<br><strong>25 MCQs in 75 mins</strong><br><em>Rec: Algebra 1+</em></td>
+          <td><span class="pill-reg">Reg: Late Sept</span><br>Exams: <strong>November</strong></td>
           <td>
             <div class="resource-links">
-              <a href="https://moems.org/sample-questions/" target="_blank">Official MOEMS Sample Questions</a>
+              <a href="https://artofproblemsolving.com/wiki/index.php/AMC_10_Problems_and_Solutions" target="_blank">AoPS AMC 10 Archive</a>
+              <a href="https://artofproblemsolving.com/wiki/index.php/AMC_12_Problems_and_Solutions" target="_blank">AoPS AMC 12 Archive</a>
             </div>
           </td>
         </tr>
@@ -267,27 +568,29 @@
     </table>
   </div>
 
+  <!-- Section 4: Long-Term Roadmap -->
+  <h2 id="pathway" style="margin-bottom: 14px;">4. Step-by-Step Pathway: 6th Grade to MIT, Stanford, Princeton &amp; Caltech</h2>
   <div class="roadmap">
     <!-- Stage 1 -->
     <div class="stage">
       <div class="stage-header">
-        <span class="stage-title">Stage 1: Middle School Foundation (Grade 6 at Marsh Creek)</span>
-        <span class="badge">Math: Prealgebra &bull; Dance: Core Technique</span>
+        <span class="stage-title">Stage 1: Middle School Foundation (Grades 6–7)</span>
+        <span class="badge">Target Math: Prealgebra &rarr; Algebra 1, Counting &amp; Number Theory</span>
       </div>
       <div class="grid-2">
         <div class="box">
-          <strong>Mathematical Milestones &amp; Practice</strong>
+          <strong>Competition Milestones</strong>
           <ul>
-            <li>Master rigorous Prealgebra (AoPS Prealgebra / Intro to Algebra).</li>
-            <li>Take timed mock tests weekly using the <a href="https://artofproblemsolving.com/wiki/index.php/AMC_8_Problems_and_Solutions" target="_blank" style="color:var(--primary); font-weight:600;">AoPS AMC 8 Archive</a>.</li>
-            <li>Sit for the <b>AMC 8</b> (Jan 21) and <b>Math Kangaroo</b> (Mar 18).</li>
+            <li>Compete in all 5 rounds of <b>MOEMS</b> (Nov–Mar) to build comfort with open-ended answers.</li>
+            <li>Sit for <b>AMC 8</b> (Jan) and <b>Math Kangaroo</b> (Mar); aim for AMC 8 Honor Roll (Top 5%) or Distinguished Honor Roll (Top 1%).</li>
+            <li>Try out for the school <b>MATHCOUNTS</b> team.</li>
           </ul>
         </div>
         <div class="box">
-          <strong>Dance &amp; Weekly Cadence</strong>
+          <strong>Preparation &amp; Balance Habits</strong>
           <ul>
-            <li>Maintain 2–3 structured dance classes/week (ballet, contemporary, or cultural dance).</li>
-            <li>Protect 3–4 hours/week of unhurried, deep math problem-solving—reviewing missed contest problems after each mock test.</li>
+            <li>Use <a href="https://artofproblemsolving.com/alcumus" target="_blank" class="inline-link">AoPS Alcumus</a> (free) and AoPS textbooks to build conceptual depth rather than rote memorization.</li>
+            <li>Protect creative &amp; physical passions (music, dance, athletics)—top universities value sustained depth outside math.</li>
           </ul>
         </div>
       </div>
@@ -296,23 +599,23 @@
     <!-- Stage 2 -->
     <div class="stage">
       <div class="stage-header">
-        <span class="stage-title">Stage 2: Junior High &amp; First Qualifications (Grades 7–8)</span>
-        <span class="badge">Math: Algebra 1 &amp; Geometry &bull; Dance: Performance</span>
+        <span class="stage-title">Stage 2: High School Transition &amp; Proof Writing (Grades 7–9)</span>
+        <span class="badge">Target Math: Geometry, Intermediate Algebra &amp; Intro Proofs</span>
       </div>
       <div class="grid-2">
         <div class="box">
-          <strong>Mathematical Milestones</strong>
+          <strong>Competition Milestones</strong>
           <ul>
-            <li>Advance to <b>AMC 10</b> once Algebra 1 &amp; Geometry are solid; aim for early <b>AIME</b> qualification.</li>
-            <li>Enter <b>USAMTS</b> (month-long proof rounds) to learn formal mathematical proof writing.</li>
-            <li>Advance through MATHCOUNTS Chapter and PA State rounds.</li>
+            <li>Take <b>AMC 10</b> (Nov) once Algebra 1 &amp; Geometry are mastered; top ~2.5%–5% qualify for the invite-only <b>AIME</b>.</li>
+            <li>Participate in <a href="https://www.usamts.org/" target="_blank" class="inline-link">USAMTS</a> (month-long proof-based rounds) to learn formal mathematical proof writing.</li>
+            <li>Advance through MATHCOUNTS Chapter and State rounds.</li>
           </ul>
         </div>
         <div class="box">
-          <strong>Dance Integration</strong>
+          <strong>Strategic Focus</strong>
           <ul>
-            <li>Join a pre-professional studio company or competitive ensemble.</li>
-            <li>Use choreography retention and stage focus as mental cross-training for multi-step geometric proofs.</li>
+            <li>Qualifying for <b>AIME</b> before 10th grade is a major milestone showing readiness for Olympiad-level reasoning.</li>
+            <li>Always review missed contest solutions—true growth happens when analyzing problems you couldn't solve under time pressure.</li>
           </ul>
         </div>
       </div>
@@ -321,23 +624,23 @@
     <!-- Stage 3 -->
     <div class="stage">
       <div class="stage-header">
-        <span class="stage-title">Stage 3: High School National Tier (Grades 9–11)</span>
-        <span class="badge">Math: AIME, USAMO &amp; HMMT &bull; Dance: Leadership</span>
+        <span class="stage-title">Stage 3: National Invitational Tier (Grades 9–11)</span>
+        <span class="badge">Target Math: Precalculus, Trigonometry &amp; Olympiad Proofs</span>
       </div>
       <div class="grid-2">
         <div class="box">
-          <strong>Mathematical Milestones</strong>
+          <strong>Competition Milestones</strong>
           <ul>
-            <li>Qualify for and score 7+ on the <b>AIME</b> (15 integer answers in 3 hours).</li>
-            <li>Qualify for <b>USAJMO / USAMO</b> (top ~250–500 students nationwide).</li>
-            <li>Compete in collegiate invitationals: <b>HMMT</b> (Harvard-MIT), <b>PUMaC</b> (Princeton), <b>SMT</b> (Stanford).</li>
+            <li>Take <b>AMC 12</b> (Nov) and excel on the <b>AIME</b> (15 integer-answer questions in 3 hours; aim for 7+ out of 15).</li>
+            <li>Qualify for <b>USAJMO / USAMO</b> (top ~250–500 students nationwide; 2-day, 9-hour proof exam).</li>
+            <li>Compete in collegiate invitationals: <b>HMMT</b> (Harvard-MIT), <b>PUMaC</b> (Princeton), <b>SMT</b> (Stanford), <b>BMT</b> (Berkeley).</li>
           </ul>
         </div>
         <div class="box">
-          <strong>Dance Integration</strong>
+          <strong>Leadership &amp; Community</strong>
           <ul>
-            <li>Take on choreography or ensemble leadership roles in high school or community dance programs.</li>
-            <li>Sustain dance as a primary pillar of personal identity and stress resilience.</li>
+            <li>Captain the high school math team or mentor younger middle school students in a local Math Circle.</li>
+            <li>Apply to selective proof-based summer programs (PROMYS, Ross Mathematics Program, Canada/USA Mathcamp).</li>
           </ul>
         </div>
       </div>
@@ -346,39 +649,92 @@
     <!-- Stage 4 -->
     <div class="stage">
       <div class="stage-header">
-        <span class="stage-title">Stage 4: Olympiad Camp &amp; University Admissions (Grade 12)</span>
-        <span class="badge">Target: MOP/IMO &amp; MIT / Stanford / Princeton / Caltech</span>
+        <span class="stage-title">Stage 4: Olympiad Camp &amp; University Admissions (Grades 11–12)</span>
+        <span class="badge">Target: MOP / IMO &amp; Top STEM Admissions</span>
       </div>
       <div class="grid-2">
         <div class="box">
-          <strong>Mathematical Milestones</strong>
+          <strong>Peak Achievements</strong>
           <ul>
-            <li>Target <b>MOP</b> (Mathematical Olympiad Program) &rarr; Team USA for the <b>IMO</b>, or selective summer research (PROMYS, Ross, RSI).</li>
-            <li>Report official AMC/AIME scores and Olympiad/HMMT honors directly on MIT, Caltech, Princeton, and Stanford applications.</li>
+            <li>Invitation to <b>MOP</b> (Mathematical Olympiad Program, top ~60 USAMO/USAJMO scorers) &rarr; Team USA selection for the <b>IMO</b>.</li>
+            <li>Selective summer research programs (RSI, MIT PRIMES).</li>
           </ul>
         </div>
         <div class="box">
-          <strong>The Admissions Narrative</strong>
+          <strong>College Application Impact</strong>
           <ul>
-            <li>Stand out as a rare, high-agency applicant: a national-caliber mathematical problem solver who brings the discipline and artistry of a dedicated dancer.</li>
+            <li>MIT, Caltech, Princeton, and Stanford specifically ask for AMC and AIME scores on their applications.</li>
+            <li>Strong AMC/AIME/USAMO results paired with authentic non-math pursuits (arts, athletics, community leadership) create an unforgettable admissions profile.</li>
           </ul>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Local Action Guide -->
-  <div class="section-card school-talk">
-    <h2>Parent Action Guide: Partnering With Marsh Creek 6th Grade Center</h2>
-    <p>When meeting with Marsh Creek teachers, counselors, or Downingtown Area School District enrichment staff, focus on four concrete asks:</p>
+  <!-- Section 5: Community Building Playbook -->
+  <div id="community" class="section-card community-box">
+    <h2>5. How Parents &amp; Kids Can Build a Local Math Circle Together</h2>
+    <p style="margin-top:0;">Problem-solving thrives in a supportive peer community. Any group of parents can start a thriving neighborhood or school Math Circle in four simple steps:</p>
     <ul>
-      <li><strong>1. Math Acceleration &amp; Placement:</strong> Confirm the placement criteria and timeline for advancing into Honors Prealgebra / Algebra 1 so school coursework keeps pace with AMC 8 and early AMC 10 readiness.</li>
-      <li><strong>2. School Contest Sponsorship (MOEMS &amp; AMC 8):</strong> Ask if Marsh Creek administers MOEMS (5 rounds, 30 mins each) or the January 21 AMC 8 (40 mins). Offer to help coordinate or parent-proctor if the school needs support registering as an official testing site.</li>
-      <li><strong>3. External Testing Center Backup:</strong> Because invite-only exams (AIME, USA(J)MO) and some open contests require registered testing centers, confirm excused-absence policies if testing at an accredited regional center (e.g., AoPS Academy or local universities) or registering individually for Math Kangaroo before Dec 31.</li>
-      <li><strong>4. Protecting Dance Balance:</strong> Share how structured dance training keeps your student energized and disciplined—ensuring enrichment accelerates mathematical depth without crowding out creative movement.</li>
+      <li><strong>1. Gather 4–8 Curious Students:</strong> Connect with families from your child's school, PTA, or extracurricular activities who enjoy puzzles and logic games.</li>
+      <li><strong>2. Use Free Open-Source Problem Sets:</strong> Pull weekly sets from the <a href="https://artofproblemsolving.com/wiki/index.php/AMC_8_Problems_and_Solutions" target="_blank" class="inline-link">AoPS Wiki</a>, <a href="https://www.mathcounts.org/resources/past-competitions" target="_blank" class="inline-link">MATHCOUNTS Past Competitions</a>, or <a href="https://mathcircles.org/" target="_blank" class="inline-link">National Association of Math Circles</a>.</li>
+      <li><strong>3. Focus on Student Explanations, Not Lectures:</strong> Rotate hosting at a local library study room, school classroom, or living room. Parents act as facilitators while kids take turns at a whiteboard explaining <em>how</em> they arrived at an answer—celebrating multiple solution paths.</li>
+      <li><strong>4. Run Monthly Mock Exams:</strong> Once a month, proctor a real timed 40-minute AMC 8 or 30-minute MOEMS round together, followed by snacks and a collaborative group review of the toughest 5 problems.</li>
     </ul>
   </div>
 </div>
+
+<!-- JavaScript for Countdown Timer, Visit Counter, and Copy Button -->
+<script>
+  // 1. Countdown Timer to AMC 8 (Jan 21, 2027)
+  const countDownDate = new Date("Jan 21, 2027 08:00:00").getTime();
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = countDownDate - now;
+
+    if (distance < 0) {
+      document.getElementById("countdown").innerHTML = "<span>Contest Window Open!</span>";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("days").innerText = days;
+    document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+    document.getElementById("mins").innerText = String(minutes).padStart(2, '0');
+    document.getElementById("secs").innerText = String(seconds).padStart(2, '0');
+  }
+
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  // 2. Page Visit Counter with local fallback
+  fetch('https://api.countapi.xyz/hit/math-competition-readiness-hub/visits')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('visit-count').innerText = data.value;
+    })
+    .catch(() => {
+      let visits = localStorage.getItem('math_hub_visits') || 1;
+      visits = parseInt(visits) + 1;
+      localStorage.setItem('math_hub_visits', visits);
+      document.getElementById('visit-count').innerText = visits;
+    });
+
+  // 3. Copy Email Template Helper
+  function copyEmail() {
+    const text = document.getElementById("email-text").innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector(".copy-btn");
+      btn.innerText = "Copied to Clipboard!";
+      setTimeout(() => { btn.innerText = "Copy Email Template"; }, 2500);
+    });
+  }
+</script>
 
 </body>
 </html>
