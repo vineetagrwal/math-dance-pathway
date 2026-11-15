@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Marsh Creek to Top STEM Universities: Math &amp; Dance Pathway</title>
+<style>
+  :root {
+    --primary: #1e3a8a;
+    --secondary: #0f766e;
+    --accent: #9333ea;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    margin: 0;
+    padding: 20px;
+  }
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  header {
+    background: linear-gradient(135deg, #1e3a8a, #0f766e, #9333ea);
+    color: white;
+    padding: 28px 32px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  header h1 {
+    margin: 0 0 8px 0;
+    font-size: 1.7rem;
+  }
+  header p {
+    margin: 0;
+    opacity: 0.92;
+    font-size: 1rem;
+  }
+  .highlight-box {
+    background: #ede9fe;
+    border: 1px solid #ddd6fe;
+    border-left: 6px solid var(--accent);
+    padding: 18px 22px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+  }
+  .highlight-box h3 {
+    margin: 0 0 8px 0;
+    color: #6b21a8;
+  }
+  .roadmap {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .stage {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 6px solid var(--primary);
+    border-radius: 8px;
+    padding: 18px 22px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .stage:nth-child(2) { border-left-color: #2563eb; }
+  .stage:nth-child(3) { border-left-color: #0f766e; }
+  .stage:nth-child(4) { border-left-color: #9333ea; }
+
+  .stage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .stage-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .badge {
+    background: #e0e7ff;
+    color: #1e3a8a;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 16px;
+    margin-top: 10px;
+  }
+  .box {
+    background: #f1f5f9;
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-size: 0.92rem;
+  }
+  .box strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #0f172a;
+  }
+  .section-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 24px;
+  }
+  h2 {
+    margin-top: 0;
+    font-size: 1.3rem;
+    color: var(--primary);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    margin-top: 12px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    color: #0f172a;
+  }
+  .pill-reg {
+    display: inline-block;
+    background: #fef3c7;
+    color: #92400e;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+  }
+  .resource-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .resource-links a {
+    background: #e0e7ff;
+    color: #1e3a8a;
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+  .resource-links a:hover {
+    background: #c7d2fe;
+  }
+  .school-talk {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-left: 6px solid #d97706;
+  }
+  .school-talk h2 {
+    color: #92400e;
+    border-bottom-color: #fde68a;
+  }
+  ul {
+    margin: 8px 0 0 0;
+    padding-left: 20px;
+  }
+  li {
+    margin-bottom: 6px;
+  }
+  @media print {
+    body { background: white; padding: 0; }
+    .stage, .section-card, .highlight-box { break-inside: avoid; box-shadow: none; }
+    .resource-links a { border: 1px solid #cbd5e1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>The Dual-Excellence Pathway: 6th Grade to MIT, Stanford, Princeton &amp; Caltech</h1>
+    <p>A step-by-step roadmap, contest calendar, and free mock test resources balancing Math Competitions (AMC, MOEMS, Math Kangaroo) with Dance — tailored for Marsh Creek 6th Grade Center in Downingtown, PA.</p>
+  </header>
+
+  <div class="highlight-box">
+    <h3>Why Math + Dance is a Powerful Admissions &amp; Cognitive Combo</h3>
+    <p>Top STEM universities (MIT, Caltech, Princeton, Stanford) look for deep intellectual spikes paired with authentic, sustained creative and physical commitments. Dance develops exceptional <strong>spatial reasoning, rhythm, discipline, and kinetic memory</strong>—reinforcing advanced geometry, multivariable thinking, and composure under timed competition pressure.</p>
+  </div>
+
+  <!-- Contest Specs & Mock Test Links Table -->
+  <div class="section-card">
+    <h2>2026–2027 Contest Mechanics &amp; Free Mock Test Resources</h2>
+    <p style="font-size:0.9rem; color:#475569; margin-top:0;">Use these exact formats, dates, and direct links to free practice tests and past exam archives:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Contest</th>
+          <th>Target Level &amp; Format</th>
+          <th>2026–27 Dates</th>
+          <th>Free Mock Tests &amp; Practice Archives</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>AMC 8</strong><br><span style="color:#64748b;font-size:0.8rem;">MAA Middle School</span></td>
+          <td>Grades 6–8<br><strong>25 MCQs in 40 mins</strong></td>
+          <td><span class="pill-reg">Reg: Late Nov</span><br>Contest: <strong>Jan 21, 2027</strong></td>
+          <td>
+            <div class="resource-links">
+              <a href="https://artofproblemsolving.com/wiki/index.php/AMC_8_Problems_and_Solutions" target="_blank">AoPS AMC 8 Wiki Archive</a>
+              <a href="https://www.competitionmath.com/amc-8-practice/" target="_blank">Competition Math Practice</a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Math Kangaroo</strong><br><span style="color:#64748b;font-size:0.8rem;">International Logic</span></td>
+          <td>Grades 1–12<br>Grades 5–12: <strong>30 MCQs in 75 mins</strong></td>
+          <td><span class="pill-reg">Reg: Dec 31 deadline</span><br>Contest: <strong>Mar 18, 2027</strong></td>
+          <td>
+            <div class="resource-links">
+              <a href="https://mathkangaroo.org/mks/practice/" target="_blank">Official Math Kangaroo Practice</a>
+              <a href="https://www.mathkangaroo.in/math-kangaroo-sample-papers/" target="_blank">Sample Papers Archive</a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Math League</strong><br><span style="color:#64748b;font-size:0.8rem;">Contests &amp; Olympiads</span></td>
+          <td>Grades 4–12<br><strong>30 MCQs in 30 mins</strong></td>
+          <td>Monthly contests (Nov – Feb)</td>
+          <td>
+            <div class="resource-links">
+              <a href="https://mathleague.com/index.php/annual-contests/help-and-resources/previous-contests" target="_blank">Official Math League Past Contests</a>
+              <a href="https://artofproblemsolving.com/community/c3330_math_league" target="_blank">AoPS Math League Community</a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>MOEMS</strong><br><span style="color:#64748b;font-size:0.8rem;">Div E &amp; M</span></td>
+          <td>Grades 4–8<br><strong>5 open-ended in 30 mins</strong></td>
+          <td>Rounds: Nov 19, Dec 17, Jan 14, Feb 11, Mar 11</td>
+          <td>
+            <div class="resource-links">
+              <a href="https://moems.org/sample-questions/" target="_blank">Official MOEMS Sample Questions</a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="roadmap">
+    <!-- Stage 1 -->
+    <div class="stage">
+      <div class="stage-header">
+        <span class="stage-title">Stage 1: Middle School Foundation (Grade 6 at Marsh Creek)</span>
+        <span class="badge">Math: Prealgebra &bull; Dance: Core Technique</span>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <strong>Mathematical Milestones &amp; Practice</strong>
+          <ul>
+            <li>Master rigorous Prealgebra (AoPS Prealgebra / Intro to Algebra).</li>
+            <li>Take timed mock tests weekly using the <a href="https://artofproblemsolving.com/wiki/index.php/AMC_8_Problems_and_Solutions" target="_blank" style="color:var(--primary); font-weight:600;">AoPS AMC 8 Archive</a>.</li>
+            <li>Sit for the <b>AMC 8</b> (Jan 21) and <b>Math Kangaroo</b> (Mar 18).</li>
+          </ul>
+        </div>
+        <div class="box">
+          <strong>Dance &amp; Weekly Cadence</strong>
+          <ul>
+            <li>Maintain 2–3 structured dance classes/week (ballet, contemporary, or cultural dance).</li>
+            <li>Protect 3–4 hours/week of unhurried, deep math problem-solving—reviewing missed contest problems after each mock test.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 2 -->
+    <div class="stage">
+      <div class="stage-header">
+        <span class="stage-title">Stage 2: Junior High &amp; First Qualifications (Grades 7–8)</span>
+        <span class="badge">Math: Algebra 1 &amp; Geometry &bull; Dance: Performance</span>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <strong>Mathematical Milestones</strong>
+          <ul>
+            <li>Advance to <b>AMC 10</b> once Algebra 1 &amp; Geometry are solid; aim for early <b>AIME</b> qualification.</li>
+            <li>Enter <b>USAMTS</b> (month-long proof rounds) to learn formal mathematical proof writing.</li>
+            <li>Advance through MATHCOUNTS Chapter and PA State rounds.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <strong>Dance Integration</strong>
+          <ul>
+            <li>Join a pre-professional studio company or competitive ensemble.</li>
+            <li>Use choreography retention and stage focus as mental cross-training for multi-step geometric proofs.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 3 -->
+    <div class="stage">
+      <div class="stage-header">
+        <span class="stage-title">Stage 3: High School National Tier (Grades 9–11)</span>
+        <span class="badge">Math: AIME, USAMO &amp; HMMT &bull; Dance: Leadership</span>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <strong>Mathematical Milestones</strong>
+          <ul>
+            <li>Qualify for and score 7+ on the <b>AIME</b> (15 integer answers in 3 hours).</li>
+            <li>Qualify for <b>USAJMO / USAMO</b> (top ~250–500 students nationwide).</li>
+            <li>Compete in collegiate invitationals: <b>HMMT</b> (Harvard-MIT), <b>PUMaC</b> (Princeton), <b>SMT</b> (Stanford).</li>
+          </ul>
+        </div>
+        <div class="box">
+          <strong>Dance Integration</strong>
+          <ul>
+            <li>Take on choreography or ensemble leadership roles in high school or community dance programs.</li>
+            <li>Sustain dance as a primary pillar of personal identity and stress resilience.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 4 -->
+    <div class="stage">
+      <div class="stage-header">
+        <span class="stage-title">Stage 4: Olympiad Camp &amp; University Admissions (Grade 12)</span>
+        <span class="badge">Target: MOP/IMO &amp; MIT / Stanford / Princeton / Caltech</span>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <strong>Mathematical Milestones</strong>
+          <ul>
+            <li>Target <b>MOP</b> (Mathematical Olympiad Program) &rarr; Team USA for the <b>IMO</b>, or selective summer research (PROMYS, Ross, RSI).</li>
+            <li>Report official AMC/AIME scores and Olympiad/HMMT honors directly on MIT, Caltech, Princeton, and Stanford applications.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <strong>The Admissions Narrative</strong>
+          <ul>
+            <li>Stand out as a rare, high-agency applicant: a national-caliber mathematical problem solver who brings the discipline and artistry of a dedicated dancer.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Local Action Guide -->
+  <div class="section-card school-talk">
+    <h2>Parent Action Guide: Partnering With Marsh Creek 6th Grade Center</h2>
+    <p>When meeting with Marsh Creek teachers, counselors, or Downingtown Area School District enrichment staff, focus on four concrete asks:</p>
+    <ul>
+      <li><strong>1. Math Acceleration &amp; Placement:</strong> Confirm the placement criteria and timeline for advancing into Honors Prealgebra / Algebra 1 so school coursework keeps pace with AMC 8 and early AMC 10 readiness.</li>
+      <li><strong>2. School Contest Sponsorship (MOEMS &amp; AMC 8):</strong> Ask if Marsh Creek administers MOEMS (5 rounds, 30 mins each) or the January 21 AMC 8 (40 mins). Offer to help coordinate or parent-proctor if the school needs support registering as an official testing site.</li>
+      <li><strong>3. External Testing Center Backup:</strong> Because invite-only exams (AIME, USA(J)MO) and some open contests require registered testing centers, confirm excused-absence policies if testing at an accredited regional center (e.g., AoPS Academy or local universities) or registering individually for Math Kangaroo before Dec 31.</li>
+      <li><strong>4. Protecting Dance Balance:</strong> Share how structured dance training keeps your student energized and disciplined—ensuring enrichment accelerates mathematical depth without crowding out creative movement.</li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>
