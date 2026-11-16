@@ -471,6 +471,47 @@
   .copy-btn:hover {
     background: #1d4ed8;
   }
+  .kit-print-btn {
+    background: var(--secondary);
+    color: #fff;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-left: 8px;
+  }
+  .kit-print-btn:hover { background: #115e59; }
+
+  /* Teacher Hosting Kit (printable one-pager) */
+  .hosting-kit { border-left: 6px solid var(--secondary); }
+  .hosting-kit h2 { color: #115e59; border-bottom-color: #99f6e4; }
+  .kit-facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .kit-fact {
+    background: #f0fdfa;
+    border: 1px solid #99f6e4;
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .kit-fact .label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #115e59;
+  }
+  .kit-fact .val {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: 2px;
+  }
 
   ul {
     margin: 8px 0 0 0;
@@ -489,6 +530,10 @@
     body { background: white; padding: 0; }
     .nav-pills, .copy-btn, .top-bar, .share-bar { display: none; }
     .stage, .section-card { break-inside: avoid; box-shadow: none; }
+    /* "Print the kit" mode: show only the one-page hosting kit */
+    body.print-kit-mode .container > *:not(.hosting-kit) { display: none !important; }
+    body.print-kit-mode .hosting-kit { display: block !important; border: none; box-shadow: none; margin: 0; }
+    body.print-kit-mode .kit-print-btn { display: none !important; }
   }
 </style>
 </head>
@@ -614,7 +659,48 @@ Best regards,
 [Your Name]
 [Your Phone Number]</div>
       <button class="copy-btn" onclick="copyEmail()">Copy Email Template</button>
+      <button class="kit-print-btn" onclick="printKit()">🖨️ Print the 1-Page Teacher Hosting Kit</button>
     </div>
+  </div>
+
+  <!-- Teacher Hosting Kit (printable one-pager) -->
+  <div class="section-card hosting-kit">
+    <h2>📋 Teacher Hosting Kit — Host AMC 8 at Your School</h2>
+    <p style="margin-top:0; color:#475569;">A one-page summary to hand to a principal or math chair. Use the <strong>Print the 1-Page Teacher Hosting Kit</strong> button above to export just this page as a clean PDF.</p>
+
+    <h3>Why host? It takes one ~40-minute session.</h3>
+    <ul>
+      <li><strong>Minimal effort:</strong> a single 40-minute block (lunch or after school) — no curriculum changes required.</li>
+      <li><strong>Low cost:</strong> about <strong>$75 host fee + $25 per 10 students</strong>; PTA/PTO or parent volunteers can cover it.</li>
+      <li><strong>Builds STEM culture:</strong> a nationally recognized benchmark that energizes students and families.</li>
+      <li><strong>Parent support ready:</strong> families volunteer to proctor and coordinate logistics.</li>
+      <li><strong>Only requirement:</strong> one school employee (teacher, chair, gifted coordinator, or principal) serves as the official <em>Competition Manager</em>.</li>
+    </ul>
+
+    <div class="kit-facts">
+      <div class="kit-fact"><div class="label">AMC 8 Registration</div><div class="val">$75 + $25 / 10 students</div></div>
+      <div class="kit-fact"><div class="label">New Host Deadline</div><div class="val">January 5, 2027</div></div>
+      <div class="kit-fact"><div class="label">Exam Window</div><div class="val">January 21–27, 2027</div></div>
+      <div class="kit-fact"><div class="label">Session Length</div><div class="val">40 minutes</div></div>
+    </div>
+
+    <h3>How to register (Competition Manager):</h3>
+    <ul>
+      <li>Register online at the <a href="https://maa.org/amcreg/" target="_blank" rel="noopener noreferrer" class="inline-link">MAA AMC Registration Portal</a> (AMC 8/10/12).</li>
+      <li>For Grades 4–8 monthly rounds: <a href="https://moems.org/" target="_blank" rel="noopener noreferrer" class="inline-link">MOEMS.org</a>. For Grades 6–8 teams: <a href="https://www.mathcounts.org/" target="_blank" rel="noopener noreferrer" class="inline-link">MATHCOUNTS.org</a>.</li>
+    </ul>
+
+    <p style="margin-bottom:6px;"><strong>Ready-to-send email</strong> (also copyable from the box above):</p>
+    <div class="email-template">Subject: Hosting AMC 8 / Middle School Math Contests at [School Name]
+
+Dear [Teacher/Principal Name],
+
+I am reaching out as a parent of a [Grade]-grade student at [School Name] to ask if our school plans to host the MAA AMC 8 (Jan 21–27, 2027) or MOEMS math competitions this academic year. These contests are low-stress ways to build problem-solving confidence and only require a single 45-to-60-minute session. The MAA deadline for new host schools is January 5, 2027 ($75 school fee + $25 per 10 students at maa.org/amcreg).
+
+I would be happy to help coordinate logistics, recruit parent proctors, or work with our PTA to support the registration fee if a faculty member is willing to serve as the Competition Manager. Thank you for considering this for our students!
+
+Best regards,
+[Your Name] · [Your Phone Number]</div>
   </div>
 
   <!-- Section 3: Contest Specs & Free Mock Test Links Table -->
@@ -870,6 +956,15 @@ Best regards,
       setTimeout(() => { btn.innerText = "Copy Email Template"; }, 2500);
     });
   }
+
+  // 5. Teacher Hosting Kit — print only the one-page kit
+  function printKit() {
+    document.body.classList.add('print-kit-mode');
+    window.print();
+  }
+  window.addEventListener('afterprint', function () {
+    document.body.classList.remove('print-kit-mode');
+  });
 
   // 4. Social Share Buttons (no SDKs — plain share intents)
   (function () {
