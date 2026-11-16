@@ -706,6 +706,9 @@
   .site-card.clickable { cursor: pointer; }
   .site-card.clickable:hover { border-left-color: #1a73e8; background: #eef4ff; }
   .site-card.active { border-left-color: #1a73e8; background: #e8f0fe; }
+  .exam-filter { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .exam-chip { background: #fff; border: 2px solid var(--border); border-radius: 999px; padding: 6px 14px; font-weight: 600; font-size: 0.85rem; cursor: pointer; font-family: inherit; color: var(--text); }
+  .exam-chip.active { background: #1a73e8; color: #fff; border-color: #1a73e8; }
   .site-tag { display: inline-block; font-size: 0.66rem; font-weight: 700; text-transform: uppercase; background: #fde68a; color: #92400e; padding: 1px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
   .official-finders { margin-top: 16px; font-size: 0.9rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .official-finders a { background: #e0e7ff; color: var(--primary); padding: 6px 11px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.85rem; }
@@ -1001,11 +1004,17 @@
   <!-- Find a Test Site -->
   <section class="section-card" id="find-site">
     <h2>📍 Find an AMC Host School Near You</h2>
-    <p class="sub-note">Search 640+ AMC host schools (2026–27 cycle) by ZIP, city, state, or school name. Click a result to locate it on the map. The source list has no contact info, so each result links to a lookup.</p>
+    <p class="sub-note">Start typing a ZIP, city, state, or school name — results update live. Filter by exam (AMC 8/10/12) for your grade, then click a result to locate it on the map. The source list has no contact info, so each result links to a lookup.</p>
     <form class="zip-form" id="zip-form">
       <input type="text" id="zip-input" placeholder="ZIP, city, state, or school name — e.g. New York, NY" aria-label="Search by ZIP, city, state, or school name">
       <button type="submit" class="cta-btn" data-action="search-site">Search</button>
     </form>
+    <div class="exam-filter" id="exam-filter" role="group" aria-label="Filter by exam">
+      <button type="button" class="exam-chip active" data-exam="">All exams</button>
+      <button type="button" class="exam-chip" data-exam="8">AMC 8</button>
+      <button type="button" class="exam-chip" data-exam="10">AMC 10</button>
+      <button type="button" class="exam-chip" data-exam="12">AMC 12</button>
+    </div>
     <div class="finder-layout">
       <div id="zip-results" class="zip-results" aria-live="polite"></div>
       <div id="site-map" class="site-map"></div>
@@ -1641,13 +1650,35 @@ Best regards,
         });
       });
     }
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
+    let examFilter = "";
+    function filtered(q) {
+      let list = match(q);
+      if (examFilter) list = list.filter(function (s) { return (s[4] || "").split("/").indexOf(examFilter) >= 0; });
+      return list;
+    }
+    function doRun() {
       const q = input.value.trim();
-      if (!q) { results.innerHTML = '<div class="site-card">Enter a ZIP, city, state, or school name.</div>'; return; }
-      logAction("site-search");
-      results.innerHTML = '<div class="site-card">Searching…</div>';
-      load().then(function () { initMap(); setTimeout(function () { if (map) map.invalidateSize(); render(match(q)); }, 0); });
+      if (q.length < 2) {
+        results.innerHTML = '<div class="site-card">Type at least 2 characters — a ZIP, city, state, or school name.</div>';
+        if (layer) layer.clearLayers();
+        return;
+      }
+      load().then(function () {
+        initMap();
+        setTimeout(function () { if (map) map.invalidateSize(); render(filtered(q)); }, 0);
+      });
+    }
+    let t;
+    function run(now) { clearTimeout(t); t = setTimeout(doRun, now ? 0 : 160); }
+    input.addEventListener("input", function () { run(false); });
+    form.addEventListener("submit", function (e) { e.preventDefault(); logAction("site-search"); run(true); });
+    const ef = document.getElementById("exam-filter");
+    if (ef) ef.addEventListener("click", function (e) {
+      const b = e.target.closest("[data-exam]"); if (!b) return;
+      examFilter = b.getAttribute("data-exam");
+      Array.prototype.forEach.call(ef.querySelectorAll(".exam-chip"), function (x) { x.classList.toggle("active", x === b); });
+      logAction("filter-amc" + (examFilter || "all"));
+      if (input.value.trim().length >= 2) run(true);
     });
     if (typeof L !== "undefined") setTimeout(initMap, 0);
   })();
