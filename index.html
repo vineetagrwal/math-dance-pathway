@@ -734,6 +734,14 @@
   .chat-quick button { background: #f0fdfa; border: 1px solid #99f6e4; color: #115e59; border-radius: 999px; padding: 7px 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; font-family: inherit; }
   .chat-quick button:hover { background: #ccfbf1; }
 
+  /* National CTA band */
+  .cta-band { background: linear-gradient(135deg,#4f46e5,#9333ea,#ec4899); color: #fff; border-radius: 12px; padding: 30px 26px; margin-bottom: 24px; text-align: center; }
+  .cta-band h2 { color: #fff; border: none; margin: 0 0 10px; font-size: 1.9rem; padding: 0; }
+  .cta-band p { max-width: 720px; margin: 0 auto 18px; font-size: 1.05rem; opacity: 0.95; }
+  .cta-band-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .cta-band-actions a { background: #fff; color: #7c3aed; text-decoration: none; font-weight: 700; padding: 12px 20px; border-radius: 999px; font-size: 0.95rem; }
+  .cta-band-actions a:hover { background: #f3e8ff; }
+
   /* Key links grid */
   .links-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; margin-top: 10px; }
   .links-col h3 { margin: 0 0 8px; color: var(--secondary); font-size: 1rem; }
@@ -793,6 +801,17 @@
     <span class="logo-badge mk">Math Kangaroo</span>
     <span class="logo-badge aops">AoPS</span>
   </div>
+
+  <!-- National Call to Action -->
+  <section class="cta-band" id="why-it-matters">
+    <h2>Every child deserves a shot at STEM.</h2>
+    <p>Competitive math is a low-cost spark for the next generation of scientists and engineers — and one of the surest ladders to economic opportunity. Reaching every student, in every neighborhood, builds the nation's future.</p>
+    <div class="cta-band-actions">
+      <a href="#mock-tests" data-action="cta-student">🎒 Students — start free</a>
+      <a href="#school-hosting" data-action="cta-teacher">🍎 Teachers — host a contest</a>
+      <a href="#start-here" data-action="cta-parent">👨‍👩‍👧 Parents — get involved</a>
+    </div>
+  </section>
 
   <!-- Audience Selector + Decision Trees -->
   <section class="audience" id="start-here" aria-label="Choose your path">
