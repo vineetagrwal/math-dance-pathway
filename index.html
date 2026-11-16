@@ -673,12 +673,13 @@
   /* Logos strip */
   .logos-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 24px; padding: 14px 18px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; }
   .logos-label { font-size: 0.85rem; font-weight: 700; color: var(--muted); margin-right: 4px; }
-  .logo-badge { font-weight: 800; font-size: 0.82rem; padding: 7px 13px; border-radius: 7px; letter-spacing: 0.3px; color: #fff; }
+  .logo-badge { display: inline-block; font-weight: 800; font-size: 0.82rem; padding: 7px 13px; border-radius: 7px; letter-spacing: 0.3px; color: #fff; text-decoration: none; }
+  .logo-badge:hover { opacity: 0.88; }
   .logo-badge.amc { background: #1e3a8a; }
   .logo-badge.mc { background: #b91c1c; }
   .logo-badge.moems { background: #0f766e; }
   .logo-badge.mk { background: #d97706; }
-  .logo-badge.aops { background: #111827; }
+  .logo-badge.ml { background: #6d28d9; }
 
   /* Shared CTA button */
   .cta-btn { background: var(--secondary); color: #fff; border: none; border-radius: 8px; padding: 12px 20px; font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; }
@@ -694,6 +695,13 @@
   .site-card .sc-name { font-weight: 700; color: var(--primary); }
   .site-card .sc-meta { font-size: 0.85rem; color: var(--muted); margin-top: 2px; }
   .site-card .sc-contact { font-size: 0.88rem; margin-top: 6px; }
+  .zip-results .sc-head { font-weight: 700; color: var(--primary); margin-bottom: 4px; font-size: 0.9rem; }
+  .view-toggle { display: none; gap: 6px; margin: 14px 0 0; }
+  .view-toggle.show { display: flex; }
+  .vt-btn { background: #fff; border: 2px solid var(--border); border-radius: 999px; padding: 6px 16px; font-weight: 600; font-size: 0.85rem; cursor: pointer; font-family: inherit; color: var(--text); }
+  .vt-btn.active { background: #1a73e8; color: #fff; border-color: #1a73e8; }
+  .site-map { height: 380px; border-radius: 10px; margin-top: 12px; border: 1px solid var(--border); display: none; }
+  .site-map.show { display: block; }
   .site-tag { display: inline-block; font-size: 0.66rem; font-weight: 700; text-transform: uppercase; background: #fde68a; color: #92400e; padding: 1px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
   .official-finders { margin-top: 16px; font-size: 0.9rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .official-finders a { background: #e0e7ff; color: var(--primary); padding: 6px 11px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.85rem; }
@@ -761,6 +769,7 @@
     body.print-kit-mode .kit-print-btn { display: none !important; }
   }
 </style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 </head>
 <body>
 
@@ -793,13 +802,13 @@
   </div>
 
   <!-- Recognized contests (text badges) -->
-  <div class="logos-strip" aria-label="Contests covered">
-    <span class="logos-label">Covers every major contest:</span>
-    <span class="logo-badge amc">MAA · AMC</span>
-    <span class="logo-badge mc">MATHCOUNTS</span>
-    <span class="logo-badge moems">MOEMS</span>
-    <span class="logo-badge mk">Math Kangaroo</span>
-    <span class="logo-badge aops">AoPS</span>
+  <div class="logos-strip" aria-label="Official contests covered">
+    <span class="logos-label">Official contests we cover:</span>
+    <a class="logo-badge amc" href="https://maa.org/student-programs/amc/" target="_blank" rel="noopener noreferrer">MAA AMC</a>
+    <a class="logo-badge mc" href="https://www.mathcounts.org/" target="_blank" rel="noopener noreferrer">MATHCOUNTS</a>
+    <a class="logo-badge moems" href="https://moems.org/" target="_blank" rel="noopener noreferrer">MOEMS</a>
+    <a class="logo-badge mk" href="https://mathkangaroo.org/" target="_blank" rel="noopener noreferrer">Math Kangaroo</a>
+    <a class="logo-badge ml" href="https://mathleague.com/" target="_blank" rel="noopener noreferrer">Math League</a>
   </div>
 
   <!-- National Call to Action -->
@@ -985,13 +994,18 @@
 
   <!-- Find a Test Site -->
   <section class="section-card" id="find-site">
-    <h2>📍 Find a Test Site Near You</h2>
-    <p class="sub-note">Enter your ZIP to search community-listed sites, or jump straight to the official locators.</p>
+    <h2>📍 Find an AMC Host School Near You</h2>
+    <p class="sub-note">Search 640+ schools that registered to host the AMC (2026–27 cycle) by ZIP. The official list has no contact info, so each result links to look the school up.</p>
     <form class="zip-form" id="zip-form">
       <input type="text" id="zip-input" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="Enter ZIP (e.g. 94043)" aria-label="ZIP code">
       <button type="submit" class="cta-btn" data-action="search-site">Find sites</button>
     </form>
     <div id="zip-results" class="zip-results" aria-live="polite"></div>
+    <div class="view-toggle" id="view-toggle">
+      <button type="button" data-view="list" class="vt-btn active">☰ List</button>
+      <button type="button" data-view="map" class="vt-btn">🗺️ Map</button>
+    </div>
+    <div id="site-map" class="site-map"></div>
     <div class="official-finders">
       <span>Official locators:</span>
       <a href="https://maa.org/student-programs/amc/" target="_blank" rel="noopener noreferrer">MAA AMC</a>
@@ -1440,6 +1454,8 @@ Best regards,
   <div class="chat-quick" id="chat-quick"></div>
 </div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
 <!-- JavaScript: countdown, finder, interest form, feedback, chatbot -->
 <script>
   // 0. Always open at the top (prevent mid-page scroll restoration)
@@ -1509,29 +1525,82 @@ Best regards,
     if (!el.classList.contains("cta-btn")) showToast("✓ Nice — you're taking a step!");
   });
 
-  // 3. ZIP test-site search (client-side over sample listings + official finders)
-  const SITE_LISTINGS = [
-    { name: "Example Middle School", area: "sample", zip: "94043", contests: "AMC 8, MATHCOUNTS", contact: "Ask the front office for the Competition Manager" },
-    { name: "Community STEM Center", area: "sample", zip: "10001", contests: "AMC 8/10/12", contact: "Contact line on the center's website" },
-    { name: "Public Library Math Circle", area: "sample", zip: "60601", contests: "MOEMS, Math Kangaroo", contact: "Children's desk / events coordinator" }
-  ];
+  // 3. AMC test-site finder + map (real host-school data from sites.json)
   (function () {
     const form = document.getElementById("zip-form");
     const results = document.getElementById("zip-results");
+    const toggle = document.getElementById("view-toggle");
+    const mapEl = document.getElementById("site-map");
     if (!form) return;
+    let SITES = null, loading = false, map = null, layer = null, last = [];
+    function load() {
+      if (SITES) return Promise.resolve();
+      if (loading) return loading;
+      loading = fetch("sites.json").then(function (r) { return r.json(); })
+        .then(function (d) { SITES = d; }).catch(function () { SITES = []; });
+      return loading;
+    }
+    function cardHtml(s) {
+      const name = s[0], loc = [s[1], s[2]].filter(Boolean).join(", "), zip = s[3], lv = s[4];
+      const q = encodeURIComponent(name + " " + loc);
+      return '<div class="site-card"><div class="sc-name">' + name + '</div>' +
+        '<div class="sc-meta">' + (loc ? loc + " · " : "") + 'ZIP ' + zip + (lv ? ' · AMC ' + lv : '') + '</div>' +
+        '<div class="sc-contact">🔎 <a href="https://www.google.com/search?q=' + q + '" target="_blank" rel="noopener noreferrer">Look up this school’s contact</a></div></div>';
+    }
+    function initMap() {
+      if (map || typeof L === "undefined") return;
+      map = L.map(mapEl).setView([39.5, -98.35], 4);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "&copy; OpenStreetMap", maxZoom: 18 }).addTo(map);
+      layer = L.layerGroup().addTo(map);
+    }
+    function plot() {
+      if (!map || !layer) return;
+      layer.clearLayers();
+      const pts = [];
+      last.forEach(function (s) {
+        if (s[5] == null || s[6] == null) return;
+        const loc = [s[1], s[2]].filter(Boolean).join(", ");
+        L.marker([s[5], s[6]]).bindPopup("<strong>" + s[0] + "</strong><br>" + loc + (s[4] ? "<br>AMC " + s[4] : "")).addTo(layer);
+        pts.push([s[5], s[6]]);
+      });
+      if (pts.length) map.fitBounds(pts, { padding: [30, 30], maxZoom: 11 });
+    }
+    function showMap() {
+      initMap();
+      setTimeout(function () { if (map) { map.invalidateSize(); plot(); } }, 0);
+    }
+    function render(zip) {
+      let list = SITES.filter(function (s) { return s[3] === zip; });
+      let nearby = false;
+      if (!list.length) { list = SITES.filter(function (s) { return s[3].slice(0, 3) === zip.slice(0, 3); }); nearby = true; }
+      last = list;
+      if (!list.length) {
+        results.innerHTML = '<div class="site-card">No AMC host schools found near <strong>' + zip + '</strong> in this list. Try the <a href="https://maa.org/student-programs/amc/" target="_blank" rel="noopener noreferrer">official MAA finder</a>, or <a href="#register-interest">register your interest</a>.</div>';
+        toggle.classList.remove("show");
+        return;
+      }
+      const shown = list.slice(0, 30);
+      results.innerHTML = '<div class="sc-head">' +
+        (nearby ? 'Nearby AMC host schools (ZIP ' + zip.slice(0, 3) + 'xx)' : 'AMC host schools in ' + zip) +
+        ' — ' + list.length + ' found' + (list.length > 30 ? ', showing first 30' : '') + '</div>' +
+        shown.map(cardHtml).join("");
+      toggle.classList.add("show");
+      if (mapEl.classList.contains("show")) showMap();
+    }
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       const zip = (document.getElementById("zip-input").value || "").trim();
       if (!/^\d{5}$/.test(zip)) { results.innerHTML = '<div class="site-card">Please enter a valid 5-digit ZIP.</div>'; return; }
       logAction("zip-search");
-      const matches = SITE_LISTINGS.filter(function (s) { return s.zip.slice(0, 3) === zip.slice(0, 3); });
-      if (matches.length) {
-        results.innerHTML = matches.map(function (s) {
-          return '<div class="site-card"><div class="sc-name">' + s.name + ' <span class="site-tag">' + s.area + '</span></div><div class="sc-meta">ZIP ' + s.zip + ' · ' + s.contests + '</div><div class="sc-contact">📞 ' + s.contact + '</div></div>';
-        }).join("");
-      } else {
-        results.innerHTML = '<div class="site-card">No community-listed sites near <strong>' + zip + '</strong> yet. Try the official locators below, or <a href="#register-interest">register your interest</a> and we\'ll help you find one.</div>';
-      }
+      results.innerHTML = '<div class="site-card">Searching…</div>';
+      load().then(function () { render(zip); });
+    });
+    if (toggle) toggle.addEventListener("click", function (e) {
+      const b = e.target.closest("[data-view]"); if (!b) return;
+      const view = b.getAttribute("data-view");
+      toggle.querySelectorAll(".vt-btn").forEach(function (x) { x.classList.toggle("active", x === b); });
+      if (view === "map") { results.style.display = "none"; mapEl.classList.add("show"); showMap(); }
+      else { results.style.display = ""; mapEl.classList.remove("show"); }
     });
   })();
 
