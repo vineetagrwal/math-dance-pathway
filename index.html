@@ -109,6 +109,134 @@
     color: #ffffff;
     border-bottom-color: rgba(255,255,255,0.75);
   }
+
+  /* Hero pillars */
+  .pillars {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .pillar {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.22);
+    color: #f8fafc;
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    flex: 1 1 240px;
+  }
+  .pillar strong { color: #ffffff; }
+
+  /* Stats strip */
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--secondary);
+    border-radius: 10px;
+    padding: 16px 18px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .stat .num { display: block; font-size: 1.45rem; font-weight: 800; color: var(--secondary); line-height: 1.15; }
+  .stat .lbl { display: block; font-size: 0.84rem; color: var(--muted); margin-top: 5px; }
+
+  /* Audience selector */
+  .audience {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 26px 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .audience > h2 { text-align: center; border: none; padding: 0; margin-bottom: 4px; }
+  .audience .sub { text-align: center; color: var(--muted); margin: 0 0 20px; font-size: 0.95rem; }
+  .audience-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
+  }
+  .aud-card {
+    background: #f8fafc;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 18px;
+    cursor: pointer;
+    text-align: center;
+    font-family: inherit;
+    transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  }
+  .aud-card:hover { border-color: var(--secondary); background: #f0fdfa; }
+  .aud-card.active { border-color: var(--secondary); background: #f0fdfa; box-shadow: 0 0 0 3px rgba(15,118,110,0.15); }
+  .aud-card .emoji { font-size: 2rem; display: block; }
+  .aud-card .ac-title { font-size: 1.1rem; font-weight: 700; color: var(--primary); margin-top: 8px; display: block; }
+  .aud-card .ac-desc { font-size: 0.85rem; color: var(--muted); margin-top: 4px; display: block; }
+
+  /* Decision trees */
+  .tree { display: none; margin-top: 22px; border-top: 1px solid var(--border); padding-top: 22px; }
+  .tree.active { display: block; }
+  .step { display: none; }
+  .step.active { display: block; animation: treefade 0.2s ease; }
+  @keyframes treefade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .step .q { font-size: 1.12rem; font-weight: 700; color: var(--primary); margin: 0 0 14px; }
+  .choices { display: flex; flex-wrap: wrap; gap: 10px; }
+  .choice {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .choice:hover { border-color: var(--secondary); background: #f0fdfa; }
+  .choice:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+  .outcome {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-left: 5px solid #16a34a;
+    border-radius: 8px;
+    padding: 18px 20px;
+  }
+  .outcome h4 { margin: 0 0 8px; color: #166534; font-size: 1.08rem; }
+  .outcome ul { margin-top: 8px; }
+  .outcome .cta-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .outcome .cta {
+    background: var(--secondary);
+    color: #fff;
+    text-decoration: none;
+    padding: 9px 15px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .outcome .cta:hover { background: #115e59; }
+  .outcome .cta.alt { background: #e0e7ff; color: var(--primary); }
+  .outcome .cta.alt:hover { background: #c7d2fe; }
+  .restart {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 0.82rem;
+    cursor: pointer;
+    margin-top: 14px;
+    text-decoration: underline;
+    font-family: inherit;
+    padding: 0;
+  }
   /* Countdown & Stats Bar */
   .top-bar {
     display: flex;
@@ -541,16 +669,192 @@
 
 <div class="container">
   <header>
-    <h1>Math Competition Readiness Hub: 6th Grade to Top STEM Universities</h1>
-    <p>An open parent &amp; student guide for families navigating math competitions:</p>
-    <ul class="header-bullets">
-      <li><a href="#school-hosting">Early school test-site registration &amp; key deadlines</a></li>
-      <li><a href="#getting-started">Weekly preparation habits &amp; the 3-phase annual cycle</a></li>
-      <li><a href="#mock-tests">Free mock test archives &amp; full contest calendar</a></li>
-      <li><a href="#pathway">Long-term pathway: middle school contests to MIT, Stanford, Princeton &amp; Caltech</a></li>
-      <li><a href="#community">How to build a local Math Circle from scratch</a></li>
-    </ul>
+    <h1>Competitive Math: The Smartest Early Advantage for STEM &amp; Top Colleges</h1>
+    <p>Stronger problem-solving. A clear, proven pathway from 6th grade to top STEM universities. Free for every student, parent, and school.</p>
+    <div class="pillars">
+      <div class="pillar">🧠 <strong>Sharper thinking.</strong> Builds deep problem-solving and analytical skills that compound for life — far beyond the classroom.</div>
+      <div class="pillar">🎓 <strong>College edge.</strong> MIT &amp; Caltech applications ask directly for AMC &amp; AIME scores. These results open doors.</div>
+      <div class="pillar">🚀 <strong>Start early.</strong> The biggest advantage is time. Beginning in 6th grade compounds into Olympiad-level readiness.</div>
+    </div>
   </header>
+
+  <!-- Key Stats Strip -->
+  <div class="stats-strip">
+    <div class="stat"><span class="num">300,000+</span><span class="lbl">students take the MAA AMC each year</span></div>
+    <div class="stat"><span class="num">Grades 6–8</span><span class="lbl">are eligible for the AMC 8 — start early</span></div>
+    <div class="stat"><span class="num">40 minutes</span><span class="lbl">is all it takes for a school to host it</span></div>
+    <div class="stat"><span class="num">MIT &amp; Caltech</span><span class="lbl">applications ask for AMC &amp; AIME scores</span></div>
+  </div>
+
+  <!-- Audience Selector + Decision Trees -->
+  <section class="audience" id="start-here" aria-label="Choose your path">
+    <h2>Start here — who are you?</h2>
+    <p class="sub">Pick one and we'll guide you to your exact next step.</p>
+    <div class="audience-cards">
+      <button class="aud-card" type="button" data-aud="student" aria-controls="tree-student">
+        <span class="emoji">🎒</span><span class="ac-title">I'm a Student</span><span class="ac-desc">Find your level &amp; what to do next</span>
+      </button>
+      <button class="aud-card" type="button" data-aud="parent" aria-controls="tree-parent">
+        <span class="emoji">👨‍👩‍👧</span><span class="ac-title">I'm a Parent</span><span class="ac-desc">Understand the benefits &amp; your role</span>
+      </button>
+      <button class="aud-card" type="button" data-aud="teacher" aria-controls="tree-teacher">
+        <span class="emoji">🍎</span><span class="ac-title">I'm a Teacher</span><span class="ac-desc">Host a contest &amp; start kids early</span>
+      </button>
+    </div>
+
+    <!-- STUDENT tree -->
+    <div class="tree" id="tree-student">
+      <div class="step active" id="st-1">
+        <p class="q">Have you ever taken a competitive math exam (like AMC 8, MOEMS, or Math Kangaroo)?</p>
+        <div class="choices">
+          <button class="choice" type="button" data-goto="st-which">✅ Yes, I have</button>
+          <button class="choice" type="button" data-goto="st-no">🚀 Not yet</button>
+        </div>
+      </div>
+      <div class="step" id="st-which">
+        <p class="q">Great — which level have you reached?</p>
+        <div class="choices">
+          <button class="choice" type="button" data-goto="st-mid">Middle school: AMC 8 / MOEMS / Kangaroo</button>
+          <button class="choice" type="button" data-goto="st-adv">High school: AMC 10 / 12 / AIME</button>
+        </div>
+        <button class="restart" type="button">↺ Start over</button>
+      </div>
+      <div class="step" id="st-no">
+        <div class="outcome">
+          <h4>Perfect timing — the best time to start is now. 🌱</h4>
+          <p>You don't need to be a "math genius." These contests are about creative problem-solving, and every expert started with their first practice problem.</p>
+          <ul>
+            <li><strong>Try a few free problems</strong> to see what it's like — no pressure.</li>
+            <li><strong>Find out if your school hosts the AMC 8.</strong> If it doesn't, <em>you</em> can be the spark.</li>
+            <li><strong>Become the activist:</strong> show your math teacher how easy hosting is, and ask a parent to help champion it.</li>
+          </ul>
+          <div class="cta-row">
+            <a class="cta" href="#mock-tests">Try free practice →</a>
+            <a class="cta alt" href="#school-hosting">Show my teacher how to host</a>
+            <a class="cta alt" href="#getting-started">See the game plan</a>
+          </div>
+          <button class="restart" type="button">↺ Start over</button>
+        </div>
+      </div>
+      <div class="step" id="st-mid">
+        <div class="outcome">
+          <h4>You're on your way — now level up and bring others with you. 📈</h4>
+          <ul>
+            <li><strong>Review every problem you missed</strong> — that's where real growth happens.</li>
+            <li><strong>Aim higher:</strong> AMC 8 Honor Roll (top 5%), then step up to the AMC 10.</li>
+            <li><strong>Be an advocate:</strong> ask your teacher to register the school for the next level, and start a math circle with friends so no one competes alone.</li>
+          </ul>
+          <div class="cta-row">
+            <a class="cta" href="#pathway">See my next milestones →</a>
+            <a class="cta alt" href="#community">Start a math circle</a>
+            <a class="cta alt" href="#school-hosting">Help my school host more</a>
+          </div>
+          <button class="restart" type="button">↺ Start over</button>
+        </div>
+      </div>
+      <div class="step" id="st-adv">
+        <div class="outcome">
+          <h4>You're on the advanced track — push toward invitationals. 🏆</h4>
+          <ul>
+            <li><strong>Target AIME</strong> and keep a solutions journal of hard problems.</li>
+            <li><strong>Learn proofs</strong> via USAMTS and aim for USAJMO/USAMO.</li>
+            <li><strong>Compete &amp; lead:</strong> collegiate invitationals (HMMT, PUMaC, SMT), and mentor younger students.</li>
+          </ul>
+          <div class="cta-row">
+            <a class="cta" href="#pathway">See the full pathway →</a>
+            <a class="cta alt" href="#community">Mentor a math circle</a>
+          </div>
+          <button class="restart" type="button">↺ Start over</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARENT tree -->
+    <div class="tree" id="tree-parent">
+      <div class="step active" id="pa-1">
+        <p class="q">Are you already familiar with competitive math and why it matters?</p>
+        <div class="choices">
+          <button class="choice" type="button" data-goto="pa-role">✅ Yes — show me my role</button>
+          <button class="choice" type="button" data-goto="pa-why">🤔 Not really — why does it matter?</button>
+        </div>
+      </div>
+      <div class="step" id="pa-why">
+        <div class="outcome" style="background:#eff6ff;border-color:#bfdbfe;border-left-color:#2563eb;">
+          <h4>Why competitive math is one of the best early investments 💡</h4>
+          <ul>
+            <li><strong>Deeper thinking:</strong> it builds creative problem-solving and resilience that help across every STEM subject — and in life.</li>
+            <li><strong>College signal:</strong> MIT and Caltech applications literally ask for AMC/AIME scores; strong results stand out.</li>
+            <li><strong>Confidence &amp; community:</strong> kids discover they can tackle hard problems alongside peers.</li>
+            <li><strong>Low cost, high upside:</strong> most resources are free and the on-ramp (AMC 8) is a single 40-minute exam.</li>
+          </ul>
+          <div class="cta-row">
+            <button class="cta" type="button" data-goto="pa-role">Got it — what's my role? →</button>
+          </div>
+          <button class="restart" type="button">↺ Start over</button>
+        </div>
+      </div>
+      <div class="step" id="pa-role">
+        <div class="outcome">
+          <h4>Your role as a parent: open the door, then support. 🤝</h4>
+          <ul>
+            <li><strong>Check access:</strong> ask whether your child's school hosts the AMC 8 or MOEMS.</li>
+            <li><strong>If not, champion it:</strong> a school employee must register — use our ready-to-send email to recruit a teacher or principal, and offer PTA help.</li>
+            <li><strong>Support at home:</strong> provide free practice time (not pressure), and celebrate effort on hard problems.</li>
+            <li><strong>Build community:</strong> start or join a local math circle with other families.</li>
+          </ul>
+          <div class="cta-row">
+            <a class="cta" href="#school-hosting">Get the email template →</a>
+            <a class="cta alt" href="#mock-tests">Free practice resources</a>
+            <a class="cta alt" href="#community">Start a math circle</a>
+          </div>
+          <button class="restart" type="button">↺ Start over</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEACHER tree -->
+    <div class="tree" id="tree-teacher">
+      <div class="step active" id="te-1">
+        <p class="q">Is your school already a registered AMC / contest test site?</p>
+        <div class="choices">
+          <button class="choice" type="button" data-goto="te-yes">✅ Yes, we host</button>
+          <button class="choice" type="button" data-goto="te-no">❓ No / Not sure</button>
+        </div>
+      </div>
+      <div class="step" id="te-yes">
+        <div class="outcome">
+          <h4>Wonderful — now widen the funnel and start them early. 🎯</h4>
+          <p><strong>Who can take the AMC 8?</strong> Any student in <strong>grade 8 or below</strong> — so 6th and even advanced younger students are eligible. Earlier starts build a stronger pipeline.</p>
+          <ul>
+            <li><strong>Invite 6th &amp; 7th graders</strong>, not just your top 8th graders.</li>
+            <li><strong>Add on-ramps:</strong> MOEMS (grades 4–6) and MATHCOUNTS (6–8) complement the AMC 8.</li>
+            <li><strong>Make it routine:</strong> a lunchtime math club keeps momentum year-round.</li>
+          </ul>
+          <div class="cta-row">
+            <a class="cta" href="#mock-tests">Free practice &amp; calendar →</a>
+            <a class="cta alt" href="#pathway">Show students the pathway</a>
+          </div>
+          <button class="restart" type="button">↺ Start over</button>
+        </div>
+      </div>
+      <div class="step" id="te-no">
+        <div class="outcome">
+          <h4>You could be the champion your students need. 🌟</h4>
+          <p>Becoming a test site is simpler than most teachers expect: <strong>one ~40-minute session</strong>, about <strong>$75 + $25 per 10 students</strong>, and one staff member listed as Competition Manager.</p>
+          <ul>
+            <li><strong>Register</strong> at the MAA AMC portal (or MOEMS / MATHCOUNTS).</li>
+            <li><strong>Start kids early</strong> — open it to grades 6–8 from day one.</li>
+            <li><strong>Lean on parents</strong> to proctor and cover fees via the PTA.</li>
+          </ul>
+          <div class="cta-row">
+            <a class="cta" href="#school-hosting">Get the 1-page Hosting Kit →</a>
+            <a class="cta alt" href="#mock-tests">See the contest calendar</a>
+          </div>
+          <button class="restart" type="button">↺ Start over</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Live Countdown & Visitor Counter Bar -->
   <div class="top-bar">
@@ -956,6 +1260,41 @@ Best regards,
       setTimeout(() => { btn.innerText = "Copy Email Template"; }, 2500);
     });
   }
+
+  // 6. Audience Selector + Decision Trees
+  (function () {
+    const trees = { student: "tree-student", parent: "tree-parent", teacher: "tree-teacher" };
+    function showStep(treeId, stepId) {
+      const tree = document.getElementById(treeId);
+      if (!tree) return;
+      tree.querySelectorAll(".step").forEach(function (s) { s.classList.remove("active"); });
+      const el = document.getElementById(stepId);
+      if (el) el.classList.add("active");
+    }
+    document.querySelectorAll(".aud-card").forEach(function (card) {
+      card.addEventListener("click", function () {
+        const aud = card.getAttribute("data-aud");
+        document.querySelectorAll(".aud-card").forEach(function (c) { c.classList.toggle("active", c === card); });
+        Object.values(trees).forEach(function (tid) { document.getElementById(tid).classList.remove("active"); });
+        const tree = document.getElementById(trees[aud]);
+        tree.classList.add("active");
+        showStep(trees[aud], tree.querySelector(".step").id); // reset to first question
+        tree.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+    });
+    document.querySelectorAll("[data-goto]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const tree = btn.closest(".tree");
+        if (tree) showStep(tree.id, btn.getAttribute("data-goto"));
+      });
+    });
+    document.querySelectorAll(".restart").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const tree = btn.closest(".tree");
+        if (tree) showStep(tree.id, tree.querySelector(".step").id);
+      });
+    });
+  })();
 
   // 5. Teacher Hosting Kit — print only the one-page kit
   function printKit() {
