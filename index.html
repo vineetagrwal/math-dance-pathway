@@ -32,7 +32,7 @@
     margin: 0 auto;
   }
   header {
-    background: linear-gradient(135deg, #1e3a8a, #0f766e);
+    background: linear-gradient(135deg, #14532d, #166534);
     color: white;
     padding: 32px 36px;
     border-radius: 12px;
@@ -45,10 +45,44 @@
     line-height: 1.25;
   }
   header p {
-    margin: 0;
+    margin: 0 0 12px 0;
     opacity: 0.94;
     font-size: 1.02rem;
     max-width: 820px;
+  }
+  .header-bullets {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .header-bullets li {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .header-bullets li::before {
+    content: "›";
+    font-size: 1.3rem;
+    line-height: 1;
+    color: rgba(255,255,255,0.55);
+    flex-shrink: 0;
+  }
+  .header-bullets a {
+    color: rgba(255,255,255,0.88);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255,255,255,0.25);
+    padding-bottom: 1px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .header-bullets a:hover {
+    color: #ffffff;
+    border-bottom-color: rgba(255,255,255,0.75);
   }
   /* Countdown & Stats Bar */
   .top-bar {
@@ -384,7 +418,14 @@
 <div class="container">
   <header>
     <h1>Math Competition Readiness Hub: 6th Grade to Top STEM Universities</h1>
-    <p>An open parent &amp; student guide covering early school test-site registration, weekly preparation habits, free mock test archives, and the long-term pathway from middle school contests to MIT, Stanford, Princeton, and Caltech.</p>
+    <p>An open parent &amp; student guide for families navigating math competitions:</p>
+    <ul class="header-bullets">
+      <li><a href="#school-hosting">Early school test-site registration &amp; key deadlines</a></li>
+      <li><a href="#getting-started">Weekly preparation habits &amp; the 3-phase annual cycle</a></li>
+      <li><a href="#mock-tests">Free mock test archives &amp; full contest calendar</a></li>
+      <li><a href="#pathway">Long-term pathway: middle school contests to MIT, Stanford, Princeton &amp; Caltech</a></li>
+      <li><a href="#community">How to build a local Math Circle from scratch</a></li>
+    </ul>
   </header>
 
   <!-- Live Countdown & Visitor Counter Bar -->
@@ -404,7 +445,7 @@
   </div>
 
   <!-- Quick Section Navigation -->
-  <nav class="nav-pills">
+  <nav class="nav-pills" aria-label="Page sections">
     <a href="#getting-started">1. End-to-End Playbook</a>
     <a href="#school-hosting">2. Registering Your School as a Test Site</a>
     <a href="#mock-tests">3. Contest Calendar &amp; Free Mock Tests</a>
@@ -455,7 +496,7 @@
       </div>
       <div class="cost-item">
         <div class="label">External Center Backup</div>
-        <div class="val"><a href="https://maa.org/student-programs/amc/" target="_blank" class="inline-link">MAA Official Site Finder</a></div>
+        <div class="val"><a href="https://maa.org/student-programs/amc/" target="_blank" rel="noopener noreferrer" class="inline-link">MAA Official Site Finder</a></div>
       </div>
     </div>
 
@@ -463,8 +504,8 @@
     <ul>
       <li><strong>Step 1 — Approach a Faculty Champion:</strong> Reach out to your child's math teacher, gifted/enrichment specialist, or principal early in the fall (or at least 3 weeks before the Jan 5 AMC 8 deadline).</li>
       <li><strong>Step 2 — Keep the Ask Simple:</strong> Explain that administering the AMC 8 or MOEMS takes only a single 45–60 minute after-school or lunch block, and offer to coordinate parent volunteers to help proctor or cover the modest registration fee via the PTA/PTO if needed.</li>
-      <li><strong>Step 3 — Official Registration Portal:</strong> Direct the school's Competition Manager to register online at the <a href="https://maa.org/amcreg/" target="_blank" class="inline-link">MAA AMC Registration Portal</a> (for AMC 8/10/12), <a href="https://moems.org/" target="_blank" class="inline-link">MOEMS.org</a> (for Grades 4–8 monthly rounds), or <a href="https://www.mathcounts.org/" target="_blank" class="inline-link">MATHCOUNTS.org</a> (for Grades 6–8).</li>
-      <li><strong>Step 4 — External Testing Center Backup:</strong> If your school cannot host this year, use the <a href="https://maa.org/student-programs/amc/" target="_blank" class="inline-link">MAA AMC Locations Directory</a> or register individually for <a href="https://mathkangaroo.org/mks/" target="_blank" class="inline-link">Math Kangaroo</a> (by Dec 31) at a nearby university, math circle, or AoPS Academy testing center.</li>
+      <li><strong>Step 3 — Official Registration Portal:</strong> Direct the school's Competition Manager to register online at the <a href="https://maa.org/amcreg/" target="_blank" rel="noopener noreferrer" class="inline-link">MAA AMC Registration Portal</a> (for AMC 8/10/12), <a href="https://moems.org/" target="_blank" rel="noopener noreferrer" class="inline-link">MOEMS.org</a> (for Grades 4–8 monthly rounds), or <a href="https://www.mathcounts.org/" target="_blank" rel="noopener noreferrer" class="inline-link">MATHCOUNTS.org</a> (for Grades 6–8).</li>
+      <li><strong>Step 4 — External Testing Center Backup:</strong> If your school cannot host this year, use the <a href="https://maa.org/student-programs/amc/" target="_blank" rel="noopener noreferrer" class="inline-link">MAA AMC Locations Directory</a> or register individually for <a href="https://mathkangaroo.org/mks/" target="_blank" rel="noopener noreferrer" class="inline-link">Math Kangaroo</a> (by Dec 31) at a nearby university, math circle, or AoPS Academy testing center.</li>
     </ul>
 
     <div style="margin-top: 16px;">
@@ -506,7 +547,7 @@ Best regards,
           <td><span class="pill-reg">School Reg: Mid-Oct</span><br>Rounds: Nov, Dec, Jan, Feb, Mar</td>
           <td>
             <div class="resource-links">
-              <a href="https://moems.org/sample-questions/" target="_blank">MOEMS Sample Questions</a>
+              <a href="https://moems.org/sample-questions/" target="_blank" rel="noopener noreferrer">MOEMS Sample Questions</a>
             </div>
           </td>
         </tr>
@@ -516,8 +557,8 @@ Best regards,
           <td><span class="pill-reg">New School Reg: Jan 5, 2027</span><br>Window: <strong>Jan 21–27, 2027</strong></td>
           <td>
             <div class="resource-links">
-              <a href="https://artofproblemsolving.com/wiki/index.php/AMC_8_Problems_and_Solutions" target="_blank">AoPS AMC 8 Past Exams</a>
-              <a href="https://www.competitionmath.com/amc-8-practice/" target="_blank">Timed AMC 8 Practice</a>
+              <a href="https://artofproblemsolving.com/wiki/index.php/AMC_8_Problems_and_Solutions" target="_blank" rel="noopener noreferrer">AoPS AMC 8 Past Exams</a>
+              <a href="https://www.competitionmath.com/amc-8-practice/" target="_blank" rel="noopener noreferrer">Timed AMC 8 Practice</a>
             </div>
           </td>
         </tr>
@@ -527,8 +568,8 @@ Best regards,
           <td><span class="pill-reg">School Reg: Fall</span><br>Chapter (Feb) &rarr; State (Mar)</td>
           <td>
             <div class="resource-links">
-              <a href="https://www.mathcounts.org/resources/past-competitions" target="_blank">Official Past Competitions</a>
-              <a href="https://artofproblemsolving.com/alcumus" target="_blank">AoPS Alcumus (Free Adaptive)</a>
+              <a href="https://www.mathcounts.org/resources/past-competitions" target="_blank" rel="noopener noreferrer">Official Past Competitions</a>
+              <a href="https://artofproblemsolving.com/alcumus" target="_blank" rel="noopener noreferrer">AoPS Alcumus (Free Adaptive)</a>
             </div>
           </td>
         </tr>
@@ -538,8 +579,8 @@ Best regards,
           <td><span class="pill-reg">Reg: Sept 15 – Dec 31</span><br>(Late: Jan 1 – Feb 1)<br>Exam: <strong>Mar 18, 2027</strong></td>
           <td>
             <div class="resource-links">
-              <a href="https://mathkangaroo.org/mks/practice/" target="_blank">Official Practice Questions</a>
-              <a href="https://www.mathkangaroo.in/math-kangaroo-sample-papers/" target="_blank">Sample Papers Archive</a>
+              <a href="https://mathkangaroo.org/mks/practice/" target="_blank" rel="noopener noreferrer">Official Practice Questions</a>
+              <a href="https://www.mathkangaroo.in/math-kangaroo-sample-papers/" target="_blank" rel="noopener noreferrer">Sample Papers Archive</a>
             </div>
           </td>
         </tr>
@@ -549,7 +590,7 @@ Best regards,
           <td>Monthly contests (Nov – Feb)</td>
           <td>
             <div class="resource-links">
-              <a href="https://mathleague.com/index.php/annual-contests/help-and-resources/previous-contests" target="_blank">Past Contests Archive</a>
+              <a href="https://mathleague.com/index.php/annual-contests/help-and-resources/previous-contests" target="_blank" rel="noopener noreferrer">Past Contests Archive</a>
             </div>
           </td>
         </tr>
@@ -559,8 +600,8 @@ Best regards,
           <td><span class="pill-reg">Reg: Late Sept</span><br>Exams: <strong>November</strong></td>
           <td>
             <div class="resource-links">
-              <a href="https://artofproblemsolving.com/wiki/index.php/AMC_10_Problems_and_Solutions" target="_blank">AoPS AMC 10 Archive</a>
-              <a href="https://artofproblemsolving.com/wiki/index.php/AMC_12_Problems_and_Solutions" target="_blank">AoPS AMC 12 Archive</a>
+              <a href="https://artofproblemsolving.com/wiki/index.php/AMC_10_Problems_and_Solutions" target="_blank" rel="noopener noreferrer">AoPS AMC 10 Archive</a>
+              <a href="https://artofproblemsolving.com/wiki/index.php/AMC_12_Problems_and_Solutions" target="_blank" rel="noopener noreferrer">AoPS AMC 12 Archive</a>
             </div>
           </td>
         </tr>
@@ -569,8 +610,9 @@ Best regards,
   </div>
 
   <!-- Section 4: Long-Term Roadmap -->
-  <h2 id="pathway" style="margin-bottom: 14px;">4. Step-by-Step Pathway: 6th Grade to MIT, Stanford, Princeton &amp; Caltech</h2>
-  <div class="roadmap">
+  <div id="pathway" class="section-card">
+  <h2>4. Step-by-Step Pathway: 6th Grade to MIT, Stanford, Princeton &amp; Caltech</h2>
+  <div class="roadmap" style="margin-bottom: 0;">
     <!-- Stage 1 -->
     <div class="stage">
       <div class="stage-header">
@@ -589,7 +631,7 @@ Best regards,
         <div class="box">
           <strong>Preparation &amp; Balance Habits</strong>
           <ul>
-            <li>Use <a href="https://artofproblemsolving.com/alcumus" target="_blank" class="inline-link">AoPS Alcumus</a> (free) and AoPS textbooks to build conceptual depth rather than rote memorization.</li>
+            <li>Use <a href="https://artofproblemsolving.com/alcumus" target="_blank" rel="noopener noreferrer" class="inline-link">AoPS Alcumus</a> (free) and AoPS textbooks to build conceptual depth rather than rote memorization.</li>
             <li>Protect creative &amp; physical passions (music, dance, athletics)—top universities value sustained depth outside math.</li>
           </ul>
         </div>
@@ -607,7 +649,7 @@ Best regards,
           <strong>Competition Milestones</strong>
           <ul>
             <li>Take <b>AMC 10</b> (Nov) once Algebra 1 &amp; Geometry are mastered; top ~2.5%–5% qualify for the invite-only <b>AIME</b>.</li>
-            <li>Participate in <a href="https://www.usamts.org/" target="_blank" class="inline-link">USAMTS</a> (month-long proof-based rounds) to learn formal mathematical proof writing.</li>
+            <li>Participate in <a href="https://www.usamts.org/" target="_blank" rel="noopener noreferrer" class="inline-link">USAMTS</a> (month-long proof-based rounds) to learn formal mathematical proof writing.</li>
             <li>Advance through MATHCOUNTS Chapter and State rounds.</li>
           </ul>
         </div>
@@ -670,6 +712,7 @@ Best regards,
       </div>
     </div>
   </div>
+  </div>
 
   <!-- Section 5: Community Building Playbook -->
   <div id="community" class="section-card community-box">
@@ -677,7 +720,7 @@ Best regards,
     <p style="margin-top:0;">Problem-solving thrives in a supportive peer community. Any group of parents can start a thriving neighborhood or school Math Circle in four simple steps:</p>
     <ul>
       <li><strong>1. Gather 4–8 Curious Students:</strong> Connect with families from your child's school, PTA, or extracurricular activities who enjoy puzzles and logic games.</li>
-      <li><strong>2. Use Free Open-Source Problem Sets:</strong> Pull weekly sets from the <a href="https://artofproblemsolving.com/wiki/index.php/AMC_8_Problems_and_Solutions" target="_blank" class="inline-link">AoPS Wiki</a>, <a href="https://www.mathcounts.org/resources/past-competitions" target="_blank" class="inline-link">MATHCOUNTS Past Competitions</a>, or <a href="https://mathcircles.org/" target="_blank" class="inline-link">National Association of Math Circles</a>.</li>
+      <li><strong>2. Use Free Open-Source Problem Sets:</strong> Pull weekly sets from the <a href="https://artofproblemsolving.com/wiki/index.php/AMC_8_Problems_and_Solutions" target="_blank" rel="noopener noreferrer" class="inline-link">AoPS Wiki</a>, <a href="https://www.mathcounts.org/resources/past-competitions" target="_blank" rel="noopener noreferrer" class="inline-link">MATHCOUNTS Past Competitions</a>, or <a href="https://mathcircles.org/" target="_blank" rel="noopener noreferrer" class="inline-link">National Association of Math Circles</a>.</li>
       <li><strong>3. Focus on Student Explanations, Not Lectures:</strong> Rotate hosting at a local library study room, school classroom, or living room. Parents act as facilitators while kids take turns at a whiteboard explaining <em>how</em> they arrived at an answer—celebrating multiple solution paths.</li>
       <li><strong>4. Run Monthly Mock Exams:</strong> Once a month, proctor a real timed 40-minute AMC 8 or 30-minute MOEMS round together, followed by snacks and a collaborative group review of the toughest 5 problems.</li>
     </ul>
@@ -712,18 +755,10 @@ Best regards,
   setInterval(updateCountdown, 1000);
   updateCountdown();
 
-  // 2. Page Visit Counter with local fallback
-  fetch('https://api.countapi.xyz/hit/math-competition-readiness-hub/visits')
-    .then(response => response.json())
-    .then(data => {
-      document.getElementById('visit-count').innerText = data.value;
-    })
-    .catch(() => {
-      let visits = localStorage.getItem('math_hub_visits') || 1;
-      visits = parseInt(visits) + 1;
-      localStorage.setItem('math_hub_visits', visits);
-      document.getElementById('visit-count').innerText = visits;
-    });
+  // 2. Page Visit Counter (local)
+  const visits = parseInt(localStorage.getItem('math_hub_visits') || 0) + 1;
+  localStorage.setItem('math_hub_visits', visits);
+  document.getElementById('visit-count').innerText = visits;
 
   // 3. Copy Email Template Helper
   function copyEmail() {
