@@ -10,7 +10,7 @@
 <meta name="keywords" content="AMC 8, MATHCOUNTS, MOEMS, Math Kangaroo, AMC 10, AIME, math competitions, math olympiad, middle school math, math practice tests, how to host AMC 8">
 <meta name="author" content="Math Competition Readiness Hub">
 <meta name="robots" content="index, follow">
-<meta name="theme-color" content="#9333ea">
+<meta name="theme-color" content="#1a73e8">
 <link rel="canonical" href="https://vineetagrwal.github.io/math-dance-pathway/">
 
 <!-- Open Graph -->
@@ -57,7 +57,7 @@
     margin: 0 auto;
   }
   header {
-    background: linear-gradient(135deg, #4f46e5 0%, #9333ea 50%, #ec4899 100%);
+    background: linear-gradient(135deg, #4285F4 0%, #1a73e8 100%);
     color: white;
     padding: 32px 36px;
     border-radius: 12px;
@@ -735,12 +735,12 @@
   .chat-quick button:hover { background: #ccfbf1; }
 
   /* National CTA band */
-  .cta-band { background: linear-gradient(135deg,#4f46e5,#9333ea,#ec4899); color: #fff; border-radius: 12px; padding: 30px 26px; margin-bottom: 24px; text-align: center; }
+  .cta-band { background: linear-gradient(135deg,#4285F4,#1a73e8); color: #fff; border-radius: 12px; padding: 30px 26px; margin-bottom: 24px; text-align: center; }
   .cta-band h2 { color: #fff; border: none; margin: 0 0 10px; font-size: 1.9rem; padding: 0; }
   .cta-band p { max-width: 720px; margin: 0 auto 18px; font-size: 1.05rem; opacity: 0.95; }
   .cta-band-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
-  .cta-band-actions a { background: #fff; color: #7c3aed; text-decoration: none; font-weight: 700; padding: 12px 20px; border-radius: 999px; font-size: 0.95rem; }
-  .cta-band-actions a:hover { background: #f3e8ff; }
+  .cta-band-actions a { background: #fff; color: #1a73e8; text-decoration: none; font-weight: 700; padding: 12px 20px; border-radius: 999px; font-size: 0.95rem; }
+  .cta-band-actions a:hover { background: #e8f0fe; }
 
   /* Key links grid */
   .links-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; margin-top: 10px; }
@@ -1448,12 +1448,13 @@ Best regards,
 
   // 1. Multi-date countdown panel
   const KEY_DATES = [
-    { label: "AMC 8", date: "2027-01-21T08:00:00" },
+    { label: "🏫 AMC 8 — school registration", date: "2027-01-05T23:59:00", kind: "register" },
+    { label: "📝 Math Kangaroo — registration", date: "2026-12-31T23:59:00", kind: "register" },
+    { label: "AMC 8 exam", date: "2027-01-21T08:00:00" },
     { label: "AMC 10", date: "2027-11-09T08:00:00" },
     { label: "AMC 12", date: "2027-11-09T08:00:00" },
-    { label: "Math Kangaroo", date: "2027-03-18T08:00:00" },
-    { label: "MOEMS (next round)", date: "2026-12-09T08:00:00" },
-    { label: "🏫 School site registration", date: "2027-01-05T23:59:00", kind: "register" }
+    { label: "Math Kangaroo exam", date: "2027-03-18T08:00:00" },
+    { label: "MOEMS (next round)", date: "2026-12-09T08:00:00" }
   ];
   (function () {
     const list = document.getElementById("cd-list");
