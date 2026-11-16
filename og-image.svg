@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Math Competition Readiness Hub">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#14532d"/>
+      <stop offset="1" stop-color="#166534"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- subtle accent bar -->
+  <rect x="80" y="150" width="90" height="8" rx="4" fill="#38bdf8"/>
+  <text x="80" y="140" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="30" font-weight="600" fill="#bbf7d0" letter-spacing="1">FREE GUIDE · PARENTS · STUDENTS · TEACHERS</text>
+  <text x="80" y="265" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="74" font-weight="800" fill="#ffffff">Math Competition</text>
+  <text x="80" y="350" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="74" font-weight="800" fill="#ffffff">Readiness Hub</text>
+  <text x="80" y="430" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="36" font-weight="500" fill="rgba(255,255,255,0.9)">6th Grade → Top STEM Universities</text>
+  <text x="80" y="530" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="600" fill="#86efac">AMC 8  ·  MATHCOUNTS  ·  MOEMS  ·  Math Kangaroo  ·  AMC 10/12</text>
+</svg>

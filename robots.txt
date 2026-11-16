@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vineetagrwal.github.io/math-dance-pathway/sitemap.xml
