@@ -695,13 +695,14 @@
   .site-card .sc-name { font-weight: 700; color: var(--primary); }
   .site-card .sc-meta { font-size: 0.85rem; color: var(--muted); margin-top: 2px; }
   .site-card .sc-contact { font-size: 0.88rem; margin-top: 6px; }
-  .zip-results .sc-head { font-weight: 700; color: var(--primary); margin-bottom: 4px; font-size: 0.9rem; }
-  .view-toggle { display: none; gap: 6px; margin: 14px 0 0; }
-  .view-toggle.show { display: flex; }
-  .vt-btn { background: #fff; border: 2px solid var(--border); border-radius: 999px; padding: 6px 16px; font-weight: 600; font-size: 0.85rem; cursor: pointer; font-family: inherit; color: var(--text); }
-  .vt-btn.active { background: #1a73e8; color: #fff; border-color: #1a73e8; }
-  .site-map { height: 380px; border-radius: 10px; margin-top: 12px; border: 1px solid var(--border); display: none; }
-  .site-map.show { display: block; }
+  .zip-results .sc-head { font-weight: 700; color: var(--primary); margin-bottom: 8px; font-size: 0.9rem; }
+  .finder-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; align-items: start; }
+  @media (max-width: 760px) { .finder-layout { grid-template-columns: 1fr; } }
+  .zip-results { margin-top: 0; max-height: 440px; overflow-y: auto; }
+  .site-map { height: 440px; border-radius: 10px; border: 1px solid var(--border); }
+  .site-card.clickable { cursor: pointer; }
+  .site-card.clickable:hover { border-left-color: #1a73e8; background: #eef4ff; }
+  .site-card.active { border-left-color: #1a73e8; background: #e8f0fe; }
   .site-tag { display: inline-block; font-size: 0.66rem; font-weight: 700; text-transform: uppercase; background: #fde68a; color: #92400e; padding: 1px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
   .official-finders { margin-top: 16px; font-size: 0.9rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .official-finders a { background: #e0e7ff; color: var(--primary); padding: 6px 11px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.85rem; }
@@ -995,17 +996,15 @@
   <!-- Find a Test Site -->
   <section class="section-card" id="find-site">
     <h2>📍 Find an AMC Host School Near You</h2>
-    <p class="sub-note">Search 640+ schools that registered to host the AMC (2026–27 cycle) by ZIP. The official list has no contact info, so each result links to look the school up.</p>
+    <p class="sub-note">Search 640+ AMC host schools (2026–27 cycle) by ZIP, city, state, or school name. Click a result to locate it on the map. The source list has no contact info, so each result links to a lookup.</p>
     <form class="zip-form" id="zip-form">
-      <input type="text" id="zip-input" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="Enter ZIP (e.g. 94043)" aria-label="ZIP code">
-      <button type="submit" class="cta-btn" data-action="search-site">Find sites</button>
+      <input type="text" id="zip-input" placeholder="ZIP, city, state, or school name — e.g. New York, NY" aria-label="Search by ZIP, city, state, or school name">
+      <button type="submit" class="cta-btn" data-action="search-site">Search</button>
     </form>
-    <div id="zip-results" class="zip-results" aria-live="polite"></div>
-    <div class="view-toggle" id="view-toggle">
-      <button type="button" data-view="list" class="vt-btn active">☰ List</button>
-      <button type="button" data-view="map" class="vt-btn">🗺️ Map</button>
+    <div class="finder-layout">
+      <div id="zip-results" class="zip-results" aria-live="polite"></div>
+      <div id="site-map" class="site-map"></div>
     </div>
-    <div id="site-map" class="site-map"></div>
     <div class="official-finders">
       <span>Official locators:</span>
       <a href="https://maa.org/student-programs/amc/" target="_blank" rel="noopener noreferrer">MAA AMC</a>
@@ -1525,14 +1524,15 @@ Best regards,
     if (!el.classList.contains("cta-btn")) showToast("✓ Nice — you're taking a step!");
   });
 
-  // 3. AMC test-site finder + map (real host-school data from sites.json)
+  // 3. AMC host-school finder + live side map (ZIP / city / state / school name)
   (function () {
     const form = document.getElementById("zip-form");
+    const input = document.getElementById("zip-input");
     const results = document.getElementById("zip-results");
-    const toggle = document.getElementById("view-toggle");
     const mapEl = document.getElementById("site-map");
     if (!form) return;
-    let SITES = null, loading = false, map = null, layer = null, last = [];
+    const ST = { al:"alabama",ak:"alaska",az:"arizona",ar:"arkansas",ca:"california",co:"colorado",ct:"connecticut",de:"delaware",fl:"florida",ga:"georgia",hi:"hawaii",id:"idaho",il:"illinois",in:"indiana",ia:"iowa",ks:"kansas",ky:"kentucky",la:"louisiana",me:"maine",md:"maryland",ma:"massachusetts",mi:"michigan",mn:"minnesota",ms:"mississippi",mo:"missouri",mt:"montana",ne:"nebraska",nv:"nevada",nh:"new hampshire",nj:"new jersey",nm:"new mexico",ny:"new york",nc:"north carolina",nd:"north dakota",oh:"ohio",ok:"oklahoma",or:"oregon",pa:"pennsylvania",ri:"rhode island",sc:"south carolina",sd:"south dakota",tn:"tennessee",tx:"texas",ut:"utah",vt:"vermont",va:"virginia",wa:"washington",wv:"west virginia",wi:"wisconsin",wy:"wyoming",dc:"district of columbia" };
+    let SITES = null, loading = false, map = null, layer = null, markers = [];
     function load() {
       if (SITES) return Promise.resolve();
       if (loading) return loading;
@@ -1540,68 +1540,69 @@ Best regards,
         .then(function (d) { SITES = d; }).catch(function () { SITES = []; });
       return loading;
     }
-    function cardHtml(s) {
-      const name = s[0], loc = [s[1], s[2]].filter(Boolean).join(", "), zip = s[3], lv = s[4];
-      const q = encodeURIComponent(name + " " + loc);
-      return '<div class="site-card"><div class="sc-name">' + name + '</div>' +
-        '<div class="sc-meta">' + (loc ? loc + " · " : "") + 'ZIP ' + zip + (lv ? ' · AMC ' + lv : '') + '</div>' +
-        '<div class="sc-contact">🔎 <a href="https://www.google.com/search?q=' + q + '" target="_blank" rel="noopener noreferrer">Look up this school’s contact</a></div></div>';
-    }
     function initMap() {
       if (map || typeof L === "undefined") return;
       map = L.map(mapEl).setView([39.5, -98.35], 4);
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "&copy; OpenStreetMap", maxZoom: 18 }).addTo(map);
       layer = L.layerGroup().addTo(map);
     }
-    function plot() {
-      if (!map || !layer) return;
-      layer.clearLayers();
-      const pts = [];
-      last.forEach(function (s) {
-        if (s[5] == null || s[6] == null) return;
-        const loc = [s[1], s[2]].filter(Boolean).join(", ");
-        L.marker([s[5], s[6]]).bindPopup("<strong>" + s[0] + "</strong><br>" + loc + (s[4] ? "<br>AMC " + s[4] : "")).addTo(layer);
-        pts.push([s[5], s[6]]);
+    function match(q) {
+      const raw = q.trim().toLowerCase();
+      if (/^\d{5}$/.test(raw)) {
+        const ex = SITES.filter(function (s) { return s[3] === raw; });
+        if (ex.length) return ex;
+        return SITES.filter(function (s) { return s[3].slice(0, 3) === raw.slice(0, 3); });
+      }
+      const toks = raw.split(/[\s,]+/).filter(Boolean).map(function (t) { return ST[t] || t; });
+      return SITES.filter(function (s) {
+        const str = (s[0] + " " + s[1] + " " + s[2] + " " + s[3]).toLowerCase();
+        return toks.every(function (t) { return str.indexOf(t) >= 0; });
       });
-      if (pts.length) map.fitBounds(pts, { padding: [30, 30], maxZoom: 11 });
     }
-    function showMap() {
-      initMap();
-      setTimeout(function () { if (map) { map.invalidateSize(); plot(); } }, 0);
-    }
-    function render(zip) {
-      let list = SITES.filter(function (s) { return s[3] === zip; });
-      let nearby = false;
-      if (!list.length) { list = SITES.filter(function (s) { return s[3].slice(0, 3) === zip.slice(0, 3); }); nearby = true; }
-      last = list;
+    function render(list) {
+      markers = [];
+      if (layer) layer.clearLayers();
       if (!list.length) {
-        results.innerHTML = '<div class="site-card">No AMC host schools found near <strong>' + zip + '</strong> in this list. Try the <a href="https://maa.org/student-programs/amc/" target="_blank" rel="noopener noreferrer">official MAA finder</a>, or <a href="#register-interest">register your interest</a>.</div>';
-        toggle.classList.remove("show");
+        results.innerHTML = '<div class="site-card">No matches. Try a city or state (e.g. “New York, NY”), a school name, or the <a href="https://maa.org/student-programs/amc/" target="_blank" rel="noopener noreferrer">official MAA finder</a>.</div>';
         return;
       }
-      const shown = list.slice(0, 30);
-      results.innerHTML = '<div class="sc-head">' +
-        (nearby ? 'Nearby AMC host schools (ZIP ' + zip.slice(0, 3) + 'xx)' : 'AMC host schools in ' + zip) +
-        ' — ' + list.length + ' found' + (list.length > 30 ? ', showing first 30' : '') + '</div>' +
-        shown.map(cardHtml).join("");
-      toggle.classList.add("show");
-      if (mapEl.classList.contains("show")) showMap();
+      const shown = list.slice(0, 100);
+      results.innerHTML = '<div class="sc-head">' + list.length + ' AMC host school' + (list.length > 1 ? 's' : '') + ' found' + (list.length > 100 ? ', showing 100' : '') + '</div>' +
+        shown.map(function (s, i) {
+          const loc = [s[1], s[2]].filter(Boolean).join(", ");
+          const q = encodeURIComponent(s[0] + " " + loc);
+          const geo = (s[5] != null);
+          return '<div class="site-card' + (geo ? ' clickable" data-idx="' + i + '"' : '"') + '><div class="sc-name">' + s[0] + '</div>' +
+            '<div class="sc-meta">' + (loc ? loc + " · " : "") + 'ZIP ' + s[3] + (s[4] ? ' · AMC ' + s[4] : '') + '</div>' +
+            '<div class="sc-contact">🔎 <a href="https://www.google.com/search?q=' + q + '" target="_blank" rel="noopener noreferrer">Look up this school’s contact</a></div></div>';
+        }).join("");
+      const pts = [];
+      shown.forEach(function (s, i) {
+        if (s[5] == null || s[6] == null || !layer) { markers[i] = null; return; }
+        const loc = [s[1], s[2]].filter(Boolean).join(", ");
+        const mk = L.marker([s[5], s[6]]).bindPopup("<strong>" + s[0] + "</strong><br>" + loc + (s[4] ? "<br>AMC " + s[4] : ""));
+        mk.addTo(layer); markers[i] = mk; pts.push([s[5], s[6]]);
+      });
+      if (map && pts.length) map.fitBounds(pts, { padding: [30, 30], maxZoom: 12 });
+      Array.prototype.forEach.call(results.querySelectorAll(".site-card.clickable"), function (c) {
+        c.addEventListener("click", function (e) {
+          if (e.target.closest("a")) return;
+          const mk = markers[+c.getAttribute("data-idx")];
+          if (mk && map) { map.setView(mk.getLatLng(), 12); mk.openPopup(); }
+          Array.prototype.forEach.call(results.querySelectorAll(".site-card.active"), function (x) { x.classList.remove("active"); });
+          c.classList.add("active");
+        });
+      });
     }
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-      const zip = (document.getElementById("zip-input").value || "").trim();
-      if (!/^\d{5}$/.test(zip)) { results.innerHTML = '<div class="site-card">Please enter a valid 5-digit ZIP.</div>'; return; }
-      logAction("zip-search");
+      const q = input.value.trim();
+      if (!q) { results.innerHTML = '<div class="site-card">Enter a ZIP, city, state, or school name.</div>'; return; }
+      logAction("site-search");
       results.innerHTML = '<div class="site-card">Searching…</div>';
-      load().then(function () { render(zip); });
+      load().then(function () { initMap(); setTimeout(function () { if (map) map.invalidateSize(); render(match(q)); }, 0); });
     });
-    if (toggle) toggle.addEventListener("click", function (e) {
-      const b = e.target.closest("[data-view]"); if (!b) return;
-      const view = b.getAttribute("data-view");
-      toggle.querySelectorAll(".vt-btn").forEach(function (x) { x.classList.toggle("active", x === b); });
-      if (view === "map") { results.style.display = "none"; mapEl.classList.add("show"); showMap(); }
-      else { results.style.display = ""; mapEl.classList.remove("show"); }
-    });
+    if (typeof L !== "undefined") setTimeout(initMap, 0);
   })();
 
   // 4. Interest form — no backend; save locally + hand off via prefilled email
