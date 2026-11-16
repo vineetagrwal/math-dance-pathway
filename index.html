@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: https://*.tile.openstreetmap.org https://unpkg.com https://vin7de.goatcounter.com; connect-src 'self' https://vin7de.goatcounter.com; font-src 'self'; base-uri 'self'; form-action 'self'">
 <title>Math Competition Readiness Hub — AMC 8, MATHCOUNTS &amp; More for Grades 6–12</title>
 
 <!-- SEO -->
@@ -772,7 +773,7 @@
     body.print-kit-mode .kit-print-btn { display: none !important; }
   }
 </style>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
 </head>
 <body>
 
@@ -1455,7 +1456,7 @@ Best regards,
   <div class="chat-quick" id="chat-quick"></div>
 </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
 
 <!-- JavaScript: countdown, finder, interest form, feedback, chatbot -->
 <script>
@@ -1466,7 +1467,7 @@ Best regards,
   // Analytics (privacy-friendly). Set GC_CODE to your free GoatCounter code
   // (e.g. "mathhub" for https://mathhub.goatcounter.com) to enable cross-visitor
   // pageview + action-event reporting. Left blank = no external calls.
-  var GC_CODE = "";
+  var GC_CODE = "vin7de";
   (function () {
     if (!GC_CODE) return;
     var s = document.createElement("script");
@@ -1474,6 +1475,13 @@ Best regards,
     s.setAttribute("data-goatcounter", "https://" + GC_CODE + ".goatcounter.com/count");
     document.head.appendChild(s);
   })();
+
+  // HTML-escape helper (prevents DOM-XSS when rendering external data)
+  function esc(v) {
+    return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
 
   // 1. Multi-date countdown panel
   const KEY_DATES = [
@@ -1591,15 +1599,15 @@ Best regards,
           const loc = [s[1], s[2]].filter(Boolean).join(", ");
           const q = encodeURIComponent(s[0] + " " + loc);
           const geo = (s[5] != null);
-          return '<div class="site-card' + (geo ? ' clickable" data-idx="' + i + '"' : '"') + '><div class="sc-name">' + s[0] + '</div>' +
-            '<div class="sc-meta">' + (loc ? loc + " · " : "") + 'ZIP ' + s[3] + (s[4] ? ' · AMC ' + s[4] : '') + '</div>' +
+          return '<div class="site-card' + (geo ? ' clickable" data-idx="' + i + '"' : '"') + '><div class="sc-name">' + esc(s[0]) + '</div>' +
+            '<div class="sc-meta">' + (loc ? esc(loc) + " · " : "") + 'ZIP ' + esc(s[3]) + (s[4] ? ' · AMC ' + esc(s[4]) : '') + '</div>' +
             '<div class="sc-contact">🔎 <a href="https://www.google.com/search?q=' + q + '" target="_blank" rel="noopener noreferrer">Look up this school’s contact</a></div></div>';
         }).join("");
       const pts = [];
       shown.forEach(function (s, i) {
         if (s[5] == null || s[6] == null || !layer) { markers[i] = null; return; }
         const loc = [s[1], s[2]].filter(Boolean).join(", ");
-        const mk = L.marker([s[5], s[6]]).bindPopup("<strong>" + s[0] + "</strong><br>" + loc + (s[4] ? "<br>AMC " + s[4] : ""));
+        const mk = L.marker([s[5], s[6]]).bindPopup("<strong>" + esc(s[0]) + "</strong><br>" + esc(loc) + (s[4] ? "<br>AMC " + esc(s[4]) : ""));
         mk.addTo(layer); markers[i] = mk; pts.push([s[5], s[6]]);
       });
       if (map && pts.length) map.fitBounds(pts, { padding: [30, 30], maxZoom: 12 });
