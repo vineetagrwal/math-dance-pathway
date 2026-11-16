@@ -698,6 +698,13 @@
   .site-card .sc-name { font-weight: 700; color: var(--primary); }
   .site-card .sc-meta { font-size: 0.85rem; color: var(--muted); margin-top: 2px; }
   .site-card .sc-contact { font-size: 0.88rem; margin-top: 6px; }
+  .sc-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .comp-tag { font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; color: #fff; }
+  .comp-tag.amc { background: #1e3a8a; }
+  .comp-tag.moems { background: #0f766e; }
+  .comp-tag.mc { background: #b91c1c; }
+  .comp-tag.ml { background: #6d28d9; }
+  .comp-tag.mk { background: #d97706; }
   .zip-results .sc-head { font-weight: 700; color: var(--primary); margin-bottom: 8px; font-size: 0.9rem; }
   .finder-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; align-items: start; }
   @media (max-width: 760px) { .finder-layout { grid-template-columns: 1fr; } }
@@ -819,6 +826,34 @@
     <a class="logo-badge mk" href="https://mathkangaroo.org/" target="_blank" rel="noopener noreferrer">Math Kangaroo</a>
     <a class="logo-badge ml" href="https://mathleague.com/" target="_blank" rel="noopener noreferrer">Math League</a>
   </div>
+
+  <!-- Find Your School (primary action) -->
+  <section class="section-card" id="find-site">
+    <h2>🔎 Find Your School</h2>
+    <p class="sub-note">Start typing a ZIP, city, state, or school name — results update live. Each school is tagged with the contests it offers (AMC 8/10/12 today; MOEMS, MATHCOUNTS &amp; Math League being added via our verification effort). Filter by exam for your grade, then click a result to see it on the map.</p>
+    <form class="zip-form" id="zip-form">
+      <input type="text" id="zip-input" placeholder="Your school, ZIP, city, or state — e.g. New York, NY" aria-label="Search by ZIP, city, state, or school name">
+      <button type="submit" class="cta-btn" data-action="search-site">Search</button>
+    </form>
+    <div class="exam-filter" id="exam-filter" role="group" aria-label="Filter by exam">
+      <button type="button" class="exam-chip active" data-exam="">All exams</button>
+      <button type="button" class="exam-chip" data-exam="8">AMC 8</button>
+      <button type="button" class="exam-chip" data-exam="10">AMC 10</button>
+      <button type="button" class="exam-chip" data-exam="12">AMC 12</button>
+    </div>
+    <div class="finder-layout">
+      <div id="zip-results" class="zip-results" aria-live="polite"></div>
+      <div id="site-map" class="site-map"></div>
+    </div>
+    <div class="official-finders">
+      <span>Official locators:</span>
+      <a href="https://maa.org/student-programs/amc/" target="_blank" rel="noopener noreferrer">MAA AMC</a>
+      <a href="https://www.mathcounts.org/" target="_blank" rel="noopener noreferrer">MATHCOUNTS</a>
+      <a href="https://moems.org/" target="_blank" rel="noopener noreferrer">MOEMS</a>
+      <a href="https://mathleague.com/" target="_blank" rel="noopener noreferrer">Math League</a>
+      <a href="https://mathkangaroo.org/mks/centers/" target="_blank" rel="noopener noreferrer">Math Kangaroo</a>
+    </div>
+  </section>
 
   <!-- National Call to Action -->
   <section class="cta-band" id="why-it-matters">
@@ -998,32 +1033,6 @@
           <button class="restart" type="button">↺ Start over</button>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- Find a Test Site -->
-  <section class="section-card" id="find-site">
-    <h2>📍 Find an AMC Host School Near You</h2>
-    <p class="sub-note">Start typing a ZIP, city, state, or school name — results update live. Filter by exam (AMC 8/10/12) for your grade, then click a result to locate it on the map. The source list has no contact info, so each result links to a lookup.</p>
-    <form class="zip-form" id="zip-form">
-      <input type="text" id="zip-input" placeholder="ZIP, city, state, or school name — e.g. New York, NY" aria-label="Search by ZIP, city, state, or school name">
-      <button type="submit" class="cta-btn" data-action="search-site">Search</button>
-    </form>
-    <div class="exam-filter" id="exam-filter" role="group" aria-label="Filter by exam">
-      <button type="button" class="exam-chip active" data-exam="">All exams</button>
-      <button type="button" class="exam-chip" data-exam="8">AMC 8</button>
-      <button type="button" class="exam-chip" data-exam="10">AMC 10</button>
-      <button type="button" class="exam-chip" data-exam="12">AMC 12</button>
-    </div>
-    <div class="finder-layout">
-      <div id="zip-results" class="zip-results" aria-live="polite"></div>
-      <div id="site-map" class="site-map"></div>
-    </div>
-    <div class="official-finders">
-      <span>Official locators:</span>
-      <a href="https://maa.org/student-programs/amc/" target="_blank" rel="noopener noreferrer">MAA AMC</a>
-      <a href="https://www.mathcounts.org/" target="_blank" rel="noopener noreferrer">MATHCOUNTS</a>
-      <a href="https://mathkangaroo.org/mks/centers/" target="_blank" rel="noopener noreferrer">Math Kangaroo centers</a>
     </div>
   </section>
 
@@ -1628,8 +1637,10 @@ Best regards,
           const loc = [s[1], s[2]].filter(Boolean).join(", ");
           const q = encodeURIComponent(s[0] + " " + loc);
           const geo = (s[5] != null);
+          const tags = (s[4] || "").split("/").filter(Boolean).map(function (l) { return '<span class="comp-tag amc">AMC ' + esc(l) + '</span>'; }).join("");
           return '<div class="site-card' + (geo ? ' clickable" data-idx="' + i + '"' : '"') + '><div class="sc-name">' + esc(s[0]) + '</div>' +
-            '<div class="sc-meta">' + (loc ? esc(loc) + " · " : "") + 'ZIP ' + esc(s[3]) + (s[4] ? ' · AMC ' + esc(s[4]) : '') + '</div>' +
+            '<div class="sc-meta">' + (loc ? esc(loc) + " · " : "") + 'ZIP ' + esc(s[3]) + '</div>' +
+            (tags ? '<div class="sc-tags">' + tags + '</div>' : '') +
             '<div class="sc-contact">🔎 <a href="https://www.google.com/search?q=' + q + '" target="_blank" rel="noopener noreferrer">Look up this school’s contact</a></div></div>';
         }).join("");
       const pts = [];
