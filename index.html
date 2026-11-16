@@ -718,6 +718,8 @@
   .interest-form .cta-btn { grid-column: 1 / -1; }
   .form-msg { margin: 12px 0 0; font-weight: 600; color: #166534; min-height: 1.2em; }
   .form-msg a { color: var(--secondary); }
+  .feedback-form textarea { grid-column: 1 / -1; padding: 12px 14px; font-size: 0.95rem; border: 2px solid var(--border); border-radius: 8px; font-family: inherit; resize: vertical; }
+  .feedback-form textarea:focus-visible { outline: none; border-color: var(--secondary); }
 
   /* Testimonials */
   .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-top: 8px; }
@@ -1033,6 +1035,24 @@
       <button type="submit" class="cta-btn" data-action="register-interest">Notify me</button>
     </form>
     <p class="form-msg" id="interest-msg" aria-live="polite"></p>
+  </section>
+
+  <!-- Feedback / correction box -->
+  <section class="section-card" id="feedback">
+    <h2>💬 Spot a problem? Help us fix it.</h2>
+    <p class="sub-note">Wrong fact, broken link, an idea, or general feedback — tell us and we'll log it. Posts to our public issue tracker (or email if you prefer).</p>
+    <form class="interest-form feedback-form" id="feedback-form">
+      <select name="kind" aria-label="Type of feedback">
+        <option value="Correction">🛠️ Correction — a fact or link is wrong</option>
+        <option value="Feedback">💬 General feedback</option>
+        <option value="Feature">✨ Feature request</option>
+        <option value="Comment">🗨️ Comment / question</option>
+      </select>
+      <input type="text" name="contact" placeholder="Your email (optional)" aria-label="Your email (optional)">
+      <textarea name="message" rows="3" placeholder="What's the problem or idea? Be specific — which page, fact, or link?" aria-label="Your message" required></textarea>
+      <button type="submit" class="cta-btn" data-action="feedback">Submit feedback</button>
+    </form>
+    <p class="form-msg" id="feedback-msg" aria-live="polite"></p>
   </section>
 
   <!-- Testimonials (sample) -->
@@ -1652,6 +1672,30 @@ Best regards,
       msg.innerHTML = "✓ Thanks! You're on the list. <a href=\"mailto:vineetagrwal@gmail.com?subject=" + subject + "&body=" + bodyTxt + "\">Finish in your email app →</a>";
       form.reset();
       showToast("✓ You're on the list!");
+    });
+  })();
+
+  // 7. Feedback box -> prefilled GitHub issue (adds to the log), email fallback
+  (function () {
+    const form = document.getElementById("feedback-form");
+    const msg = document.getElementById("feedback-msg");
+    if (!form) return;
+    const REPO = "https://github.com/vineetagrwal/math-dance-pathway/issues/new";
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const kind = form.kind.value;
+      const message = form.message.value.trim();
+      const contact = form.contact.value.trim();
+      if (!message) { msg.textContent = "Please add a short description."; return; }
+      logAction("feedback-" + kind.toLowerCase());
+      const title = "[" + kind + "] " + message.slice(0, 60).replace(/\s+/g, " ");
+      const body = message + "\n\n— submitted via the site feedback form" + (contact ? "\nContact: " + contact : "");
+      const gh = REPO + "?labels=feedback&title=" + encodeURIComponent(title) + "&body=" + encodeURIComponent(body);
+      const mail = "mailto:vineetagrwal@gmail.com?subject=" + encodeURIComponent("[" + kind + "] site feedback") + "&body=" + encodeURIComponent(body);
+      window.open(gh, "_blank", "noopener");
+      msg.innerHTML = "✓ Thanks! A prefilled issue opened in a new tab — click <strong>Submit</strong> there to post it. No GitHub account? <a href=\"" + mail + "\">Email it instead</a>.";
+      form.reset();
+      showToast("✓ Thanks for the feedback!");
     });
   })();
 
