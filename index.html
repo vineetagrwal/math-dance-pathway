@@ -661,7 +661,9 @@
   .countdown-panel { background: rgba(0,0,0,0.20); border: 1px solid rgba(255,255,255,0.16); border-radius: 12px; padding: 16px 18px; }
   .cp-title { margin: 0 0 10px; font-size: 1rem; color: #fff; font-weight: 700; }
   .cd-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
-  .cd-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: rgba(255,255,255,0.08); border-radius: 7px; padding: 8px 11px; }
+  .cd-list li { margin: 0; }
+  .cd-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: rgba(255,255,255,0.08); border-radius: 7px; padding: 8px 11px; text-decoration: none; color: inherit; cursor: pointer; transition: background 0.15s ease; }
+  .cd-row:hover { background: rgba(255,255,255,0.2); }
   .cd-label { font-size: 0.85rem; color: #e2e8f0; font-weight: 600; }
   .cd-time { font-size: 0.82rem; color: #fff; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .cd-time strong { color: #86efac; font-size: 1rem; }
@@ -1461,25 +1463,42 @@ Best regards,
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   window.addEventListener('load', function () { window.scrollTo(0, 0); });
 
+  // Analytics (privacy-friendly). Set GC_CODE to your free GoatCounter code
+  // (e.g. "mathhub" for https://mathhub.goatcounter.com) to enable cross-visitor
+  // pageview + action-event reporting. Left blank = no external calls.
+  var GC_CODE = "";
+  (function () {
+    if (!GC_CODE) return;
+    var s = document.createElement("script");
+    s.async = true; s.src = "//gc.zgo.at/count.js";
+    s.setAttribute("data-goatcounter", "https://" + GC_CODE + ".goatcounter.com/count");
+    document.head.appendChild(s);
+  })();
+
   // 1. Multi-date countdown panel
   const KEY_DATES = [
-    { label: "🏫 AMC 8 — school registration", date: "2027-01-05T23:59:00", kind: "register" },
-    { label: "📝 Math Kangaroo — registration", date: "2026-12-31T23:59:00", kind: "register" },
-    { label: "AMC 8 exam", date: "2027-01-21T08:00:00" },
-    { label: "AMC 10", date: "2027-11-09T08:00:00" },
-    { label: "AMC 12", date: "2027-11-09T08:00:00" },
-    { label: "Math Kangaroo exam", date: "2027-03-18T08:00:00" },
-    { label: "MOEMS (next round)", date: "2026-12-09T08:00:00" }
+    { label: "🏫 AMC 8 — register your school", date: "2027-01-05T23:59:00", kind: "register", url: "https://maa.org/amcreg/", action: "reg-amc8-school" },
+    { label: "📝 Math Kangaroo — register", date: "2026-12-31T23:59:00", kind: "register", url: "https://mathkangaroo.org/mks/registration/", action: "reg-kangaroo" },
+    { label: "AMC 8 exam — prep now", date: "2027-01-21T08:00:00", url: "#mock-tests", action: "prep-amc8" },
+    { label: "AMC 10 — register", date: "2027-11-09T08:00:00", url: "https://maa.org/amcreg/", action: "reg-amc10" },
+    { label: "AMC 12 — register", date: "2027-11-09T08:00:00", url: "https://maa.org/amcreg/", action: "reg-amc12" },
+    { label: "Math Kangaroo exam — prep", date: "2027-03-18T08:00:00", url: "https://mathkangaroo.org/mks/practice/", action: "prep-kangaroo" },
+    { label: "MOEMS — learn more", date: "2026-12-09T08:00:00", url: "https://moems.org/", action: "moems" }
   ];
   (function () {
     const list = document.getElementById("cd-list");
     if (!list) return;
     const rows = KEY_DATES.map(function (d) {
       const li = document.createElement("li");
-      li.className = "cd-row" + (d.kind === "register" ? " cd-register" : "");
-      li.innerHTML = '<span class="cd-label">' + d.label + '</span><span class="cd-time">--</span>';
+      const a = document.createElement("a");
+      a.className = "cd-row" + (d.kind === "register" ? " cd-register" : "");
+      a.href = d.url;
+      if (d.action) a.setAttribute("data-action", d.action);
+      if (/^https?:/.test(d.url)) { a.target = "_blank"; a.rel = "noopener noreferrer"; }
+      a.innerHTML = '<span class="cd-label">' + d.label + '</span><span class="cd-time">--</span>';
+      li.appendChild(a);
       list.appendChild(li);
-      return { el: li.querySelector(".cd-time"), target: new Date(d.date).getTime() };
+      return { el: a.querySelector(".cd-time"), target: new Date(d.date).getTime() };
     });
     function tick() {
       const now = Date.now();
