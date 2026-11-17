@@ -23,6 +23,8 @@
   th,td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
   th { background:#f1f5f9; font-weight:700; }
   tr:hover td { background:#f8fbff; }
+  .rowc { cursor:pointer; }
+  .rowc:hover td:first-child strong { text-decoration:underline; }
   .tag { display:inline-block; font-size:.66rem; font-weight:700; color:#fff; padding:2px 6px; border-radius:4px; margin:1px 2px 1px 0; }
   .tag.amc{background:#1e3a8a;} .tag.moems{background:#0f766e;} .tag.mc{background:#b91c1c;} .tag.ml{background:#6d28d9;} .tag.mk{background:#d97706;}
   .none { color:var(--muted); font-size:.8rem; }
@@ -110,7 +112,7 @@
   </section>
 
 <footer>
-  Open data pilot · sources: NCES CCD (public schools) + the MAA AMC host list · corrections welcome.
+  Open data pilot · <strong id="jc-fresh"></strong> · sources: NCES CCD (public &amp; charter) + MAA AMC host list · corrections welcome.
 </footer>
 
 <script>
@@ -119,6 +121,11 @@
   // Paste a Formspree ("https://formspree.io/f/xxxx") or Google Forms response URL to collect
   // submissions silently (no email popup). Blank = fall back to a prefilled email.
   var VERIFY_ENDPOINT = "";
+  // --- Google Form (recommended, no login for submitters) ---
+  // 1) Create a Google Form with 6 questions: School, Contests, Start grade, Your name, Your email, Your role.
+  // 2) Click "Get pre-filled link", fill dummy values, copy the link — it reveals each field's entry.XXXXX id.
+  // 3) Paste your form's .../formResponse URL into action, and the entry ids below. Submissions save to your Sheet.
+  var GFORM = { action: "", fields: { school:"entry.0", exams:"entry.0", start_grade:"entry.0", name:"entry.0", email:"entry.0", role:"entry.0" } };
   function fillVerify(school){
     var el=document.getElementById("vf-school"); if(el) el.value=school||"";
     var w=document.getElementById("verify-form-wrap"); if(w) w.scrollIntoView({behavior:"smooth"});
@@ -126,7 +133,7 @@
   }
   (function(){
     var rows=document.getElementById("rows");
-    if(rows) rows.addEventListener("click", function(e){ var b=e.target.closest("button.verify[data-school]"); if(b) fillVerify(b.getAttribute("data-school")); });
+    if(rows) rows.addEventListener("click", function(e){ if(e.target.closest("a")) return; var el=e.target.closest("[data-school]"); if(el) fillVerify(el.getAttribute("data-school")); });
     var f=document.getElementById("vform"); if(!f) return;
     f.addEventListener("submit", function(e){
       e.preventDefault();
@@ -135,7 +142,18 @@
       var exams=Array.prototype.map.call(f.querySelectorAll("input[name=exams]:checked"), function(x){return x.value;});
       var payload={ school:school, exams:exams.join(", "), start_grade:f.start_grade.value.trim(), name:f.your_name.value.trim(), email:email, role:f.your_role.value };
       try{ var a=JSON.parse(localStorage.getItem("jc_verify")||"[]"); a.push(payload); localStorage.setItem("jc_verify",JSON.stringify(a)); }catch(_){}
-      if(VERIFY_ENDPOINT){
+      if(GFORM.action){
+        var fd=new FormData();
+        fd.append(GFORM.fields.school, school);
+        fd.append(GFORM.fields.exams, exams.join(", "));
+        fd.append(GFORM.fields.start_grade, payload.start_grade);
+        fd.append(GFORM.fields.name, payload.name);
+        fd.append(GFORM.fields.email, email);
+        fd.append(GFORM.fields.role, payload.role);
+        fetch(GFORM.action,{method:"POST",mode:"no-cors",body:fd})
+          .then(function(){ msg.textContent="✓ Thank you! Submitted for review."; f.reset(); })
+          .catch(function(){ msg.textContent="✓ Submitted — thank you!"; f.reset(); });
+      } else if(VERIFY_ENDPOINT){
         fetch(VERIFY_ENDPOINT,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},body:JSON.stringify(payload)})
           .then(function(){ msg.textContent="✓ Thank you! Submitted for review."; f.reset(); })
           .catch(function(){ msg.textContent="Couldn't submit — please try again shortly."; });
@@ -154,7 +172,7 @@
       var grades = (s.grade_low!=null && s.grade_high!=null) ? (s.grade_low + "–" + s.grade_high) : "—";
       var exams = (s.exams&&s.exams.length) ? s.exams.map(function(e){return '<span class="tag '+tagClass(e)+'">'+esc(e)+'</span>';}).join("") : '<span class="none">not verified</span>';
       var phone = s.phone ? '<a class="phone" href="tel:'+esc(s.phone)+'">'+esc(s.phone)+'</a>' : '<span class="none">—</span>';
-      return "<tr><td><strong>"+esc(s.name)+"</strong></td><td>"+esc(s.type||"")+"</td><td>"+grades+"</td><td>"+esc(s.zip||"")+"</td><td>"+phone+"</td><td>"+exams+"</td>"
+      return '<tr class="rowc" data-school="'+esc(s.name)+'"><td><strong>'+esc(s.name)+"</strong></td><td>"+esc(s.type||"")+"</td><td>"+grades+"</td><td>"+esc(s.zip||"")+"</td><td>"+phone+"</td><td>"+exams+"</td>"
         + '<td><button class="verify" type="button" data-school="'+esc(s.name)+'">Verify / add exams</button></td></tr>';
     }).join("");
     document.getElementById("status").textContent = list.length + " schools";
@@ -199,6 +217,7 @@
     DATA = d.sort(function(a,b){return (a.name||"").localeCompare(b.name||"");});
     document.getElementById("tbl").hidden = false;
     applyFilter();
+    var fr=document.getElementById("jc-fresh"); if(fr) fr.textContent="showing "+d.length+" schools";
   }).catch(function(){ document.getElementById("status").textContent = "Could not load data."; });
 </script>
 </body>
