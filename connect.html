@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://formspree.io https://docs.google.com; base-uri 'self'; form-action 'self' https://formspree.io https://docs.google.com">
+<title>Stay in Touch &amp; Give Feedback — Math Competition Readiness Hub</title>
+<style>
+  :root { --blue:#1a73e8; --border:#e2e8f0; --muted:#64748b; --text:#1e293b; }
+  * { box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--text); background:#f8fafc; margin:0; }
+  header { background:linear-gradient(135deg,#4285F4,#1a73e8); color:#fff; padding:26px 20px; }
+  .wrap { max-width:720px; margin:0 auto; padding:0 20px; }
+  header h1 { margin:0 0 6px; font-size:1.6rem; }
+  header a { color:#fff; }
+  .card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:22px; margin:22px 0; }
+  .card h2 { margin:0 0 4px; font-size:1.25rem; color:var(--blue); }
+  .sub { color:var(--muted); font-size:.92rem; margin:0 0 14px; }
+  form { display:grid; gap:10px; }
+  input, select, textarea { padding:11px 13px; border:2px solid var(--border); border-radius:8px; font-size:.95rem; font-family:inherit; }
+  input:focus-visible, select:focus-visible, textarea:focus-visible { outline:none; border-color:var(--blue); }
+  button { background:var(--blue); color:#fff; border:none; border-radius:8px; padding:12px 20px; font-weight:700; font-size:.95rem; cursor:pointer; font-family:inherit; }
+  button:hover { background:#1558b0; }
+  .msg { font-weight:600; color:#166534; margin-top:10px; min-height:1.2em; }
+  footer { text-align:center; color:var(--muted); padding:28px 20px; font-size:.85rem; }
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>💬 Stay in Touch &amp; Give Feedback</h1><a href="./">← Back to the hub</a></div></header>
+<div class="wrap">
+
+  <section class="card" id="interest">
+    <h2>💌 Stay in the loop</h2>
+    <p class="sub">Get deadline reminders and help finding a nearby site. One message, no spam, no account.</p>
+    <form id="interest-form">
+      <input name="name" placeholder="Your name" autocomplete="name">
+      <input name="contact" placeholder="Email, phone, or WhatsApp *" required>
+      <select name="role"><option value="">I am a…</option><option>Parent</option><option>Student</option><option>Teacher</option></select>
+      <input name="zip" inputmode="numeric" maxlength="5" placeholder="ZIP (optional)">
+      <button type="submit">Notify me</button>
+    </form>
+    <p class="msg" id="interest-msg" aria-live="polite"></p>
+  </section>
+
+  <section class="card" id="feedback">
+    <h2>🛠️ Spot a problem? Give feedback</h2>
+    <p class="sub">Wrong fact, broken link, an idea, or general feedback — tell us and we'll fix it.</p>
+    <form id="feedback-form">
+      <select name="kind"><option value="Correction">🛠️ Correction — a fact or link is wrong</option><option value="Feedback">💬 General feedback</option><option value="Feature">✨ Feature request</option><option value="Comment">🗨️ Comment / question</option></select>
+      <input name="contact" type="email" placeholder="Your email (optional)">
+      <textarea name="message" rows="4" placeholder="What's the problem or idea? Be specific — which page, fact, or link?" required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+    <p class="msg" id="feedback-msg" aria-live="polite"></p>
+  </section>
+
+</div>
+<footer>Math Competition Readiness Hub · no login required</footer>
+<script>
+  // Set to a Formspree ("https://formspree.io/f/xxxx") endpoint for silent submit; blank = email.
+  var FORM_ENDPOINT = "";
+  var OWNER = "vineetagrwal@gmail.com";
+  function submitForm(form, msgEl, subject, buildBody, store){
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      var data = {}; Array.prototype.forEach.call(form.elements, function(el){ if(el.name) data[el.name]=el.value.trim(); });
+      if(store==="contact" && !data.contact){ msgEl.textContent="Please add your email, phone, or WhatsApp."; return; }
+      if(store==="message" && !data.message){ msgEl.textContent="Please add a short message."; return; }
+      try{ var a=JSON.parse(localStorage.getItem("mh_"+store)||"[]"); a.push(Object.assign({t:Date.now()},data)); localStorage.setItem("mh_"+store,JSON.stringify(a)); }catch(_){}
+      if(FORM_ENDPOINT){
+        fetch(FORM_ENDPOINT,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},body:JSON.stringify(data)})
+          .then(function(){ msgEl.textContent="✓ Thank you! Sent."; form.reset(); })
+          .catch(function(){ msgEl.textContent="Couldn't send — please try again shortly."; });
+      } else {
+        window.location.href = "mailto:"+OWNER+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(buildBody(data));
+        msgEl.innerHTML="✓ Thanks! Your email app should open — just hit send.";
+        form.reset();
+      }
+    });
+  }
+  submitForm(document.getElementById("interest-form"), document.getElementById("interest-msg"), "Math Hub — stay in the loop",
+    function(d){ return "Name: "+d.name+"\nContact: "+d.contact+"\nRole: "+d.role+"\nZIP: "+d.zip; }, "contact");
+  submitForm(document.getElementById("feedback-form"), document.getElementById("feedback-msg"), "Math Hub — feedback",
+    function(d){ return "Type: "+d.kind+"\nMessage: "+d.message+"\nFrom: "+d.contact; }, "message");
+  if(location.hash){ var t=document.querySelector(location.hash); if(t) t.scrollIntoView(); }
+</script>
+</body>
+</html>

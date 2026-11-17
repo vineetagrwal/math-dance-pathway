@@ -214,15 +214,17 @@
     var tf=document.getElementById("type-filter");
     if(tf) tf.addEventListener("click", function(e){
       var b=e.target.closest("[data-type]"); if(!b) return;
-      typeFilter=b.getAttribute("data-type");
-      Array.prototype.forEach.call(tf.querySelectorAll(".tf-chip"), function(x){ x.classList.toggle("active", x===b); });
+      var v=b.getAttribute("data-type"); if(v && typeFilter===v) v="";
+      typeFilter=v;
+      Array.prototype.forEach.call(tf.querySelectorAll(".tf-chip"), function(x){ x.classList.toggle("active", x.getAttribute("data-type")===v); });
       applyFilter();
     });
     var lf=document.getElementById("level-filter");
     if(lf) lf.addEventListener("click", function(e){
       var b=e.target.closest("[data-level]"); if(!b) return;
-      levelFilter=b.getAttribute("data-level");
-      Array.prototype.forEach.call(lf.querySelectorAll(".tf-chip"), function(x){ x.classList.toggle("active", x===b); });
+      var v=b.getAttribute("data-level"); if(v && levelFilter===v) v="";
+      levelFilter=v;
+      Array.prototype.forEach.call(lf.querySelectorAll(".tf-chip"), function(x){ x.classList.toggle("active", x.getAttribute("data-level")===v); });
       applyFilter();
     });
   })();

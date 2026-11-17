@@ -152,6 +152,9 @@
   .jc-banner { background: #fef9c3; border: 1px solid #fde68a; border-radius: 10px; padding: 10px 16px; margin-bottom: 16px; text-align: center; }
   .jc-banner a { color: #92400e; font-weight: 600; text-decoration: none; }
   .jc-banner a:hover { text-decoration: underline; }
+  .connect-links { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 24px; }
+  .connect-links a { background: var(--card); border: 1px solid var(--border); border-radius: 999px; padding: 10px 18px; color: var(--primary); font-weight: 600; text-decoration: none; }
+  .connect-links a:hover { background: #e8f0fe; }
 
   /* Audience selector */
   .audience {
@@ -1131,42 +1134,11 @@
   <!-- Math joke (levity) -->
   <div class="joke-bar" id="joke-bar" title="Click for another">😄 <span id="joke-text"></span></div>
 
-  <!-- Register Interest -->
-  <section class="section-card" id="register-interest">
-    <h2>💌 Stay in the Loop</h2>
-    <p class="sub-note">Get deadline reminders and help finding a nearby site. One message, no spam.</p>
-    <form class="interest-form" id="interest-form">
-      <input type="text" name="name" placeholder="Your name" aria-label="Your name" autocomplete="name">
-      <input type="text" name="contact" placeholder="Email, phone, or WhatsApp *" required aria-label="Email, phone, or WhatsApp">
-      <select name="role" aria-label="I am a">
-        <option value="">I am a…</option>
-        <option>Parent</option>
-        <option>Student</option>
-        <option>Teacher</option>
-      </select>
-      <input type="text" name="zip" inputmode="numeric" maxlength="5" placeholder="ZIP (optional)" aria-label="ZIP code">
-      <button type="submit" class="cta-btn" data-action="register-interest">Notify me</button>
-    </form>
-    <p class="form-msg" id="interest-msg" aria-live="polite"></p>
-  </section>
-
-  <!-- Feedback / correction box -->
-  <section class="section-card" id="feedback">
-    <h2>💬 Spot a problem? Help us fix it.</h2>
-    <p class="sub-note">Wrong fact, broken link, an idea, or general feedback — tell us and we'll log it. Posts to our public issue tracker (or email if you prefer).</p>
-    <form class="interest-form feedback-form" id="feedback-form">
-      <select name="kind" aria-label="Type of feedback">
-        <option value="Correction">🛠️ Correction — a fact or link is wrong</option>
-        <option value="Feedback">💬 General feedback</option>
-        <option value="Feature">✨ Feature request</option>
-        <option value="Comment">🗨️ Comment / question</option>
-      </select>
-      <input type="text" name="contact" placeholder="Your email (optional)" aria-label="Your email (optional)">
-      <textarea name="message" rows="3" placeholder="What's the problem or idea? Be specific — which page, fact, or link?" aria-label="Your message" required></textarea>
-      <button type="submit" class="cta-btn" data-action="feedback">Submit feedback</button>
-    </form>
-    <p class="form-msg" id="feedback-msg" aria-live="polite"></p>
-  </section>
+  <!-- Stay in touch / feedback (moved to connect.html) -->
+  <div class="connect-links">
+    <a href="connect.html#interest" data-action="open-interest">💌 Stay in the loop — deadline reminders</a>
+    <a href="connect.html#feedback" data-action="open-feedback">💬 Spot a problem? Give feedback</a>
+  </div>
 
   <!-- Testimonials (sample) -->
   <section class="section-card">
