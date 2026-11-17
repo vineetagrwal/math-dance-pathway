@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: https://*.tile.openstreetmap.org https://unpkg.com https://vin7de.goatcounter.com; connect-src 'self' https://vin7de.goatcounter.com; font-src 'self'; base-uri 'self'; form-action 'self'">
 <title>Math Competition Readiness Hub — AMC 8, MATHCOUNTS &amp; More for Grades 6–12</title>
 
@@ -1694,7 +1695,7 @@ Best regards,
     function load() {
       if (SITES) return Promise.resolve();
       if (loading) return loading;
-      loading = fetch("sites.json").then(function (r) { return r.json(); })
+      loading = fetch("sites.json", { cache: "no-store" }).then(function (r) { return r.json(); })
         .then(function (d) { SITES = d; }).catch(function () { SITES = []; });
       return loading;
     }
