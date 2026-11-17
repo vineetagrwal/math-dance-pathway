@@ -86,6 +86,12 @@
     <button class="tf-chip" type="button" data-type="Private">Private</button>
     <button class="tf-chip" type="button" data-type="Institution">Institution</button>
   </div>
+  <div class="type-filter" id="level-filter" role="group" aria-label="Filter by grade level">
+    <button class="tf-chip active" type="button" data-level="">All levels</button>
+    <button class="tf-chip" type="button" data-level="Elem">Elementary</button>
+    <button class="tf-chip" type="button" data-level="Middle">Middle</button>
+    <button class="tf-chip" type="button" data-level="High">High</button>
+  </div>
 
   <div id="status" class="count">Loading…</div>
   <table id="tbl" hidden>
@@ -128,6 +134,7 @@
   var GC_CODE="vin7de";
   (function(){ if(!GC_CODE) return; var s=document.createElement("script"); s.async=true; s.src="//gc.zgo.at/count.js"; s.setAttribute("data-goatcounter","https://"+GC_CODE+".goatcounter.com/count"); document.head.appendChild(s); })();
   function gcEvent(n){ try{ if(window.goatcounter&&window.goatcounter.count) window.goatcounter.count({path:"action-"+n,event:true}); }catch(e){} }
+  function bandOf(s){ if(s.grade_low==null||s.grade_high==null) return ""; var lo=s.grade_low,hi=s.grade_high,b=[]; if(lo<=5)b.push("Elem"); if(hi>=6&&lo<=8)b.push("Middle"); if(hi>=9)b.push("High"); return b.join("/"); }
   function tagClass(e){ e=e.toLowerCase(); if(e.indexOf("amc")>=0)return"amc"; if(e.indexOf("moems")>=0)return"moems"; if(e.indexOf("mathcounts")>=0)return"mc"; if(e.indexOf("league")>=0)return"ml"; if(e.indexOf("kangaroo")>=0)return"mk"; return"amc"; }
   // Paste a Formspree ("https://formspree.io/f/xxxx") or Google Forms response URL to collect
   // submissions silently (no email popup). Blank = fall back to a prefilled email.
@@ -184,7 +191,7 @@
     rows.innerHTML = list.map(function(s){
       var gl=function(n){return n===-1?"PK":(n===0?"K":n);};
       var grades = (s.grade_low!=null && s.grade_high!=null) ? (gl(s.grade_low)+"–"+gl(s.grade_high)) : "—";
-      var band = (s.grade_low!=null && s.grade_high!=null) ? (function(lo,hi){var b=[];if(lo<=5)b.push("Elem");if(hi>=6&&lo<=8)b.push("Middle");if(hi>=9)b.push("High");return b.join("/");})(s.grade_low,s.grade_high) : "";
+      var band = bandOf(s);
       var exams = (s.exams&&s.exams.length) ? s.exams.map(function(e){return '<span class="tag '+tagClass(e)+'">'+esc(e)+'</span>';}).join("") : '<span class="none">not verified</span>';
       var phone = s.phone ? '<a class="phone" href="tel:'+esc(s.phone)+'">'+esc(s.phone)+'</a>' : '<span class="none">—</span>';
       return '<tr class="rowc" data-school="'+esc(s.name)+'"><td><strong>'+esc(s.name)+"</strong></td><td>"+esc(s.type||"")+(band?'<br><span class="lvl-tag">'+band+'</span>':'')+"</td><td>"+grades+"</td><td>"+esc(s.zip||"")+"</td><td>"+phone+"</td><td>"+exams+"</td>"
@@ -192,11 +199,12 @@
     }).join("");
     document.getElementById("status").textContent = list.length + " schools";
   }
-  var typeFilter = "";
+  var typeFilter = "", levelFilter = "";
   function applyFilter(){
     var q = document.getElementById("q").value.trim().toLowerCase();
     var list = DATA.filter(function(s){
       if(typeFilter && (s.type||"")!==typeFilter) return false;
+      if(levelFilter && bandOf(s).indexOf(levelFilter)<0) return false;
       if(!q) return true;
       return (s.name+" "+(s.zip||"")+" "+(s.exams||[]).join(" ")+" "+(s.type||"")).toLowerCase().indexOf(q)>=0;
     });
@@ -208,6 +216,13 @@
       var b=e.target.closest("[data-type]"); if(!b) return;
       typeFilter=b.getAttribute("data-type");
       Array.prototype.forEach.call(tf.querySelectorAll(".tf-chip"), function(x){ x.classList.toggle("active", x===b); });
+      applyFilter();
+    });
+    var lf=document.getElementById("level-filter");
+    if(lf) lf.addEventListener("click", function(e){
+      var b=e.target.closest("[data-level]"); if(!b) return;
+      levelFilter=b.getAttribute("data-level");
+      Array.prototype.forEach.call(lf.querySelectorAll(".tf-chip"), function(x){ x.classList.toggle("active", x===b); });
       applyFilter();
     });
   })();
