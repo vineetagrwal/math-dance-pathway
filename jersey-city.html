@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'">
+<title>Jersey City Pilot — Help Verify Math-Competition Data</title>
+<meta name="description" content="Jersey City school math-competition registry pilot. Help verify which schools host AMC, MOEMS, MATHCOUNTS, Math League, and Math Kangaroo.">
+<style>
+  :root { --blue:#1a73e8; --border:#e2e8f0; --muted:#64748b; --text:#1e293b; }
+  * { box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--text); background:#f8fafc; margin:0; padding:0; line-height:1.5; }
+  header { background:linear-gradient(135deg,#4285F4,#1a73e8); color:#fff; padding:26px 20px; }
+  .wrap { max-width:1100px; margin:0 auto; padding:0 20px; }
+  header h1 { margin:0 0 6px; font-size:1.7rem; }
+  header p { margin:0; opacity:.95; max-width:760px; }
+  header a { color:#fff; }
+  .note { background:#fff; border:1px solid var(--border); border-left:5px solid var(--blue); border-radius:8px; padding:14px 16px; margin:22px 0; }
+  .controls { display:flex; flex-wrap:wrap; gap:10px; margin:18px 0; }
+  .controls input { flex:1 1 220px; padding:10px 14px; border:2px solid var(--border); border-radius:8px; font-size:1rem; }
+  table { width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--border); border-radius:10px; overflow:hidden; font-size:.9rem; }
+  th,td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th { background:#f1f5f9; font-weight:700; }
+  tr:hover td { background:#f8fbff; }
+  .tag { display:inline-block; font-size:.66rem; font-weight:700; color:#fff; padding:2px 6px; border-radius:4px; margin:1px 2px 1px 0; }
+  .tag.amc{background:#1e3a8a;} .tag.moems{background:#0f766e;} .tag.mc{background:#b91c1c;} .tag.ml{background:#6d28d9;} .tag.mk{background:#d97706;}
+  .none { color:var(--muted); font-size:.8rem; }
+  .verify { background:var(--blue); color:#fff; text-decoration:none; padding:7px 12px; border-radius:6px; font-weight:600; font-size:.8rem; white-space:nowrap; display:inline-block; }
+  .verify:hover { background:#1558b0; }
+  a.phone { color:var(--blue); text-decoration:none; }
+  footer { text-align:center; color:var(--muted); padding:30px 20px; font-size:.85rem; }
+  .count { color:var(--muted); font-size:.85rem; margin-left:4px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>🗽 Jersey City Pilot — Math-Competition Registry</h1>
+    <p>Every Jersey City school, and whether it hosts math contests. Data is incomplete on purpose — <strong>help us verify it</strong>. If your school runs AMC, MOEMS, MATHCOUNTS, Math League, or Math Kangaroo, click <em>Verify / add exams</em>. <a href="./">← Back to the main hub</a></p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="note">
+    <strong>Why this matters:</strong> the official published lists badly under-count real participation (e.g. <strong>OLC runs the AMC 8 but isn't listed anywhere</strong>). A trusted, complete registry is built from <em>your</em> knowledge + school outreach. Contact info (phone) below comes from the federal NCES directory.
+  </div>
+
+  <div class="controls">
+    <input type="text" id="q" placeholder="Filter by school name, ZIP, or exam…" aria-label="Filter schools">
+    <a class="verify" id="add-missing" href="#">➕ Add a school we missed</a>
+  </div>
+
+  <div id="status" class="count">Loading…</div>
+  <table id="tbl" hidden>
+    <thead><tr><th>School</th><th>Type</th><th>Grades</th><th>ZIP</th><th>Contact</th><th>Hosts</th><th></th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+</div>
+
+<footer>
+  Open data pilot · sources: NCES CCD (public schools) + the MAA AMC host list · corrections welcome.
+</footer>
+
+<script>
+  var REPO = "https://github.com/vineetagrwal/math-dance-pathway/issues/new";
+  function esc(v){ return String(v==null?"":v).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+  function tagClass(e){ e=e.toLowerCase(); if(e.indexOf("amc")>=0)return"amc"; if(e.indexOf("moems")>=0)return"moems"; if(e.indexOf("mathcounts")>=0)return"mc"; if(e.indexOf("league")>=0)return"ml"; if(e.indexOf("kangaroo")>=0)return"mk"; return"amc"; }
+  function verifyUrl(s){
+    var title = "[JC data] " + s.name + " — contests & start grade";
+    var body = "School: " + s.name + (s.nces_id? " (NCES " + s.nces_id + ")":"") + "\n"
+      + "ZIP: " + (s.zip||"?") + " | Phone: " + (s.phone||"?") + "\n\n"
+      + "Which contests does this school host? (keep the ones that apply)\n"
+      + "- AMC 8\n- AMC 10\n- AMC 12\n- MOEMS\n- MATHCOUNTS\n- Math League\n- Math Kangaroo\n\n"
+      + "Earliest grade students compete: \n"
+      + "How do you know (source / your role): \n";
+    return REPO + "?labels=data-verification&title=" + encodeURIComponent(title) + "&body=" + encodeURIComponent(body);
+  }
+  var DATA = [];
+  function render(list){
+    var rows = document.getElementById("rows");
+    rows.innerHTML = list.map(function(s){
+      var grades = (s.grade_low!=null && s.grade_high!=null) ? (s.grade_low + "–" + s.grade_high) : "—";
+      var exams = (s.exams&&s.exams.length) ? s.exams.map(function(e){return '<span class="tag '+tagClass(e)+'">'+esc(e)+'</span>';}).join("") : '<span class="none">not verified</span>';
+      var phone = s.phone ? '<a class="phone" href="tel:'+esc(s.phone)+'">'+esc(s.phone)+'</a>' : '<span class="none">—</span>';
+      return "<tr><td><strong>"+esc(s.name)+"</strong></td><td>"+esc(s.type||"")+"</td><td>"+grades+"</td><td>"+esc(s.zip||"")+"</td><td>"+phone+"</td><td>"+exams+"</td>"
+        + '<td><a class="verify" target="_blank" rel="noopener noreferrer" href="'+verifyUrl(s)+'">Verify / add exams</a></td></tr>';
+    }).join("");
+    document.getElementById("status").textContent = list.length + " schools";
+  }
+  function applyFilter(){
+    var q = document.getElementById("q").value.trim().toLowerCase();
+    if(!q){ render(DATA); return; }
+    render(DATA.filter(function(s){ return (s.name+" "+(s.zip||"")+" "+(s.exams||[]).join(" ")+" "+(s.type||"")).toLowerCase().indexOf(q)>=0; }));
+  }
+  document.getElementById("add-missing").href = REPO + "?labels=data-verification&title=" + encodeURIComponent("[JC data] New school to add") + "&body=" + encodeURIComponent("School name:\nAddress / ZIP:\nType (public/private):\nContests it hosts (AMC 8/10/12, MOEMS, MATHCOUNTS, Math League, Kangaroo):\nEarliest grade:\nSource:");
+  document.getElementById("q").addEventListener("input", applyFilter);
+  fetch("data/jersey-city-middle-schools.json").then(function(r){return r.json();}).then(function(d){
+    DATA = d.sort(function(a,b){return (a.name||"").localeCompare(b.name||"");});
+    document.getElementById("tbl").hidden = false;
+    render(DATA);
+  }).catch(function(){ document.getElementById("status").textContent = "Could not load data."; });
+</script>
+</body>
+</html>
