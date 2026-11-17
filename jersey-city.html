@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self' https://formspree.io https://docs.google.com; connect-src 'self' https://formspree.io https://docs.google.com">
 <title>Jersey City Pilot — Help Verify Math-Competition Data</title>
 <meta name="description" content="Jersey City school math-competition registry pilot. Help verify which schools host AMC, MOEMS, MATHCOUNTS, Math League, and Math Kangaroo.">
 <style>
@@ -25,7 +25,15 @@
   .tag { display:inline-block; font-size:.66rem; font-weight:700; color:#fff; padding:2px 6px; border-radius:4px; margin:1px 2px 1px 0; }
   .tag.amc{background:#1e3a8a;} .tag.moems{background:#0f766e;} .tag.mc{background:#b91c1c;} .tag.ml{background:#6d28d9;} .tag.mk{background:#d97706;}
   .none { color:var(--muted); font-size:.8rem; }
-  .verify { background:var(--blue); color:#fff; text-decoration:none; padding:7px 12px; border-radius:6px; font-weight:600; font-size:.8rem; white-space:nowrap; display:inline-block; }
+  .verify { background:var(--blue); color:#fff; text-decoration:none; padding:7px 12px; border-radius:6px; font-weight:600; font-size:.8rem; white-space:nowrap; display:inline-block; border:none; cursor:pointer; font-family:inherit; }
+  .verify-form-wrap { background:#fff; border:1px solid var(--border); border-radius:12px; padding:20px; margin:26px 0; }
+  .verify-form-wrap h2 { margin:0 0 6px; font-size:1.2rem; color:var(--blue); }
+  .vf-intro { color:var(--muted); font-size:.9rem; margin:0 0 14px; }
+  #vform { display:grid; gap:10px; }
+  #vform input, #vform select { padding:11px 13px; border:2px solid var(--border); border-radius:8px; font-size:.95rem; font-family:inherit; }
+  .vf-exams { display:flex; flex-wrap:wrap; gap:10px 16px; font-size:.9rem; }
+  .vf-exams label { display:flex; align-items:center; gap:5px; }
+  .vf-msg { font-weight:600; color:#166534; margin-top:10px; min-height:1.2em; }
   .verify:hover { background:#1558b0; }
   a.phone { color:var(--blue); text-decoration:none; }
   footer { text-align:center; color:var(--muted); padding:30px 20px; font-size:.85rem; }
@@ -37,13 +45,16 @@
   .jc-stat .lbl { font-size:.8rem; color:var(--muted); margin-top:3px; }
   .jc-contests { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:8px; }
   .jc-contests .tag { font-size:.76rem; padding:4px 10px; }
+  .type-filter { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 16px; }
+  .tf-chip { background:#fff; border:2px solid var(--border); border-radius:999px; padding:6px 14px; font-weight:600; font-size:.85rem; cursor:pointer; font-family:inherit; color:var(--text); }
+  .tf-chip.active { background:var(--blue); color:#fff; border-color:var(--blue); }
 </style>
 </head>
 <body>
 <header>
   <div class="wrap">
     <h1>🗽 Jersey City Pilot — Math-Competition Registry</h1>
-    <p>Every Jersey City school, and whether it hosts math contests. Data is incomplete on purpose — <strong>help us verify it</strong>. If your school runs AMC, MOEMS, MATHCOUNTS, Math League, or Math Kangaroo, click <em>Verify / add exams</em> — it opens a prefilled email (no account needed). <a href="./">← Back to the main hub</a></p>
+    <p>Every Jersey City school, and whether it hosts math contests. Data is incomplete on purpose — <strong>help us verify it</strong>. If your school runs AMC, MOEMS, MATHCOUNTS, Math League, or Math Kangaroo, click <em>Verify / add exams</em> — it opens a quick form (no account needed). <a href="./">← Back to the main hub</a></p>
   </div>
 </header>
 
@@ -59,12 +70,43 @@
     <a class="verify" id="add-missing" href="#">➕ Add a school we missed</a>
   </div>
 
+  <div class="type-filter" id="type-filter" role="group" aria-label="Filter by school type">
+    <button class="tf-chip active" type="button" data-type="">All</button>
+    <button class="tf-chip" type="button" data-type="Public">Public</button>
+    <button class="tf-chip" type="button" data-type="Charter">Charter</button>
+    <button class="tf-chip" type="button" data-type="Private">Private</button>
+    <button class="tf-chip" type="button" data-type="Institution">Institution</button>
+  </div>
+
   <div id="status" class="count">Loading…</div>
   <table id="tbl" hidden>
     <thead><tr><th>School</th><th>Type</th><th>Grades</th><th>ZIP</th><th>Contact</th><th>Hosts</th><th></th></tr></thead>
     <tbody id="rows"></tbody>
   </table>
 </div>
+
+  <section class="verify-form-wrap" id="verify-form-wrap">
+    <h2>✅ Add or verify a school</h2>
+    <p class="vf-intro">A parent, teacher, or staff member can fill this — no account needed. We review submissions before publishing; your email lets us confirm (light verification).</p>
+    <form id="vform">
+      <input name="school" id="vf-school" placeholder="School name *" required autocomplete="off">
+      <div class="vf-exams">
+        <label><input type="checkbox" name="exams" value="AMC 8"> AMC 8</label>
+        <label><input type="checkbox" name="exams" value="AMC 10"> AMC 10</label>
+        <label><input type="checkbox" name="exams" value="AMC 12"> AMC 12</label>
+        <label><input type="checkbox" name="exams" value="MOEMS"> MOEMS</label>
+        <label><input type="checkbox" name="exams" value="MATHCOUNTS"> MATHCOUNTS</label>
+        <label><input type="checkbox" name="exams" value="Math League"> Math League</label>
+        <label><input type="checkbox" name="exams" value="Math Kangaroo"> Math Kangaroo</label>
+      </div>
+      <input name="start_grade" placeholder="Earliest grade students compete (optional)">
+      <input name="your_name" placeholder="Your name (optional)">
+      <input name="your_email" type="email" placeholder="Your email * (so we can confirm)" required>
+      <select name="your_role"><option value="">I am a…</option><option>Parent</option><option>Teacher / Staff</option><option>Student</option><option>Other</option></select>
+      <button type="submit" class="verify" style="padding:11px 20px;">Submit for review</button>
+    </form>
+    <p class="vf-msg" id="vf-msg" aria-live="polite"></p>
+  </section>
 
 <footer>
   Open data pilot · sources: NCES CCD (public schools) + the MAA AMC host list · corrections welcome.
@@ -73,16 +115,37 @@
 <script>
   function esc(v){ return String(v==null?"":v).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
   function tagClass(e){ e=e.toLowerCase(); if(e.indexOf("amc")>=0)return"amc"; if(e.indexOf("moems")>=0)return"moems"; if(e.indexOf("mathcounts")>=0)return"mc"; if(e.indexOf("league")>=0)return"ml"; if(e.indexOf("kangaroo")>=0)return"mk"; return"amc"; }
-  function verifyUrl(s){
-    var title = "[JC data] " + s.name + " — contests & start grade";
-    var body = "School: " + s.name + (s.nces_id? " (NCES " + s.nces_id + ")":"") + "\n"
-      + "ZIP: " + (s.zip||"?") + " | Phone: " + (s.phone||"?") + "\n\n"
-      + "Which contests does this school host? (keep the ones that apply)\n"
-      + "- AMC 8\n- AMC 10\n- AMC 12\n- MOEMS\n- MATHCOUNTS\n- Math League\n- Math Kangaroo\n\n"
-      + "Earliest grade students compete: \n"
-      + "How do you know (source / your role): \n";
-    return "mailto:vineetagrwal@gmail.com?subject=" + encodeURIComponent(title) + "&body=" + encodeURIComponent(body);
+  // Paste a Formspree ("https://formspree.io/f/xxxx") or Google Forms response URL to collect
+  // submissions silently (no email popup). Blank = fall back to a prefilled email.
+  var VERIFY_ENDPOINT = "";
+  function fillVerify(school){
+    var el=document.getElementById("vf-school"); if(el) el.value=school||"";
+    var w=document.getElementById("verify-form-wrap"); if(w) w.scrollIntoView({behavior:"smooth"});
+    if(el) el.focus();
   }
+  (function(){
+    var rows=document.getElementById("rows");
+    if(rows) rows.addEventListener("click", function(e){ var b=e.target.closest("button.verify[data-school]"); if(b) fillVerify(b.getAttribute("data-school")); });
+    var f=document.getElementById("vform"); if(!f) return;
+    f.addEventListener("submit", function(e){
+      e.preventDefault();
+      var school=f.school.value.trim(), email=f.your_email.value.trim(), msg=document.getElementById("vf-msg");
+      if(!school||!email){ msg.textContent="Please add the school name and your email."; return; }
+      var exams=Array.prototype.map.call(f.querySelectorAll("input[name=exams]:checked"), function(x){return x.value;});
+      var payload={ school:school, exams:exams.join(", "), start_grade:f.start_grade.value.trim(), name:f.your_name.value.trim(), email:email, role:f.your_role.value };
+      try{ var a=JSON.parse(localStorage.getItem("jc_verify")||"[]"); a.push(payload); localStorage.setItem("jc_verify",JSON.stringify(a)); }catch(_){}
+      if(VERIFY_ENDPOINT){
+        fetch(VERIFY_ENDPOINT,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},body:JSON.stringify(payload)})
+          .then(function(){ msg.textContent="✓ Thank you! Submitted for review."; f.reset(); })
+          .catch(function(){ msg.textContent="Couldn't submit — please try again shortly."; });
+      } else {
+        var body="School: "+school+"\nContests: "+(exams.join(", ")||"(none)")+"\nEarliest grade: "+payload.start_grade+"\nBy: "+payload.name+" ("+payload.role+")\nEmail: "+email;
+        window.location.href="mailto:vineetagrwal@gmail.com?subject="+encodeURIComponent("[JC verify] "+school)+"&body="+encodeURIComponent(body);
+        msg.innerHTML="✓ Thanks! Your email app should open — just hit send.";
+        f.reset();
+      }
+    });
+  })();
   var DATA = [];
   function render(list){
     var rows = document.getElementById("rows");
@@ -91,16 +154,30 @@
       var exams = (s.exams&&s.exams.length) ? s.exams.map(function(e){return '<span class="tag '+tagClass(e)+'">'+esc(e)+'</span>';}).join("") : '<span class="none">not verified</span>';
       var phone = s.phone ? '<a class="phone" href="tel:'+esc(s.phone)+'">'+esc(s.phone)+'</a>' : '<span class="none">—</span>';
       return "<tr><td><strong>"+esc(s.name)+"</strong></td><td>"+esc(s.type||"")+"</td><td>"+grades+"</td><td>"+esc(s.zip||"")+"</td><td>"+phone+"</td><td>"+exams+"</td>"
-        + '<td><a class="verify" target="_blank" rel="noopener noreferrer" href="'+verifyUrl(s)+'">Verify / add exams</a></td></tr>';
+        + '<td><button class="verify" type="button" data-school="'+esc(s.name)+'">Verify / add exams</button></td></tr>';
     }).join("");
     document.getElementById("status").textContent = list.length + " schools";
   }
+  var typeFilter = "";
   function applyFilter(){
     var q = document.getElementById("q").value.trim().toLowerCase();
-    if(!q){ render(DATA); return; }
-    render(DATA.filter(function(s){ return (s.name+" "+(s.zip||"")+" "+(s.exams||[]).join(" ")+" "+(s.type||"")).toLowerCase().indexOf(q)>=0; }));
+    var list = DATA.filter(function(s){
+      if(typeFilter && (s.type||"")!==typeFilter) return false;
+      if(!q) return true;
+      return (s.name+" "+(s.zip||"")+" "+(s.exams||[]).join(" ")+" "+(s.type||"")).toLowerCase().indexOf(q)>=0;
+    });
+    render(list); renderStats(list);
   }
-  document.getElementById("add-missing").href = "mailto:vineetagrwal@gmail.com?subject=" + encodeURIComponent("[JC data] New school to add") + "&body=" + encodeURIComponent("School name:\nAddress / ZIP:\nType (public/private):\nContests it hosts (AMC 8/10/12, MOEMS, MATHCOUNTS, Math League, Kangaroo):\nEarliest grade:\nSource:");
+  (function(){
+    var tf=document.getElementById("type-filter");
+    if(tf) tf.addEventListener("click", function(e){
+      var b=e.target.closest("[data-type]"); if(!b) return;
+      typeFilter=b.getAttribute("data-type");
+      Array.prototype.forEach.call(tf.querySelectorAll(".tf-chip"), function(x){ x.classList.toggle("active", x===b); });
+      applyFilter();
+    });
+  })();
+  document.getElementById("add-missing").addEventListener("click", function(e){ e.preventDefault(); fillVerify(""); });
   document.getElementById("q").addEventListener("input", applyFilter);
   function renderStats(d){
     var el=document.getElementById("jc-stats"); if(!el) return;
@@ -120,7 +197,7 @@
   fetch("data/jersey-city-middle-schools.json").then(function(r){return r.json();}).then(function(d){
     DATA = d.sort(function(a,b){return (a.name||"").localeCompare(b.name||"");});
     document.getElementById("tbl").hidden = false;
-    render(DATA); renderStats(DATA);
+    applyFilter();
   }).catch(function(){ document.getElementById("status").textContent = "Could not load data."; });
 </script>
 </body>
