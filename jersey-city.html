@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self' https://formspree.io https://docs.google.com; connect-src 'self' https://formspree.io https://docs.google.com">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self' https://formspree.io https://docs.google.com; connect-src 'self' https://formspree.io https://docs.google.com https://vin7de.goatcounter.com; script-src 'self' 'unsafe-inline' https://gc.zgo.at; img-src 'self' data: https://vin7de.goatcounter.com">
 <title>Jersey City Pilot — Help Verify Math-Competition Data</title>
 <meta name="description" content="Jersey City school math-competition registry pilot. Help verify which schools host AMC, MOEMS, MATHCOUNTS, Math League, and Math Kangaroo.">
 <style>
@@ -25,6 +25,10 @@
   tr:hover td { background:#f8fbff; }
   .rowc { cursor:pointer; }
   .rowc:hover td:first-child strong { text-decoration:underline; }
+  .reg-banner { background:#f0fdf4; border:1px solid #bbf7d0; border-left:5px solid #16a34a; border-radius:8px; padding:12px 16px; margin:18px 0; }
+  .reg-banner a { color:#166534; font-weight:700; }
+  .vf-reg { display:flex; align-items:center; gap:6px; font-weight:600; color:#166534; }
+  .lvl-tag { display:inline-block; font-size:.64rem; font-weight:700; background:#e2e8f0; color:#334155; padding:1px 6px; border-radius:4px; margin-top:3px; }
   .tag { display:inline-block; font-size:.66rem; font-weight:700; color:#fff; padding:2px 6px; border-radius:4px; margin:1px 2px 1px 0; }
   .tag.amc{background:#1e3a8a;} .tag.moems{background:#0f766e;} .tag.mc{background:#b91c1c;} .tag.ml{background:#6d28d9;} .tag.mk{background:#d97706;}
   .none { color:var(--muted); font-size:.8rem; }
@@ -68,6 +72,8 @@
 
   <div id="jc-stats"></div>
 
+  <div class="reg-banner"><strong>🎉 Just registered your school as a test site?</strong> <a href="#verify-form-wrap">Report it →</a> Every new registration is our measure of success.</div>
+
   <div class="controls">
     <input type="text" id="q" placeholder="Filter by school name, ZIP, or exam…" aria-label="Filter schools">
     <a class="verify" id="add-missing" href="#">➕ Add a school we missed</a>
@@ -107,6 +113,7 @@
       <input name="your_name" placeholder="Your name (optional)">
       <input name="your_email" type="email" placeholder="Your email * (so we can confirm)" required>
       <select name="your_role"><option value="">I am a…</option><option>Parent</option><option>Teacher / Staff</option><option>Student</option><option>Other</option></select>
+      <label class="vf-reg"><input type="checkbox" name="registered" id="vf-registered"> ✅ We just registered this school as a NEW test site!</label>
       <button type="submit" class="verify" style="padding:11px 20px;">Submit for review</button>
     </form>
     <p class="vf-msg" id="vf-msg" aria-live="polite"></p>
@@ -118,6 +125,9 @@
 
 <script>
   function esc(v){ return String(v==null?"":v).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+  var GC_CODE="vin7de";
+  (function(){ if(!GC_CODE) return; var s=document.createElement("script"); s.async=true; s.src="//gc.zgo.at/count.js"; s.setAttribute("data-goatcounter","https://"+GC_CODE+".goatcounter.com/count"); document.head.appendChild(s); })();
+  function gcEvent(n){ try{ if(window.goatcounter&&window.goatcounter.count) window.goatcounter.count({path:"action-"+n,event:true}); }catch(e){} }
   function tagClass(e){ e=e.toLowerCase(); if(e.indexOf("amc")>=0)return"amc"; if(e.indexOf("moems")>=0)return"moems"; if(e.indexOf("mathcounts")>=0)return"mc"; if(e.indexOf("league")>=0)return"ml"; if(e.indexOf("kangaroo")>=0)return"mk"; return"amc"; }
   // Paste a Formspree ("https://formspree.io/f/xxxx") or Google Forms response URL to collect
   // submissions silently (no email popup). Blank = fall back to a prefilled email.
@@ -142,6 +152,8 @@
       if(!school||!email){ msg.textContent="Please add the school name and your email."; return; }
       var exams=Array.prototype.map.call(f.querySelectorAll("input[name=exams]:checked"), function(x){return x.value;});
       var payload={ school:school, exams:exams.join(", "), start_grade:f.start_grade.value.trim(), name:f.your_name.value.trim(), email:email, role:f.your_role.value };
+      if(f.registered && f.registered.checked){ payload.registered="YES"; payload.role=(payload.role||"")+" — JUST REGISTERED THE SCHOOL"; gcEvent("school-registered"); }
+      gcEvent("verify-submit");
       try{ var a=JSON.parse(localStorage.getItem("jc_verify")||"[]"); a.push(payload); localStorage.setItem("jc_verify",JSON.stringify(a)); }catch(_){}
       if(GFORM.action){
         var fd=new FormData();
@@ -170,10 +182,12 @@
   function render(list){
     var rows = document.getElementById("rows");
     rows.innerHTML = list.map(function(s){
-      var grades = (s.grade_low!=null && s.grade_high!=null) ? (s.grade_low + "–" + s.grade_high) : "—";
+      var gl=function(n){return n===-1?"PK":(n===0?"K":n);};
+      var grades = (s.grade_low!=null && s.grade_high!=null) ? (gl(s.grade_low)+"–"+gl(s.grade_high)) : "—";
+      var band = (s.grade_low!=null && s.grade_high!=null) ? (function(lo,hi){var b=[];if(lo<=5)b.push("Elem");if(hi>=6&&lo<=8)b.push("Middle");if(hi>=9)b.push("High");return b.join("/");})(s.grade_low,s.grade_high) : "";
       var exams = (s.exams&&s.exams.length) ? s.exams.map(function(e){return '<span class="tag '+tagClass(e)+'">'+esc(e)+'</span>';}).join("") : '<span class="none">not verified</span>';
       var phone = s.phone ? '<a class="phone" href="tel:'+esc(s.phone)+'">'+esc(s.phone)+'</a>' : '<span class="none">—</span>';
-      return '<tr class="rowc" data-school="'+esc(s.name)+'"><td><strong>'+esc(s.name)+"</strong></td><td>"+esc(s.type||"")+"</td><td>"+grades+"</td><td>"+esc(s.zip||"")+"</td><td>"+phone+"</td><td>"+exams+"</td>"
+      return '<tr class="rowc" data-school="'+esc(s.name)+'"><td><strong>'+esc(s.name)+"</strong></td><td>"+esc(s.type||"")+(band?'<br><span class="lvl-tag">'+band+'</span>':'')+"</td><td>"+grades+"</td><td>"+esc(s.zip||"")+"</td><td>"+phone+"</td><td>"+exams+"</td>"
         + '<td><button class="verify" type="button" data-school="'+esc(s.name)+'">Verify / add exams</button></td></tr>';
     }).join("");
     document.getElementById("status").textContent = list.length + " schools";
