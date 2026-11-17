@@ -92,7 +92,8 @@
     <h2>✅ Add or verify a school</h2>
     <p class="vf-intro">A parent, teacher, or staff member can fill this — no account needed. We review submissions before publishing; your email lets us confirm (light verification).</p>
     <form id="vform">
-      <input name="school" id="vf-school" placeholder="School name *" required autocomplete="off">
+      <input name="school" id="vf-school" placeholder="Start typing a school name *" list="school-list" required autocomplete="off">
+      <datalist id="school-list"></datalist>
       <div class="vf-exams">
         <label><input type="checkbox" name="exams" value="AMC 8"> AMC 8</label>
         <label><input type="checkbox" name="exams" value="AMC 10"> AMC 10</label>
@@ -218,6 +219,7 @@
     document.getElementById("tbl").hidden = false;
     applyFilter();
     var fr=document.getElementById("jc-fresh"); if(fr) fr.textContent="showing "+d.length+" schools";
+    var dl=document.getElementById("school-list"); if(dl) dl.innerHTML=d.map(function(s){return '<option value="'+esc(s.name)+'">';}).join("");
   }).catch(function(){ document.getElementById("status").textContent = "Could not load data."; });
 </script>
 </body>
