@@ -665,6 +665,8 @@
   .cd-list li { margin: 0; }
   .cd-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: rgba(255,255,255,0.08); border-radius: 7px; padding: 8px 11px; text-decoration: none; color: inherit; cursor: pointer; transition: background 0.15s ease; }
   .cd-row:hover { background: rgba(255,255,255,0.2); }
+  .cd-col { display: flex; flex-direction: column; }
+  .cd-date { font-size: 0.68rem; color: rgba(255,255,255,0.65); margin-top: 1px; }
   .cd-label { font-size: 0.85rem; color: #e2e8f0; font-weight: 600; }
   .cd-time { font-size: 0.82rem; color: #fff; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .cd-time strong { color: #86efac; font-size: 1rem; }
@@ -766,6 +768,35 @@
   .cta-band-actions a { background: #fff; color: #1a73e8; text-decoration: none; font-weight: 700; padding: 12px 20px; border-radius: 999px; font-size: 0.95rem; }
   .cta-band-actions a:hover { background: #e8f0fe; }
 
+  /* Math joke bar */
+  .joke-bar { text-align: center; font-style: italic; color: var(--muted); background: #fff; border: 1px dashed var(--border); border-radius: 10px; padding: 14px 18px; margin-bottom: 24px; font-size: 0.95rem; cursor: pointer; }
+
+  /* AMC 8 problem slideshow */
+  .prob-card { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+  .prob-q { font-size: 1.05rem; font-weight: 600; color: #0f172a; }
+  .prob-opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin: 12px 0; }
+  .prob-opt { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; font-size: 0.92rem; }
+  .prob-opt.correct { background: #dcfce7; border-color: #86efac; font-weight: 700; }
+  .prob-ans { margin-top: 10px; font-size: 0.92rem; color: #166534; }
+  .prob-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+  .prob-nav button { background: #e0e7ff; color: var(--primary); border: none; border-radius: 6px; padding: 8px 14px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .prob-nav #prob-count { font-size: 0.85rem; color: var(--muted); }
+
+  /* Site-wide search */
+  .site-search { position: sticky; top: 0; z-index: 500; background: #1a73e8; padding: 10px 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+  .ss-wrap { max-width: 1020px; margin: 0 auto; position: relative; }
+  #site-search-input { width: 100%; padding: 11px 16px; border: none; border-radius: 999px; font-size: 1rem; font-family: inherit; }
+  #site-search-input:focus-visible { outline: 3px solid rgba(255,255,255,0.5); }
+  .ss-results { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #fff; border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 8px 28px rgba(0,0,0,0.18); max-height: 60vh; overflow-y: auto; z-index: 501; }
+  .ss-item { display: block; padding: 11px 15px; border-bottom: 1px solid var(--border); text-decoration: none; cursor: pointer; }
+  .ss-item:last-child { border-bottom: none; }
+  .ss-item:hover, .ss-item.sel { background: #e8f0fe; }
+  .ss-item .ss-t { font-weight: 700; color: var(--primary); font-size: 0.95rem; }
+  .ss-item .ss-d { font-size: 0.83rem; color: var(--muted); margin-top: 2px; }
+  .section-card, header, section { scroll-margin-top: 66px; }
+  .flash-target { animation: flashring 1.6s ease; }
+  @keyframes flashring { 0%, 100% { box-shadow: 0 0 0 0 rgba(26,115,232,0); } 25%, 60% { box-shadow: 0 0 0 4px rgba(26,115,232,0.55); } }
+
   /* Key links grid */
   .links-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; margin-top: 10px; }
   .links-col h3 { margin: 0 0 8px; color: var(--secondary); font-size: 1rem; }
@@ -777,7 +808,7 @@
   @media print {
     body { background: white; padding: 0; }
     .chat-fab, .chat-panel, .toast { display: none !important; }
-    .nav-pills, .copy-btn, .top-bar, .share-bar { display: none; }
+    .nav-pills, .copy-btn, .top-bar, .share-bar, .site-search { display: none; }
     .stage, .section-card { break-inside: avoid; box-shadow: none; }
     /* "Print the kit" mode: show only the one-page hosting kit */
     body.print-kit-mode .container > *:not(.hosting-kit) { display: none !important; }
@@ -788,6 +819,14 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
 </head>
 <body>
+
+<!-- Site-wide search -->
+<div class="site-search" role="search">
+  <div class="ss-wrap">
+    <input type="text" id="site-search-input" placeholder="🔎 Search the site — AMC 8, how to host, deadlines, free practice…" aria-label="Search the site" autocomplete="off">
+    <div id="site-search-results" class="ss-results" hidden></div>
+  </div>
+</div>
 
 <div class="container">
   <header>
@@ -1035,6 +1074,26 @@
       </div>
     </div>
   </section>
+
+  <!-- AMC 8 problem slideshow -->
+  <section class="section-card" id="try-problem">
+    <h2>🧩 Try an AMC 8–Style Problem</h2>
+    <p class="sub-note">A fresh one every few seconds. These are samples in the style of the AMC 8 — for real ones, see the <a href="https://artofproblemsolving.com/wiki/index.php/AMC_8_Problems_and_Solutions" target="_blank" rel="noopener noreferrer">official past exams</a>.</p>
+    <div class="prob-card" id="prob-card">
+      <div class="prob-q" id="prob-q"></div>
+      <div class="prob-opts" id="prob-opts"></div>
+      <button class="kit-print-btn" type="button" id="prob-answer">Show answer</button>
+      <div class="prob-ans" id="prob-ans" hidden></div>
+    </div>
+    <div class="prob-nav">
+      <button type="button" id="prob-prev" aria-label="Previous problem">‹ Prev</button>
+      <span id="prob-count"></span>
+      <button type="button" id="prob-next" aria-label="Next problem">Next ›</button>
+    </div>
+  </section>
+
+  <!-- Math joke (levity) -->
+  <div class="joke-bar" id="joke-bar" title="Click for another">😄 <span id="joke-text"></span></div>
 
   <!-- Register Interest -->
   <section class="section-card" id="register-interest">
@@ -1541,7 +1600,10 @@ Best regards,
       a.href = d.url;
       if (d.action) a.setAttribute("data-action", d.action);
       if (/^https?:/.test(d.url)) { a.target = "_blank"; a.rel = "noopener noreferrer"; }
-      a.innerHTML = '<span class="cd-label">' + d.label + '</span><span class="cd-time">--</span>';
+      const p = d.date.slice(0, 10).split("-");
+      const MM = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      const human = MM[+p[1] - 1] + " " + (+p[2]) + ", " + p[0];
+      a.innerHTML = '<span class="cd-col"><span class="cd-label">' + d.label + '</span><span class="cd-date">' + human + '</span></span><span class="cd-time">--</span>';
       li.appendChild(a);
       list.appendChild(li);
       return { el: a.querySelector(".cd-time"), target: new Date(d.date).getTime() };
@@ -1739,6 +1801,125 @@ Best regards,
       form.reset();
       showToast("✓ Thanks for the feedback!");
     });
+  })();
+
+  // 8. Site-wide quick search (jump to any section; deeper search in finder)
+  (function () {
+    const input = document.getElementById("site-search-input");
+    const box = document.getElementById("site-search-results");
+    if (!input) return;
+    const INDEX = [
+      { t: "Find your school", d: "Search AMC host schools by ZIP, city, state, or name", a: "#find-site", k: "find school registered site map zip amc host near me" },
+      { t: "The readiness playbook", d: "Register early, build habits, compete (3 phases)", a: "#getting-started", k: "playbook phases plan prepare how to start" },
+      { t: "Host AMC 8 at your school", d: "Become a test site + ready-to-send email template", a: "#school-hosting", k: "host register school test site competition manager teacher principal hosting kit email cost fee" },
+      { t: "Contest calendar & free practice", d: "AMC, MATHCOUNTS, MOEMS, Kangaroo — deadlines & mock tests", a: "#mock-tests", k: "calendar deadlines practice mock test free amc mathcounts moems kangaroo math league aops alcumus eligibility" },
+      { t: "Grade 6-12 university pathway", d: "Middle-school contests to top STEM colleges", a: "#pathway", k: "pathway roadmap aime usamo mop imo college admissions mit stanford caltech princeton" },
+      { t: "Build a local math circle", d: "Start a neighborhood problem-solving group", a: "#community", k: "math circle community parents club" },
+      { t: "Stay in the loop", d: "Deadline reminders by email, phone, or WhatsApp", a: "#register-interest", k: "reminders register interest email phone whatsapp notify" },
+      { t: "Give feedback / report a correction", d: "Wrong fact, broken link, or an idea?", a: "#feedback", k: "feedback correction feature request comment problem bug report" },
+      { t: "Key links & resources", d: "Official sites, registration, free practice", a: "#key-links", k: "links resources official maa mathcounts moems kangaroo aops" }
+    ];
+    let items = [], sel = -1;
+    function render(q) {
+      const ql = q.trim().toLowerCase();
+      if (ql.length < 2) { box.hidden = true; return; }
+      const toks = ql.split(/\s+/);
+      const hits = INDEX.map(function (e) {
+        const hay = (e.t + " " + e.d + " " + e.k).toLowerCase();
+        let score = 0; toks.forEach(function (tk) { if (hay.indexOf(tk) >= 0) score++; });
+        return { e: e, score: score };
+      }).filter(function (x) { return x.score > 0; }).sort(function (a, b) { return b.score - a.score; });
+      let html = hits.map(function (x) { return '<a class="ss-item" href="' + x.e.a + '"><div class="ss-t">' + x.e.t + '</div><div class="ss-d">' + x.e.d + '</div></a>'; }).join("");
+      html += '<a class="ss-item" data-finder="1" href="#find-site"><div class="ss-t">🔎 Search schools for “' + esc(q.trim()) + '”</div><div class="ss-d">Deeper search in the school finder</div></a>';
+      box.innerHTML = html;
+      box.hidden = false;
+      items = Array.prototype.slice.call(box.querySelectorAll(".ss-item"));
+      sel = -1;
+    }
+    function go(a, finderQ) {
+      box.hidden = true;
+      const el = a ? document.querySelector(a) : null;
+      if (el) { el.scrollIntoView({ behavior: "smooth", block: "start" }); el.classList.add("flash-target"); setTimeout(function () { el.classList.remove("flash-target"); }, 1700); }
+      if (finderQ) { const fi = document.getElementById("zip-input"); if (fi) { fi.value = finderQ; fi.dispatchEvent(new Event("input")); } }
+      if (typeof logAction === "function") logAction("site-search-nav");
+    }
+    input.addEventListener("input", function () { render(input.value); });
+    box.addEventListener("click", function (e) {
+      const it = e.target.closest(".ss-item"); if (!it) return;
+      e.preventDefault();
+      go(it.getAttribute("href"), it.getAttribute("data-finder") ? input.value.trim() : null);
+    });
+    input.addEventListener("keydown", function (e) {
+      if (box.hidden) return;
+      if (e.key === "ArrowDown") { e.preventDefault(); sel = Math.min(sel + 1, items.length - 1); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); sel = Math.max(sel - 1, 0); }
+      else if (e.key === "Enter") { e.preventDefault(); const it = items[sel < 0 ? 0 : sel]; if (it) go(it.getAttribute("href"), it.getAttribute("data-finder") ? input.value.trim() : null); return; }
+      else if (e.key === "Escape") { box.hidden = true; return; }
+      else { return; }
+      items.forEach(function (x, idx) { x.classList.toggle("sel", idx === sel); });
+    });
+    document.addEventListener("click", function (e) { if (!e.target.closest(".site-search")) box.hidden = true; });
+  })();
+
+  // 9. Math jokes (levity)
+  (function () {
+    const el = document.getElementById("joke-text");
+    if (!el) return;
+    const JOKES = [
+      "Why was six afraid of seven? Because seven eight nine. 🍽️",
+      "Why do mathematicians love parks? All the natural logs. 🌲",
+      "I'll do algebra and trig, but graphing is where I draw the line. 📈",
+      "Parallel lines have so much in common — shame they'll never meet. ↔️",
+      "Why did the obtuse triangle go to therapy? It was never right. 📐",
+      "There are 10 kinds of people: those who get binary and those who don't. 💡",
+      "Why was the math book sad? Too many problems. 📖",
+      "Decimals have a point. ⚫"
+    ];
+    let i = Math.floor((Date.now() / 1000)) % JOKES.length;
+    function show() { el.textContent = JOKES[i % JOKES.length]; i++; }
+    show();
+    setInterval(show, 7000);
+    const bar = document.getElementById("joke-bar");
+    if (bar) bar.addEventListener("click", show);
+  })();
+
+  // 10. AMC 8-style problem slideshow
+  (function () {
+    const qEl = document.getElementById("prob-q");
+    if (!qEl) return;
+    const optsEl = document.getElementById("prob-opts");
+    const ansBtn = document.getElementById("prob-answer");
+    const ansEl = document.getElementById("prob-ans");
+    const countEl = document.getElementById("prob-count");
+    const P = [
+      { q: "A pizza is cut into 8 equal slices. Maria eats 3 and Jon eats 2. What fraction is left?", o: ["1/8", "3/8", "1/2", "5/8", "3/4"], a: 1, s: "8 − 5 = 3 slices left → 3/8." },
+      { q: "What is the least whole number greater than 100 that is divisible by both 6 and 8?", o: ["104", "108", "120", "144", "168"], a: 2, s: "LCM(6, 8) = 24; first multiple over 100 is 120." },
+      { q: "A number is tripled, then 7 is added, giving 28. What was the number?", o: ["5", "7", "9", "11", "21"], a: 1, s: "3x + 7 = 28 → 3x = 21 → x = 7." },
+      { q: "In a class of 24, the ratio of girls to boys is 5 : 3. How many girls are there?", o: ["9", "12", "15", "18", "20"], a: 2, s: "8 parts → 24/8 = 3 per part; girls = 5 × 3 = 15." },
+      { q: "What is the area, in square units, of a right triangle with legs 6 and 8?", o: ["24", "28", "48", "14", "40"], a: 0, s: "½ × 6 × 8 = 24." },
+      { q: "How many two-digit numbers are multiples of 7?", o: ["11", "12", "13", "14", "15"], a: 2, s: "14, 21, …, 98 → (98 − 14)/7 + 1 = 13." }
+    ];
+    let idx = 0, revealed = false, timer = null;
+    const L = ["A", "B", "C", "D", "E"];
+    function draw() {
+      const p = P[idx];
+      qEl.textContent = p.q;
+      optsEl.innerHTML = p.o.map(function (o, j) { return '<div class="prob-opt' + (revealed && j === p.a ? ' correct' : '') + '">(' + L[j] + ') ' + esc(o) + '</div>'; }).join("");
+      ansEl.hidden = !revealed;
+      ansEl.textContent = revealed ? ("Answer: (" + L[p.a] + ") — " + p.s) : "";
+      ansBtn.textContent = revealed ? "Hide answer" : "Show answer";
+      countEl.textContent = (idx + 1) + " / " + P.length;
+    }
+    function step(d) { idx = (idx + d + P.length) % P.length; revealed = false; draw(); }
+    function start() { stop(); timer = setInterval(function () { step(1); }, 9000); }
+    function stop() { if (timer) clearInterval(timer); }
+    ansBtn.addEventListener("click", function () { revealed = !revealed; draw(); });
+    document.getElementById("prob-next").addEventListener("click", function () { step(1); start(); });
+    document.getElementById("prob-prev").addEventListener("click", function () { step(-1); start(); });
+    const card = document.getElementById("prob-card");
+    card.addEventListener("mouseenter", stop);
+    card.addEventListener("mouseleave", start);
+    draw(); start();
   })();
 
   // 5. Chatbot (rule-based, fully client-side)
