@@ -923,6 +923,36 @@
     </div>
   </section>
 
+  <!-- Math Challenge (gamified, timed) -->
+  <section class="section-card" id="challenge">
+    <h2>🎮 Math Challenge — Beat the Clock</h2>
+    <p class="sub-note">AMC 8–style problems on a timer. Answer fast for more points; new questions keep coming. These are <strong>original practice problems in the style of the AMC 8</strong> (not copied from the exams).</p>
+    <p class="sub-note" style="margin-top:-8px;">🎯 Practice the <strong>real past exams</strong> (official, by year):
+      <a href="https://artofproblemsolving.com/wiki/index.php/2024_AMC_8" target="_blank" rel="noopener noreferrer">2024</a> ·
+      <a href="https://artofproblemsolving.com/wiki/index.php/2023_AMC_8" target="_blank" rel="noopener noreferrer">2023</a> ·
+      <a href="https://artofproblemsolving.com/wiki/index.php/2022_AMC_8" target="_blank" rel="noopener noreferrer">2022</a> ·
+      <a href="https://artofproblemsolving.com/wiki/index.php/2021_AMC_8" target="_blank" rel="noopener noreferrer">2021</a> ·
+      <a href="https://artofproblemsolving.com/wiki/index.php/2020_AMC_8" target="_blank" rel="noopener noreferrer">2020</a> ·
+      <a href="https://artofproblemsolving.com/wiki/index.php/AMC_8_Problems_and_Solutions" target="_blank" rel="noopener noreferrer">all years</a>
+    </p>
+    <div class="game-bar">
+      <span class="game-stat">Score <strong id="g-score">0</strong></span>
+      <span class="game-stat">Streak <strong id="g-streak">0</strong></span>
+      <span class="game-stat">Best <strong id="g-best">0</strong></span>
+      <span class="game-stat">Solved <strong id="g-solved">0</strong></span>
+    </div>
+    <div class="timer-track"><div class="timer-fill" id="g-timer"></div></div>
+    <div class="game-card">
+      <div class="prob-q" id="g-q"></div>
+      <div class="game-opts" id="g-opts"></div>
+      <div class="game-feedback" id="g-fb"></div>
+    </div>
+    <div class="prob-nav">
+      <button type="button" id="g-skip">Skip ›</button>
+      <button type="button" id="g-restart">↺ Reset score</button>
+    </div>
+  </section>
+
   <!-- Audience Selector + Decision Trees -->
   <section class="audience" id="start-here" aria-label="Choose your path">
     <h2>Start here — who are you?</h2>
@@ -1090,36 +1120,6 @@
           <button class="restart" type="button">↺ Start over</button>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- Math Challenge (gamified, timed) -->
-  <section class="section-card" id="challenge">
-    <h2>🎮 Math Challenge — Beat the Clock</h2>
-    <p class="sub-note">AMC 8–style problems on a timer. Answer fast for more points; new questions keep coming. These are <strong>original practice problems in the style of the AMC 8</strong> (not copied from the exams).</p>
-    <p class="sub-note" style="margin-top:-8px;">🎯 Practice the <strong>real past exams</strong> (official, by year):
-      <a href="https://artofproblemsolving.com/wiki/index.php/2024_AMC_8" target="_blank" rel="noopener noreferrer">2024</a> ·
-      <a href="https://artofproblemsolving.com/wiki/index.php/2023_AMC_8" target="_blank" rel="noopener noreferrer">2023</a> ·
-      <a href="https://artofproblemsolving.com/wiki/index.php/2022_AMC_8" target="_blank" rel="noopener noreferrer">2022</a> ·
-      <a href="https://artofproblemsolving.com/wiki/index.php/2021_AMC_8" target="_blank" rel="noopener noreferrer">2021</a> ·
-      <a href="https://artofproblemsolving.com/wiki/index.php/2020_AMC_8" target="_blank" rel="noopener noreferrer">2020</a> ·
-      <a href="https://artofproblemsolving.com/wiki/index.php/AMC_8_Problems_and_Solutions" target="_blank" rel="noopener noreferrer">all years</a>
-    </p>
-    <div class="game-bar">
-      <span class="game-stat">Score <strong id="g-score">0</strong></span>
-      <span class="game-stat">Streak <strong id="g-streak">0</strong></span>
-      <span class="game-stat">Best <strong id="g-best">0</strong></span>
-      <span class="game-stat">Solved <strong id="g-solved">0</strong></span>
-    </div>
-    <div class="timer-track"><div class="timer-fill" id="g-timer"></div></div>
-    <div class="game-card">
-      <div class="prob-q" id="g-q"></div>
-      <div class="game-opts" id="g-opts"></div>
-      <div class="game-feedback" id="g-fb"></div>
-    </div>
-    <div class="prob-nav">
-      <button type="button" id="g-skip">Skip ›</button>
-      <button type="button" id="g-restart">↺ Reset score</button>
     </div>
   </section>
 
@@ -1929,18 +1929,18 @@ Best regards,
     const sEl = document.getElementById("g-score"), stEl = document.getElementById("g-streak"), bEl = document.getElementById("g-best"), slEl = document.getElementById("g-solved");
     const TIME = 25, L = ["A", "B", "C", "D", "E"];
     const POOL = [
-      { q: "A pizza is cut into 8 equal slices. Maria eats 3 and Jon eats 2. What fraction is left?", o: ["1/8", "3/8", "1/2", "5/8", "3/4"], a: 1, s: "8 − 5 = 3 → 3/8." },
-      { q: "Least whole number greater than 100 divisible by both 6 and 8?", o: ["104", "108", "120", "144", "168"], a: 2, s: "LCM = 24 → 120." },
-      { q: "A number is tripled, then 7 is added, giving 28. The number?", o: ["5", "7", "9", "11", "21"], a: 1, s: "3x + 7 = 28 → x = 7." },
-      { q: "In a class of 24, girls : boys = 5 : 3. How many girls?", o: ["9", "12", "15", "18", "20"], a: 2, s: "8 parts, 3 each → 15." },
-      { q: "Area (sq units) of a right triangle with legs 6 and 8?", o: ["24", "28", "48", "14", "40"], a: 0, s: "½ · 6 · 8 = 24." },
-      { q: "How many two-digit numbers are multiples of 7?", o: ["11", "12", "13", "14", "15"], a: 2, s: "14…98 → 13." },
-      { q: "The mean of 15, 18, 22, 25, and x is 20. Find x.", o: ["18", "20", "22", "25", "30"], a: 1, s: "sum 100 → x = 20." },
-      { q: "A shirt costs $40 after a 20% discount. Original price?", o: ["$45", "$48", "$50", "$52", "$60"], a: 2, s: "40 / 0.8 = 50." },
-      { q: "How many diagonals does a pentagon have?", o: ["3", "5", "7", "9", "10"], a: 1, s: "5·2/2 = 5." },
-      { q: "What is the units digit of 3⁴?", o: ["1", "3", "7", "9", "8"], a: 0, s: "81 → 1." },
-      { q: "If today is Wednesday, what day is it 100 days from now?", o: ["Thursday", "Friday", "Saturday", "Sunday", "Monday"], a: 1, s: "100 mod 7 = 2 → Friday." },
-      { q: "A rectangle has perimeter 24 and length 8. Its area?", o: ["16", "24", "32", "40", "48"], a: 2, s: "width 4 → 8 · 4 = 32." }
+      { q: "What is the units digit of 7^2023?", o: ["1", "3", "7", "9", "8"], a: 1, s: "Units of 7^n cycle 7,9,3,1 (period 4); 2023 mod 4 = 3 → 3." },
+      { q: "How many positive integers less than 100 are divisible by 3 but not by 5?", o: ["24", "26", "27", "30", "33"], a: 2, s: "⌊99/3⌋=33 minus ⌊99/15⌋=6 → 27." },
+      { q: "The sum of three consecutive even integers is 90. What is the largest?", o: ["28", "30", "32", "34", "36"], a: 2, s: "Middle = 30 → largest = 32." },
+      { q: "If 2^x = 32, what is 2^(x+2)?", o: ["64", "96", "128", "256", "512"], a: 2, s: "x = 5 → 2^7 = 128." },
+      { q: "What is the acute angle between the clock hands at 3:30?", o: ["75°", "80°", "85°", "90°", "105°"], a: 0, s: "Hour 105°, minute 180° → 75°." },
+      { q: "How many diagonals does an octagon have?", o: ["16", "18", "20", "24", "28"], a: 2, s: "8·5/2 = 20." },
+      { q: "A number is chosen at random from 10 to 99. Probability it is a multiple of 7?", o: ["1/9", "13/90", "1/7", "7/90", "1/10"], a: 1, s: "13 multiples of 7 among 90 numbers → 13/90." },
+      { q: "The mean of five numbers is 12. Remove one; the mean of the four left is 10. The removed number?", o: ["16", "18", "20", "22", "24"], a: 2, s: "60 − 40 = 20." },
+      { q: "A rectangle's length is 3× its width; its perimeter is 64. Its area?", o: ["96", "144", "192", "240", "256"], a: 2, s: "w=8, l=24 → 192." },
+      { q: "What is gcd(84, 126)?", o: ["14", "21", "6", "42", "7"], a: 3, s: "2·3·7 = 42." },
+      { q: "A bag has 4 red and 6 blue marbles. Two are drawn without replacement. Probability both red?", o: ["2/15", "1/5", "4/25", "6/45", "1/3"], a: 0, s: "(4/10)(3/9) = 12/90 = 2/15." },
+      { q: "How many positive divisors does 2^5 · 3^2 have?", o: ["7", "10", "12", "15", "18"], a: 4, s: "(5+1)(2+1) = 18." }
     ];
     let score = 0, streak = 0, solved = 0, best = 0, cur = -1, locked = false, timer = null, tStart = 0;
     try { best = parseInt(localStorage.getItem("mh_quiz_best") || "0", 10) || 0; } catch (e) {}
