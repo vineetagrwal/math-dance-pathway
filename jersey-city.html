@@ -30,6 +30,13 @@
   a.phone { color:var(--blue); text-decoration:none; }
   footer { text-align:center; color:var(--muted); padding:30px 20px; font-size:.85rem; }
   .count { color:var(--muted); font-size:.85rem; margin-left:4px; }
+  .jc-headline { font-size:1.15rem; font-weight:700; color:#0f172a; margin:20px 0 10px; text-align:center; }
+  .jc-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:10px; }
+  .jc-stat { background:#fff; border:1px solid var(--border); border-top:4px solid var(--blue); border-radius:10px; padding:14px 16px; text-align:center; }
+  .jc-stat .num { font-size:1.9rem; font-weight:800; color:var(--blue); line-height:1.1; }
+  .jc-stat .lbl { font-size:.8rem; color:var(--muted); margin-top:3px; }
+  .jc-contests { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:8px; }
+  .jc-contests .tag { font-size:.76rem; padding:4px 10px; }
 </style>
 </head>
 <body>
@@ -44,6 +51,8 @@
   <div class="note">
     <strong>Why this matters:</strong> the official published lists badly under-count real participation (e.g. <strong>OLC runs the AMC 8 but isn't listed anywhere</strong>). A trusted, complete registry is built from <em>your</em> knowledge + school outreach. Contact info (phone) below comes from the federal NCES directory.
   </div>
+
+  <div id="jc-stats"></div>
 
   <div class="controls">
     <input type="text" id="q" placeholder="Filter by school name, ZIP, or exam…" aria-label="Filter schools">
@@ -94,10 +103,25 @@
   }
   document.getElementById("add-missing").href = "mailto:vineetagrwal@gmail.com?subject=" + encodeURIComponent("[JC data] New school to add") + "&body=" + encodeURIComponent("School name:\nAddress / ZIP:\nType (public/private):\nContests it hosts (AMC 8/10/12, MOEMS, MATHCOUNTS, Math League, Kangaroo):\nEarliest grade:\nSource:");
   document.getElementById("q").addEventListener("input", applyFilter);
+  function renderStats(d){
+    var el=document.getElementById("jc-stats"); if(!el) return;
+    var total=d.length;
+    var hosting=d.filter(function(s){return (s.exams||[]).length>0;}).length;
+    var unverified=total-hosting;
+    var pct= total? Math.round(unverified/total*100):0;
+    var contests=[["AMC 8","amc"],["AMC 10","amc"],["AMC 12","amc"],["MOEMS","moems"],["MATHCOUNTS","mc"],["Math League","ml"],["Math Kangaroo","mk"]];
+    function cnt(name){ return d.filter(function(s){ return (s.exams||[]).some(function(e){ return e.toLowerCase().indexOf(name.toLowerCase())>=0; }); }).length; }
+    var cards='<div class="jc-stat"><div class="num">'+total+'</div><div class="lbl">Schools mapped</div></div>'
+      +'<div class="jc-stat"><div class="num">'+hosting+'</div><div class="lbl">Verified hosting a contest</div></div>'
+      +'<div class="jc-stat"><div class="num">'+unverified+'</div><div class="lbl">Still unverified — help!</div></div>';
+    var tags=contests.map(function(c){ return '<span class="tag '+c[1]+'">'+c[0]+': '+cnt(c[0])+'</span>'; }).join("");
+    el.innerHTML='<div class="jc-headline">🗺️ Jersey City’s math-contest map is '+pct+'% blank — let’s fill it in.</div>'
+      +'<div class="jc-grid">'+cards+'</div><div class="jc-contests">'+tags+'</div>';
+  }
   fetch("data/jersey-city-middle-schools.json").then(function(r){return r.json();}).then(function(d){
     DATA = d.sort(function(a,b){return (a.name||"").localeCompare(b.name||"");});
     document.getElementById("tbl").hidden = false;
-    render(DATA);
+    render(DATA); renderStats(DATA);
   }).catch(function(){ document.getElementById("status").textContent = "Could not load data."; });
 </script>
 </body>

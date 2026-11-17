@@ -1810,12 +1810,13 @@ Best regards,
     });
   })();
 
-  // 7. Feedback box -> prefilled GitHub issue (adds to the log), email fallback
+  // 7. Feedback box -> prefilled email (no login, no backend). Set FORM_ENDPOINT to a
+  //    Formspree/Google-Forms endpoint for silent submit; otherwise falls back to email.
   (function () {
     const form = document.getElementById("feedback-form");
     const msg = document.getElementById("feedback-msg");
     if (!form) return;
-    const REPO = "https://github.com/vineetagrwal/math-dance-pathway/issues/new";
+    const FORM_ENDPOINT = ""; // e.g. "https://formspree.io/f/xxxx''" — leave blank to use email
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       const kind = form.kind.value;
@@ -1823,12 +1824,18 @@ Best regards,
       const contact = form.contact.value.trim();
       if (!message) { msg.textContent = "Please add a short description."; return; }
       logAction("feedback-" + kind.toLowerCase());
-      const title = "[" + kind + "] " + message.slice(0, 60).replace(/\s+/g, " ");
-      const body = message + "\n\n— submitted via the site feedback form" + (contact ? "\nContact: " + contact : "");
-      const gh = REPO + "?labels=feedback&title=" + encodeURIComponent(title) + "&body=" + encodeURIComponent(body);
+      try { const a = JSON.parse(localStorage.getItem("mh_feedback") || "[]"); a.push({ kind: kind, message: message, contact: contact, t: Date.now() }); localStorage.setItem("mh_feedback", JSON.stringify(a)); } catch (e2) {}
+      if (FORM_ENDPOINT) {
+        fetch(FORM_ENDPOINT, { method: "POST", headers: { "Accept": "application/json", "Content-Type": "application/json" }, body: JSON.stringify({ type: kind, message: message, contact: contact }) })
+          .then(function () { msg.textContent = "✓ Thanks! Your feedback was sent."; })
+          .catch(function () { msg.textContent = "✓ Saved. (Could not reach the server — please try again later.)"; });
+        form.reset(); showToast("✓ Thanks for the feedback!");
+        return;
+      }
+      const body = message + "\n\nType: " + kind + (contact ? "\nFrom: " + contact : "");
       const mail = "mailto:vineetagrwal@gmail.com?subject=" + encodeURIComponent("[" + kind + "] site feedback") + "&body=" + encodeURIComponent(body);
-      window.open(gh, "_blank", "noopener");
-      msg.innerHTML = "✓ Thanks! A prefilled issue opened in a new tab — click <strong>Submit</strong> there to post it. No GitHub account? <a href=\"" + mail + "\">Email it instead</a>.";
+      window.location.href = mail;
+      msg.innerHTML = "✓ Thanks! Your email app should open — just hit send. If it didn't, <a href=\"" + mail + "\">click here</a>.";
       form.reset();
       showToast("✓ Thanks for the feedback!");
     });
