@@ -36,7 +36,7 @@
 <header>
   <div class="wrap">
     <h1>🗽 Jersey City Pilot — Math-Competition Registry</h1>
-    <p>Every Jersey City school, and whether it hosts math contests. Data is incomplete on purpose — <strong>help us verify it</strong>. If your school runs AMC, MOEMS, MATHCOUNTS, Math League, or Math Kangaroo, click <em>Verify / add exams</em>. <a href="./">← Back to the main hub</a></p>
+    <p>Every Jersey City school, and whether it hosts math contests. Data is incomplete on purpose — <strong>help us verify it</strong>. If your school runs AMC, MOEMS, MATHCOUNTS, Math League, or Math Kangaroo, click <em>Verify / add exams</em> — it opens a prefilled email (no account needed). <a href="./">← Back to the main hub</a></p>
   </div>
 </header>
 
@@ -73,7 +73,7 @@
       + "- AMC 8\n- AMC 10\n- AMC 12\n- MOEMS\n- MATHCOUNTS\n- Math League\n- Math Kangaroo\n\n"
       + "Earliest grade students compete: \n"
       + "How do you know (source / your role): \n";
-    return REPO + "?labels=data-verification&title=" + encodeURIComponent(title) + "&body=" + encodeURIComponent(body);
+    return "mailto:vineetagrwal@gmail.com?subject=" + encodeURIComponent(title) + "&body=" + encodeURIComponent(body);
   }
   var DATA = [];
   function render(list){
@@ -92,7 +92,7 @@
     if(!q){ render(DATA); return; }
     render(DATA.filter(function(s){ return (s.name+" "+(s.zip||"")+" "+(s.exams||[]).join(" ")+" "+(s.type||"")).toLowerCase().indexOf(q)>=0; }));
   }
-  document.getElementById("add-missing").href = REPO + "?labels=data-verification&title=" + encodeURIComponent("[JC data] New school to add") + "&body=" + encodeURIComponent("School name:\nAddress / ZIP:\nType (public/private):\nContests it hosts (AMC 8/10/12, MOEMS, MATHCOUNTS, Math League, Kangaroo):\nEarliest grade:\nSource:");
+  document.getElementById("add-missing").href = "mailto:vineetagrwal@gmail.com?subject=" + encodeURIComponent("[JC data] New school to add") + "&body=" + encodeURIComponent("School name:\nAddress / ZIP:\nType (public/private):\nContests it hosts (AMC 8/10/12, MOEMS, MATHCOUNTS, Math League, Kangaroo):\nEarliest grade:\nSource:");
   document.getElementById("q").addEventListener("input", applyFilter);
   fetch("data/jersey-city-middle-schools.json").then(function(r){return r.json();}).then(function(d){
     DATA = d.sort(function(a,b){return (a.name||"").localeCompare(b.name||"");});
