@@ -37,7 +37,7 @@
   .verify-form-wrap h2 { margin:0 0 6px; font-size:1.2rem; color:var(--blue); }
   .vf-intro { color:var(--muted); font-size:.9rem; margin:0 0 14px; }
   #vform { display:grid; gap:10px; }
-  #vform input, #vform select { padding:11px 13px; border:2px solid var(--border); border-radius:8px; font-size:.95rem; font-family:inherit; }
+  #vform input, #vform select, #vform textarea { padding:11px 13px; border:2px solid var(--border); border-radius:8px; font-size:.95rem; font-family:inherit; }
   .vf-exams { display:flex; flex-wrap:wrap; gap:10px 16px; font-size:.9rem; }
   .vf-exams label { display:flex; align-items:center; gap:5px; }
   .vf-msg { font-weight:600; color:#166534; margin-top:10px; min-height:1.2em; }
@@ -119,6 +119,7 @@
       <input name="your_name" placeholder="Your name (optional)">
       <input name="your_email" type="email" placeholder="Your email * (so we can confirm)" required>
       <select name="your_role"><option value="">I am a…</option><option>Parent</option><option>Teacher / Staff</option><option>Student</option><option>Other</option></select>
+      <textarea name="corrections" rows="2" placeholder="Fix anything wrong or missing — grades, school type, contact, etc. (optional)"></textarea>
       <label class="vf-reg"><input type="checkbox" name="registered" id="vf-registered"> ✅ We just registered this school as a NEW test site!</label>
       <button type="submit" class="verify" style="padding:11px 20px;">Submit for review</button>
     </form>
@@ -158,7 +159,7 @@
       var school=f.school.value.trim(), email=f.your_email.value.trim(), msg=document.getElementById("vf-msg");
       if(!school||!email){ msg.textContent="Please add the school name and your email."; return; }
       var exams=Array.prototype.map.call(f.querySelectorAll("input[name=exams]:checked"), function(x){return x.value;});
-      var payload={ school:school, exams:exams.join(", "), start_grade:f.start_grade.value.trim(), name:f.your_name.value.trim(), email:email, role:f.your_role.value };
+      var payload={ school:school, exams:exams.join(", "), start_grade:f.start_grade.value.trim(), name:f.your_name.value.trim(), email:email, role:f.your_role.value, corrections:f.corrections.value.trim() };
       if(f.registered && f.registered.checked){ payload.registered="YES"; payload.role=(payload.role||"")+" — JUST REGISTERED THE SCHOOL"; gcEvent("school-registered"); }
       gcEvent("verify-submit");
       try{ var a=JSON.parse(localStorage.getItem("jc_verify")||"[]"); a.push(payload); localStorage.setItem("jc_verify",JSON.stringify(a)); }catch(_){}
@@ -178,7 +179,7 @@
           .then(function(){ msg.textContent="✓ Thank you! Submitted for review."; f.reset(); })
           .catch(function(){ msg.textContent="Couldn't submit — please try again shortly."; });
       } else {
-        var body="School: "+school+"\nContests: "+(exams.join(", ")||"(none)")+"\nEarliest grade: "+payload.start_grade+"\nBy: "+payload.name+" ("+payload.role+")\nEmail: "+email;
+        var body="School: "+school+"\nContests: "+(exams.join(", ")||"(none)")+"\nEarliest grade: "+payload.start_grade+"\nFix/missing: "+(payload.corrections||"(none)")+"\nBy: "+payload.name+" ("+payload.role+")\nEmail: "+email;
         window.location.href="mailto:vineetagrwal@gmail.com?subject="+encodeURIComponent("[JC verify] "+school)+"&body="+encodeURIComponent(body);
         msg.innerHTML="✓ Thanks! Your email app should open — just hit send.";
         f.reset();
