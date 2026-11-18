@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'self'">
+<title>Security &amp; Tech-Risk Report — Math Competition Readiness Hub</title>
+<style>
+  :root { --blue:#1a73e8; --ink:#1e293b; --muted:#64748b; --border:#e2e8f0; }
+  * { box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--ink); line-height:1.5; max-width:900px; margin:0 auto; padding:34px 26px; }
+  h1 { font-size:1.8rem; margin:0 0 4px; }
+  h2 { font-size:1.2rem; color:var(--blue); border-bottom:2px solid var(--border); padding-bottom:6px; margin-top:30px; }
+  h3 { font-size:1rem; margin:16px 0 4px; }
+  .meta { color:var(--muted); font-size:.9rem; }
+  table { width:100%; border-collapse:collapse; font-size:.86rem; margin:10px 0; }
+  th,td { border:1px solid var(--border); padding:7px 9px; text-align:left; vertical-align:top; }
+  th { background:#f1f5f9; }
+  .ok { color:#166534; font-weight:700; }
+  .open { color:#b45309; font-weight:700; }
+  .crit { color:#b91c1c; font-weight:700; }
+  .pill { display:inline-block; font-size:.72rem; font-weight:700; padding:2px 8px; border-radius:999px; }
+  .p-low{background:#dcfce7;color:#166534;} .p-med{background:#fef3c7;color:#92400e;} .p-hi{background:#fee2e2;color:#b91c1c;}
+  .btn { background:var(--blue); color:#fff; border:none; border-radius:8px; padding:10px 18px; font-weight:700; cursor:pointer; font-size:.9rem; }
+  ul { margin:6px 0; } li { margin-bottom:4px; }
+  .box { background:#f8fafc; border:1px solid var(--border); border-left:5px solid var(--blue); border-radius:8px; padding:14px 16px; margin:12px 0; }
+  footer { margin-top:30px; color:var(--muted); font-size:.8rem; border-top:1px solid var(--border); padding-top:12px; }
+  @media print { .btn { display:none; } body { padding:0; } }
+</style>
+</head>
+<body>
+  <button class="btn" onclick="window.print()">⬇ Download / Print as PDF</button>
+  <h1>Security &amp; Technology Risk Report</h1>
+  <div class="meta">Math Competition Readiness Hub · vineetagrwal.github.io/math-dance-pathway · Prepared Nov 2026 · Classification: Internal</div>
+
+  <h2>Executive summary</h2>
+  <div class="box">A static, single-page web application (plus a Jersey City data pilot) hosted on GitHub Pages. It holds <strong>no backend and no sensitive data store</strong>, so the attack surface is narrow and centered on client-side and supply-chain risk. Since the initial build, the <strong>Medium-severity web risks have been remediated</strong> (DOM-XSS, missing SRI, no CSP) and a <strong>clean secret scan</strong> was confirmed. Residual items are low-severity hardening tasks. Reaching <strong>enterprise-grade for global, high-demand access</strong> primarily requires fronting the site with a CDN/WAF (for real HTTP security headers, DDoS protection, and rate limiting), a strict CSP, automated dependency monitoring, and a documented data-governance/privacy posture for the school registry.</div>
+
+  <h2>1. Original state &amp; baseline risk</h2>
+  <ul>
+    <li><strong>Architecture:</strong> one static <code>index.html</code> on GitHub Pages; no server, no database, no auth.</li>
+    <li><strong>Baseline gaps identified:</strong> external links without <code>rel="noopener"</code> (tabnabbing); a dead third-party counter (<code>countapi.xyz</code>); no README/LICENSE; no CSP; CDN assets without Subresource Integrity (SRI); DOM-XSS exposure once external data (school names) was rendered via <code>innerHTML</code>; no automated dependency/secret scanning.</li>
+    <li><strong>Baseline posture:</strong> low data-breach risk (no data store) but several <strong>Medium</strong> client-side/supply-chain weaknesses and no hardening baseline.</li>
+  </ul>
+
+  <h2>2. Progress to date — remediations</h2>
+  <table>
+    <tr><th>Area</th><th>Action</th><th>Status</th></tr>
+    <tr><td>XSS (client-side)</td><td>Added HTML-escaping of all external/registry data before DOM insertion &amp; map popups</td><td class="ok">Fixed</td></tr>
+    <tr><td>Supply chain</td><td>Pinned Leaflet + added SHA-384 <strong>SRI</strong>; version-pinned (no <code>@latest</code>)</td><td class="ok">Fixed</td></tr>
+    <tr><td>Browser hardening</td><td>Added meta <strong>Content-Security-Policy</strong> restricting script/style/img/connect origins</td><td class="ok">Fixed</td></tr>
+    <tr><td>Transport</td><td>HTTPS enforced (GitHub Pages); all external links use <code>rel="noopener noreferrer"</code></td><td class="ok">Fixed</td></tr>
+    <tr><td>Secrets</td><td>Repo secret scan (PAT/keys/PEM) across tracked files</td><td class="ok">Pass — none</td></tr>
+    <tr><td>Data integrity</td><td>Registry sourced from authoritative <strong>NCES</strong> + official host lists; corrections reviewed before publish</td><td class="ok">In place</td></tr>
+    <tr><td>Privacy analytics</td><td>GoatCounter (cookieless, no PII); no third-party ad/tracking</td><td class="ok">In place</td></tr>
+    <tr><td>Resiliency</td><td>Removed dead external counter; cache-control + <code>no-store</code> data fetches for freshness</td><td class="ok">Fixed</td></tr>
+    <tr><td>Governance</td><td>Added README, LICENSE, and a tracked SECURITY-ASSESSMENT.md</td><td class="ok">Fixed</td></tr>
+  </table>
+
+  <h2>3. Current risk register</h2>
+  <table>
+    <tr><th>ID</th><th>Risk</th><th>Sev</th><th>Status</th></tr>
+    <tr><td>V-01</td><td>DOM-XSS via external data</td><td><span class="pill p-med">Med</span></td><td class="ok">Fixed</td></tr>
+    <tr><td>V-02</td><td>No SRI on CDN assets</td><td><span class="pill p-med">Med</span></td><td class="ok">Fixed</td></tr>
+    <tr><td>V-03</td><td>No Content-Security-Policy</td><td><span class="pill p-med">Med</span></td><td class="ok">Fixed (meta)</td></tr>
+    <tr><td>V-04</td><td>CSP needs <code>unsafe-inline</code> (inline JS/CSS)</td><td><span class="pill p-low">Low</span></td><td class="open">Open</td></tr>
+    <tr><td>V-05</td><td>Third-party scripts (Leaflet, GoatCounter)</td><td><span class="pill p-low">Low</span></td><td class="open">Accepted</td></tr>
+    <tr><td>V-06</td><td>Owner email exposed in <code>mailto:</code></td><td><span class="pill p-low">Low</span></td><td class="open">Open</td></tr>
+    <tr><td>V-07</td><td>Form/lead data in <code>localStorage</code></td><td><span class="pill p-low">Low</span></td><td class="open">Accepted</td></tr>
+    <tr><td>V-08</td><td>No automated SCA / dependency monitoring</td><td><span class="pill p-low">Low</span></td><td class="open">Open</td></tr>
+    <tr><td>V-09</td><td>No HSTS / <code>frame-ancestors</code> (GitHub Pages header limits)</td><td><span class="pill p-med">Med</span></td><td class="open">Open*</td></tr>
+  </table>
+  <div class="meta">*Not fixable via <code>&lt;meta&gt;</code> on GitHub Pages — requires a CDN/proxy to set real response headers (see roadmap).</div>
+
+  <h2>4. Resiliency &amp; scale posture</h2>
+  <ul>
+    <li><strong>Strengths for global high demand:</strong> fully static assets served from GitHub's CDN — horizontally scalable, no backend to overload, no database to fail. A traffic spike serves cached files; cost stays flat.</li>
+    <li><strong>Single points of failure:</strong> GitHub Pages availability; CDN dependencies (unpkg/Leaflet, OpenStreetMap tiles, GoatCounter). Tile/analytics outages degrade gracefully (map/analytics only).</li>
+    <li><strong>No rate limiting / WAF / DDoS controls</strong> at the edge today (GitHub Pages provides basic protection only).</li>
+  </ul>
+
+  <h2>5. Hardening roadmap — to enterprise-grade, global access</h2>
+  <h3>Phase 1 — Edge &amp; headers (highest impact)</h3>
+  <ul>
+    <li>Front the site with a <strong>CDN/WAF (e.g., Cloudflare)</strong> to add <strong>HSTS, X-Frame-Options/frame-ancestors, X-Content-Type-Options, Referrer-Policy</strong>, plus <strong>DDoS protection, rate limiting, and bot management</strong> for high-demand access.</li>
+    <li>Self-host or SRI-pin all third-party assets; add a tile-provider fallback.</li>
+  </ul>
+  <h3>Phase 2 — App hardening</h3>
+  <ul>
+    <li>Externalize JS/CSS and adopt a <strong>nonce/hash-based CSP</strong> (remove <code>unsafe-inline</code>) — closes V-04.</li>
+    <li>Replace <code>mailto:</code> with a vetted form backend (spam/abuse controls, CAPTCHA) — closes V-06.</li>
+  </ul>
+  <h3>Phase 3 — Supply chain &amp; CI</h3>
+  <ul>
+    <li>Enable <strong>Dependabot + SCA</strong> (e.g., <code>pip-audit</code>) and a link-checker in CI — closes V-08.</li>
+    <li>Add branch protection, required reviews, and signed commits.</li>
+  </ul>
+  <h3>Phase 4 — Data governance, privacy &amp; compliance</h3>
+  <ul>
+    <li>Formalize the registry data pipeline: source attribution, review-before-publish, and a correction/audit trail.</li>
+    <li>Given the education context, document a <strong>privacy posture (COPPA / FERPA-aware)</strong>: collect no student PII; keep submitter data minimal and consented; publish a privacy notice.</li>
+    <li>Accessibility (WCAG 2.1 AA) and a performance budget as release gates.</li>
+  </ul>
+  <h3>Phase 5 — Operations</h3>
+  <ul>
+    <li>Uptime/synthetic monitoring + alerting; a lightweight incident-response runbook; periodic re-assessment.</li>
+  </ul>
+
+  <footer>Companion to <code>SECURITY-ASSESSMENT.md</code> in the repository. This report reflects point-in-time status and should be re-validated each release.</footer>
+</body>
+</html>
