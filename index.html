@@ -933,8 +933,8 @@
 
   <!-- Math Challenge (gamified, timed) -->
   <section class="section-card" id="challenge">
-    <h2>🎮 Math Challenge — Beat the Clock</h2>
-    <p class="sub-note">AMC 8–style problems on a timer. Answer fast for more points; new questions keep coming. These are <strong>original practice problems in the style of the AMC 8</strong> (not copied from the exams).</p>
+    <h2>🧩 Try a Practice Problem</h2>
+    <p class="sub-note">AMC 8–style problems — take your time, pick an answer, see the solution, then hit <em>Next</em>. These are <strong>original practice problems in the style of the AMC 8</strong> (not copied from the exams).</p>
     <p class="sub-note" style="margin-top:-8px;">🎯 Practice the <strong>real past exams</strong> (official, by year):
       <a href="https://artofproblemsolving.com/wiki/index.php/2024_AMC_8" target="_blank" rel="noopener noreferrer">2024</a> ·
       <a href="https://artofproblemsolving.com/wiki/index.php/2023_AMC_8" target="_blank" rel="noopener noreferrer">2023</a> ·
@@ -943,21 +943,13 @@
       <a href="https://artofproblemsolving.com/wiki/index.php/2020_AMC_8" target="_blank" rel="noopener noreferrer">2020</a> ·
       <a href="https://artofproblemsolving.com/wiki/index.php/AMC_8_Problems_and_Solutions" target="_blank" rel="noopener noreferrer">all years</a>
     </p>
-    <div class="game-bar">
-      <span class="game-stat">Score <strong id="g-score">0</strong></span>
-      <span class="game-stat">Streak <strong id="g-streak">0</strong></span>
-      <span class="game-stat">Best <strong id="g-best">0</strong></span>
-      <span class="game-stat">Solved <strong id="g-solved">0</strong></span>
-    </div>
-    <div class="timer-track"><div class="timer-fill" id="g-timer"></div></div>
     <div class="game-card">
       <div class="prob-q" id="g-q"></div>
       <div class="game-opts" id="g-opts"></div>
       <div class="game-feedback" id="g-fb"></div>
     </div>
     <div class="prob-nav">
-      <button type="button" id="g-skip">Skip ›</button>
-      <button type="button" id="g-restart">↺ Reset score</button>
+      <button type="button" id="g-next">Next problem →</button>
     </div>
   </section>
 
@@ -1912,9 +1904,8 @@ Best regards,
   (function () {
     const qEl = document.getElementById("g-q");
     if (!qEl) return;
-    const optsEl = document.getElementById("g-opts"), fbEl = document.getElementById("g-fb"), timerEl = document.getElementById("g-timer");
-    const sEl = document.getElementById("g-score"), stEl = document.getElementById("g-streak"), bEl = document.getElementById("g-best"), slEl = document.getElementById("g-solved");
-    const TIME = 25, L = ["A", "B", "C", "D", "E"];
+    const optsEl = document.getElementById("g-opts"), fbEl = document.getElementById("g-fb");
+    const L = ["A", "B", "C", "D", "E"];
     const POOL = [
       { q: "What is the units digit of 7^2023?", o: ["1", "3", "7", "9", "8"], a: 1, s: "Units of 7^n cycle 7,9,3,1 (period 4); 2023 mod 4 = 3 → 3." },
       { q: "How many positive integers less than 100 are divisible by 3 but not by 5?", o: ["24", "26", "27", "30", "33"], a: 2, s: "⌊99/3⌋=33 minus ⌊99/15⌋=6 → 27." },
@@ -1929,21 +1920,8 @@ Best regards,
       { q: "A bag has 4 red and 6 blue marbles. Two are drawn without replacement. Probability both red?", o: ["2/15", "1/5", "4/25", "6/45", "1/3"], a: 0, s: "(4/10)(3/9) = 12/90 = 2/15." },
       { q: "How many positive divisors does 2^5 · 3^2 have?", o: ["7", "10", "12", "15", "18"], a: 4, s: "(5+1)(2+1) = 18." }
     ];
-    let score = 0, streak = 0, solved = 0, best = 0, cur = -1, locked = false, timer = null, tStart = 0;
-    try { best = parseInt(localStorage.getItem("mh_quiz_best") || "0", 10) || 0; } catch (e) {}
-    function update() { sEl.textContent = score; stEl.textContent = streak; bEl.textContent = best; slEl.textContent = solved; }
+    let cur = -1, locked = false;
     function pick() { let n; do { n = Math.floor(Math.random() * POOL.length); } while (n === cur && POOL.length > 1); return n; }
-    function startTimer() {
-      clearTimeout(timer);
-      timerEl.style.transition = "none"; timerEl.style.width = "100%"; void timerEl.offsetWidth;
-      timerEl.style.transition = "width " + TIME + "s linear"; timerEl.style.width = "0%";
-      tStart = Date.now(); timer = setTimeout(timeout, TIME * 1000);
-    }
-    function freeze() { clearTimeout(timer); const w = getComputedStyle(timerEl).width; timerEl.style.transition = "none"; timerEl.style.width = w; }
-    function reveal(correct, chosen) {
-      locked = true;
-      Array.prototype.forEach.call(optsEl.children, function (b, j) { b.disabled = true; if (j === correct) b.classList.add("correct"); else if (j === chosen) b.classList.add("wrong"); });
-    }
     function load() {
       cur = pick(); locked = false;
       const p = POOL[cur];
@@ -1951,34 +1929,20 @@ Best regards,
       p.o.forEach(function (o, j) {
         const b = document.createElement("button");
         b.type = "button"; b.className = "game-opt"; b.innerHTML = "(" + L[j] + ") " + esc(o);
-        b.addEventListener("click", function () { answer(j, b); });
+        b.addEventListener("click", function () { answer(j); });
         optsEl.appendChild(b);
       });
-      startTimer();
     }
     function answer(j) {
-      if (locked) return;
-      freeze(); const p = POOL[cur]; solved++;
-      if (j === p.a) {
-        const bonus = Math.round(Math.max(0, TIME * 1000 - (Date.now() - tStart)) / (TIME * 1000) * 100);
-        score += 100 + bonus; streak++;
-        if (streak > best) { best = streak; try { localStorage.setItem("mh_quiz_best", String(best)); } catch (e) {} }
-        fbEl.textContent = "✓ Correct! +" + (100 + bonus) + "   " + p.s; fbEl.className = "game-feedback ok";
-        if (typeof logAction === "function" && solved === 1) logAction("play-quiz");
-      } else {
-        streak = 0; fbEl.textContent = "✗ Answer: (" + L[p.a] + ") — " + p.s; fbEl.className = "game-feedback no";
-      }
-      reveal(p.a, j); update(); setTimeout(load, 2300);
+      if (locked) return; locked = true;
+      const p = POOL[cur];
+      Array.prototype.forEach.call(optsEl.children, function (b, k) { b.disabled = true; if (k === p.a) b.classList.add("correct"); else if (k === j) b.classList.add("wrong"); });
+      if (j === p.a) { fbEl.textContent = "✓ Correct! " + p.s; fbEl.className = "game-feedback ok"; }
+      else { fbEl.textContent = "✗ Answer: (" + L[p.a] + ") — " + p.s; fbEl.className = "game-feedback no"; }
+      if (typeof logAction === "function") logAction("quiz-answer");
     }
-    function timeout() {
-      if (locked) return;
-      const p = POOL[cur]; solved++; streak = 0;
-      fbEl.textContent = "⏰ Time! Answer: (" + L[p.a] + ") — " + p.s; fbEl.className = "game-feedback no";
-      reveal(p.a, -1); update(); setTimeout(load, 2300);
-    }
-    document.getElementById("g-skip").addEventListener("click", function () { if (!locked) load(); });
-    document.getElementById("g-restart").addEventListener("click", function () { score = 0; streak = 0; solved = 0; update(); load(); });
-    update(); load();
+    document.getElementById("g-next").addEventListener("click", load);
+    load();
   })();
 
   // 5. Chatbot (rule-based, fully client-side)

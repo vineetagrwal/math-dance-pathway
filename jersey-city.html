@@ -145,11 +145,8 @@
   // 2) Click "Get pre-filled link", fill dummy values, copy the link — it reveals each field's entry.XXXXX id.
   // 3) Paste your form's .../formResponse URL into action, and the entry ids below. Submissions save to your Sheet.
   var GFORM = { action: "", fields: { school:"entry.0", exams:"entry.0", start_grade:"entry.0", name:"entry.0", email:"entry.0", role:"entry.0" } };
-  function fillVerify(school){
-    var el=document.getElementById("vf-school"); if(el) el.value=school||"";
-    var w=document.getElementById("verify-form-wrap"); if(w) w.scrollIntoView({behavior:"smooth"});
-    if(el) el.focus();
-  }
+  var GFORM_VIEW = "https://docs.google.com/forms/d/1R0c92gXCexDSmPdgb_HGTKVCV9SoR0mwjOX3-gwQrYs/viewform";
+  function fillVerify(school){ gcEvent("open-form"); window.open(GFORM_VIEW, "_blank", "noopener"); }
   (function(){
     var rows=document.getElementById("rows");
     if(rows) rows.addEventListener("click", function(e){ if(e.target.closest("a")) return; var el=e.target.closest("[data-school]"); if(el) fillVerify(el.getAttribute("data-school")); });
