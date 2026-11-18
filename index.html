@@ -312,7 +312,18 @@
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 24px;
+    position: sticky;
+    top: 54px;
+    z-index: 300;
+    background: var(--bg);
+    padding: 8px 0;
   }
+  /* Fixed left section nav (desktop) */
+  .side-nav { position: fixed; left: 12px; top: 130px; display: flex; flex-direction: column; gap: 6px; z-index: 400; }
+  .side-nav a { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 7px 11px; font-size: 0.8rem; font-weight: 600; color: var(--primary); text-decoration: none; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .side-nav a:hover { background: #e8f0fe; }
+  @media (max-width: 1240px) { .side-nav { display: none; } }
+  @media print { .side-nav { display: none; } }
   .nav-pills a {
     background: var(--card);
     border: 1px solid var(--border);
@@ -857,6 +868,16 @@
     <div id="site-search-results" class="ss-results" hidden></div>
   </div>
 </div>
+
+<nav class="side-nav" aria-label="Section navigation">
+  <a href="#find-site">🔎 Find</a>
+  <a href="#getting-started">🗺️ Plan</a>
+  <a href="#school-hosting">🏫 Host</a>
+  <a href="#mock-tests">📅 Contests</a>
+  <a href="#pathway">🎯 Pathway</a>
+  <a href="#community">🤝 Circle</a>
+  <a href="#key-links">🔗 Links</a>
+</nav>
 
 <div class="container">
   <div class="jc-banner"><a href="jersey-city.html">📍 <strong>Jersey City Pilot</strong> — see &amp; verify every school's math contests, and report a new registration →</a></div>
@@ -1951,8 +1972,9 @@ Best regards,
     load();
   })();
 
-  // 11. Collapsible deep sections (reduce page length)
+  // 11. Collapsible deep sections + section navigation (top + side)
   (function () {
+    const mhSections = {};
     const ids = ["getting-started", "school-hosting", "mock-tests", "pathway", "community", "key-links"];
     ids.forEach(function (id, i) {
       const sec = document.getElementById(id); if (!sec) return;
@@ -1964,6 +1986,11 @@ Best regards,
       function set(open) { body.forEach(function (el) { el.style.display = open ? "" : "none"; }); ind.textContent = open ? "▾" : "▸"; }
       set(i === 0);
       h.addEventListener("click", function () { set(ind.textContent === "▸"); });
+      mhSections[id] = set;
+    });
+    function openSection(id) { if (mhSections[id]) mhSections[id](true); const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }
+    document.querySelectorAll(".side-nav a, .nav-pills a").forEach(function (a) {
+      a.addEventListener("click", function (e) { const href = a.getAttribute("href"); if (href && href[0] === "#") { const id = href.slice(1); if (document.getElementById(id)) { e.preventDefault(); openSection(id); } } });
     });
   })();
 
