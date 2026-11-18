@@ -318,11 +318,12 @@
     background: var(--bg);
     padding: 8px 0;
   }
-  /* Fixed left section nav (desktop) */
-  .side-nav { position: fixed; left: 12px; top: 130px; display: flex; flex-direction: column; gap: 6px; z-index: 400; }
-  .side-nav a { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 7px 11px; font-size: 0.8rem; font-weight: 600; color: var(--primary); text-decoration: none; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-  .side-nav a:hover { background: #e8f0fe; }
-  @media (max-width: 1240px) { .side-nav { display: none; } }
+  /* Fixed left section nav panel (desktop) */
+  .side-nav { position: fixed; left: 18px; top: 110px; width: 216px; display: flex; flex-direction: column; gap: 4px; z-index: 400; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px 14px; box-shadow: 0 10px 30px rgba(15,23,42,0.1); }
+  .side-nav-title { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin: 2px 0 8px 8px; }
+  .side-nav a { display: block; border-radius: 10px; padding: 12px 14px; font-size: 1rem; font-weight: 700; color: var(--primary); text-decoration: none; transition: background 0.15s ease, transform 0.1s ease; }
+  .side-nav a:hover { background: #e8f0fe; transform: translateX(2px); }
+  @media (max-width: 1480px) { .side-nav { display: none; } }
   @media print { .side-nav { display: none; } }
   .nav-pills a {
     background: var(--card);
@@ -870,13 +871,14 @@
 </div>
 
 <nav class="side-nav" aria-label="Section navigation">
-  <a href="#find-site">🔎 Find</a>
-  <a href="#getting-started">🗺️ Plan</a>
-  <a href="#school-hosting">🏫 Host</a>
-  <a href="#mock-tests">📅 Contests</a>
+  <div class="side-nav-title">Explore</div>
+  <a href="#find-site">🔎 Find a School</a>
+  <a href="#getting-started">🗺️ The Plan</a>
+  <a href="#school-hosting">🏫 Host a Contest</a>
+  <a href="#mock-tests">📅 Contests &amp; Practice</a>
   <a href="#pathway">🎯 Pathway</a>
-  <a href="#community">🤝 Circle</a>
-  <a href="#key-links">🔗 Links</a>
+  <a href="#community">🤝 Math Circle</a>
+  <a href="#key-links">🔗 Resources</a>
 </nav>
 
 <div class="container">
