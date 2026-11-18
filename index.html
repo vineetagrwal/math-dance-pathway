@@ -1287,7 +1287,7 @@ Best regards,
   </div>
 
   <!-- Teacher Hosting Kit (printable one-pager) -->
-  <div class="section-card hosting-kit">
+  <div class="section-card hosting-kit" id="hosting-kit">
     <h2>📋 Teacher Hosting Kit — Host AMC 8 at Your School</h2>
     <p style="margin-top:0; color:#475569;">A one-page summary to hand to a principal or math chair. Use the <strong>Print the 1-Page Teacher Hosting Kit</strong> button above to export just this page as a clean PDF.</p>
 
@@ -1987,7 +1987,7 @@ Best regards,
   // 11. Collapsible deep sections + section navigation (top + side)
   (function () {
     const mhSections = {};
-    const ids = ["getting-started", "school-hosting", "mock-tests", "pathway", "community", "key-links"];
+    const ids = ["getting-started", "school-hosting", "hosting-kit", "mock-tests", "pathway", "community", "key-links"];
     ids.forEach(function (id, i) {
       const sec = document.getElementById(id); if (!sec) return;
       const h = sec.querySelector("h2"); if (!h) return;
