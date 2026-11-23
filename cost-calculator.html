@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; base-uri 'self'">
+<title>Competition Cost Calculator — Math Competition Readiness Hub</title>
+<style>
+  :root { --blue:#1a73e8; --ink:#1e293b; --muted:#64748b; --border:#e2e8f0; }
+  * { box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--ink); background:#f8fafc; margin:0; }
+  header { background:linear-gradient(135deg,#4285F4,#1a73e8); color:#fff; padding:26px 20px; }
+  .wrap { max-width:860px; margin:0 auto; padding:0 20px; }
+  header h1 { margin:0 0 6px; font-size:1.7rem; }
+  header a { color:#fff; }
+  .card { background:#fff; border:1px solid var(--border); border-radius:14px; padding:22px; margin:22px 0; box-shadow:0 2px 10px rgba(0,0,0,.04); }
+  .students { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .students input { width:110px; padding:10px 12px; font-size:1.1rem; border:2px solid var(--border); border-radius:8px; font-weight:700; }
+  table { width:100%; border-collapse:collapse; font-size:.9rem; margin-top:10px; }
+  th,td { border-bottom:1px solid var(--border); padding:9px 8px; text-align:left; vertical-align:middle; }
+  th { font-size:.78rem; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); }
+  td.num, th.num { text-align:right; }
+  .fee { width:78px; padding:6px 8px; border:1px solid var(--border); border-radius:6px; text-align:right; font-family:inherit; }
+  .sub { font-weight:700; color:var(--blue); white-space:nowrap; }
+  .totals { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin-top:16px; }
+  .tcard { background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:14px 16px; text-align:center; }
+  .tcard .n { font-size:1.6rem; font-weight:800; color:var(--blue); }
+  .tcard .l { font-size:.8rem; color:var(--muted); }
+  .note { color:var(--muted); font-size:.82rem; }
+  .fund { background:#f0fdf4; border:1px solid #bbf7d0; border-left:5px solid #16a34a; }
+  .fund h2 { color:#166534; }
+  .fund a.btn { display:inline-block; background:#16a34a; color:#fff; text-decoration:none; padding:9px 15px; border-radius:7px; font-weight:700; font-size:.85rem; margin:4px 6px 0 0; }
+  footer { text-align:center; color:var(--muted); padding:28px 20px; font-size:.82rem; }
+  @media print { header, .fund a.btn { } }
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>💰 Competition Cost Calculator</h1><a href="./">🧮 Main Math Hub</a></div></header>
+<div class="wrap">
+
+  <div class="card">
+    <div class="students">
+      <strong style="font-size:1.05rem;">How many students will participate?</strong>
+      <input type="number" id="students" min="1" value="30">
+    </div>
+    <p class="note" style="margin:10px 0 0;">Check the contests you'd offer. Fees are <strong>editable estimates</strong> — always confirm current fees with each organization. Most contests charge a <em>base fee per school</em> plus a <em>per-student</em> amount; there's typically <strong>no equipment cost</strong> (one classroom, one proctor).</p>
+    <table id="tbl">
+      <thead><tr>
+        <th>Offer?</th><th>Contest</th><th class="num">Base $/yr</th><th class="num">$/student</th><th class="num">Subtotal / yr</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="totals">
+      <div class="tcard"><div class="n" id="t-total">$0</div><div class="l">Total per year</div></div>
+      <div class="tcard"><div class="n" id="t-base">$0</div><div class="l">Fixed (base fees)</div></div>
+      <div class="tcard"><div class="n" id="t-per">$0</div><div class="l">Scales with students</div></div>
+      <div class="tcard"><div class="n" id="t-each">$0</div><div class="l">Cost per student</div></div>
+    </div>
+  </div>
+
+  <div class="card fund">
+    <h2>💚 It's small — and easy to fund</h2>
+    <p>At these amounts, cost should never stop a school. A full <strong>AMC 8 for 30 students is only a few dollars per child.</strong> The bill can be covered by any of:</p>
+    <ul>
+      <li><strong>PTA / PTO</strong> — often the simplest path.</li>
+      <li><strong>A local sponsor</strong> — a nearby business, credit union, or alum.</li>
+      <li><strong>Crowdfunding</strong> — students, parents, teachers, or even strangers can chip in. It's a good cause: the money goes <em>directly</em> to help kids take a STEM exam.</li>
+    </ul>
+    <p class="note" id="fund-line"></p>
+    <a class="btn" href="https://www.donorschoose.org/" target="_blank" rel="noopener noreferrer">Teachers: DonorsChoose</a>
+    <a class="btn" href="https://www.gofundme.com/" target="_blank" rel="noopener noreferrer">Start a GoFundMe</a>
+    <a class="btn" href="connect.html#interest" style="background:#1a73e8;">Ask the Hub for help</a>
+  </div>
+
+</div>
+<footer>Estimates only — confirm current fees with each organization. · Math Competition Readiness Hub</footer>
+<script>
+  // Editable estimated fees (base $/yr per school, $/student). VERIFY with each org.
+  var CONTESTS = [
+    { k:"amc8",  name:"AMC 8",        base:75,  per:2.5,  note:"grades 8 & under" },
+    { k:"amc10", name:"AMC 10 / 12",  base:100, per:3.0,  note:"" },
+    { k:"moems", name:"MOEMS",        base:129, per:0,    note:"team up to ~35" },
+    { k:"mc",    name:"MATHCOUNTS",   base:100, per:0,    note:"team-based" },
+    { k:"mk",    name:"Math Kangaroo", base:0,  per:21,   note:"per student" },
+    { k:"ml",    name:"Math League",  base:60,  per:0,    note:"per school" }
+  ];
+  var rows = document.getElementById("rows");
+  CONTESTS.forEach(function(c){
+    var tr = document.createElement("tr");
+    tr.innerHTML = '<td><input type="checkbox" data-k="'+c.k+'" class="chk"'+(c.k==="amc8"?" checked":"")+'></td>'
+      + '<td><strong>'+c.name+'</strong>'+(c.note?'<br><span class="note">'+c.note+'</span>':'')+'</td>'
+      + '<td class="num"><input class="fee base" data-k="'+c.k+'" type="number" min="0" value="'+c.base+'"></td>'
+      + '<td class="num"><input class="fee per" data-k="'+c.k+'" type="number" min="0" step="0.5" value="'+c.per+'"></td>'
+      + '<td class="num sub" id="sub-'+c.k+'">$0</td>';
+    rows.appendChild(tr);
+  });
+  function val(sel,k){ var el=document.querySelector(sel+'[data-k="'+k+'"]'); return el?parseFloat(el.value)||0:0; }
+  function money(n){ return "$"+Math.round(n).toLocaleString(); }
+  function calc(){
+    var students = Math.max(0, parseInt(document.getElementById("students").value)||0);
+    var total=0, base=0, per=0;
+    CONTESTS.forEach(function(c){
+      var on = document.querySelector('.chk[data-k="'+c.k+'"]').checked;
+      var b = val('.base', c.k), p = val('.per', c.k);
+      var sub = on ? (b + p*students) : 0;
+      document.getElementById("sub-"+c.k).textContent = money(sub);
+      if(on){ total+=sub; base+=b; per+=p*students; }
+    });
+    document.getElementById("t-total").textContent = money(total);
+    document.getElementById("t-base").textContent = money(base);
+    document.getElementById("t-per").textContent = money(per);
+    document.getElementById("t-each").textContent = students? ("$"+(total/students).toFixed(2)) : "$0";
+    document.getElementById("fund-line").textContent = students && total ? ("Your estimate: "+money(total)+"/year for "+students+" students — about $"+(total/students).toFixed(2)+" per student.") : "";
+  }
+  document.addEventListener("input", calc);
+  calc();
+</script>
+</body>
+</html>
