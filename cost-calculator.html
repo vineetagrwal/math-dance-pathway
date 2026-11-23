@@ -68,6 +68,7 @@
       <li><strong>Crowdfunding</strong> — students, parents, teachers, or even strangers can chip in. It's a good cause: the money goes <em>directly</em> to help kids take a STEM exam.</li>
     </ul>
     <p class="note" id="fund-line"></p>
+    <a class="btn" href="#" id="share-est" style="background:#7c3aed;">📋 Share this estimate</a>
     <a class="btn" href="https://www.donorschoose.org/" target="_blank" rel="noopener noreferrer">Teachers: DonorsChoose</a>
     <a class="btn" href="https://www.gofundme.com/" target="_blank" rel="noopener noreferrer">Start a GoFundMe</a>
     <a class="btn" href="connect.html#interest" style="background:#1a73e8;">Ask the Hub for help</a>
@@ -78,12 +79,12 @@
 <script>
   // Editable estimated fees (base $/yr per school, $/student). VERIFY with each org.
   var CONTESTS = [
-    { k:"amc8",  name:"AMC 8",        base:75,  per:2.5,  note:"grades 8 & under" },
-    { k:"amc10", name:"AMC 10 / 12",  base:100, per:3.0,  note:"" },
-    { k:"moems", name:"MOEMS",        base:129, per:0,    note:"team up to ~35" },
-    { k:"mc",    name:"MATHCOUNTS",   base:100, per:0,    note:"team-based" },
-    { k:"mk",    name:"Math Kangaroo", base:0,  per:21,   note:"per student" },
-    { k:"ml",    name:"Math League",  base:60,  per:0,    note:"per school" }
+    { k:"amc8",  name:"AMC 8",         base:75,  per:2.5, note:"$75 base + $2.50/student (regular reg)" },
+    { k:"amc10", name:"AMC 10 / 12",   base:75,  per:3.0, note:"$75 base + $3.00/student (regular reg)" },
+    { k:"moems", name:"MOEMS",         base:200, per:0,   note:"~$200/team, up to 35 students" },
+    { k:"mc",    name:"MATHCOUNTS",    base:75,  per:0,   note:"team-based (varies by chapter)" },
+    { k:"mk",    name:"Math Kangaroo", base:0,   per:20,  note:"~$20/student (regular reg)" },
+    { k:"ml",    name:"Math League",   base:45,  per:0,   note:"~$45 per grade level" }
   ];
   var rows = document.getElementById("rows");
   CONTESTS.forEach(function(c){
@@ -113,6 +114,16 @@
     document.getElementById("t-each").textContent = students? ("$"+(total/students).toFixed(2)) : "$0";
     document.getElementById("fund-line").textContent = students && total ? ("Your estimate: "+money(total)+"/year for "+students+" students — about $"+(total/students).toFixed(2)+" per student.") : "";
   }
+  document.getElementById("share-est").addEventListener("click", function(e){
+    e.preventDefault();
+    var students=document.getElementById("students").value;
+    var total=document.getElementById("t-total").textContent;
+    var each=document.getElementById("t-each").textContent;
+    var names=[]; CONTESTS.forEach(function(c){ if(document.querySelector('.chk[data-k="'+c.k+'"]').checked) names.push(c.name); });
+    var txt="Offering "+(names.join(", ")||"math competitions")+" at our school for "+students+" students is about "+total+"/year (~"+each+"/student). A low-cost STEM boost — help fund it: "+location.href;
+    if(navigator.share){ navigator.share({title:"Math competition cost estimate", text:txt}).catch(function(){}); }
+    else if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(function(){ var b=document.getElementById("share-est"); var o=b.textContent; b.textContent="✓ Copied!"; setTimeout(function(){ b.textContent=o; },2000); }); }
+  });
   document.addEventListener("input", calc);
   calc();
 </script>
