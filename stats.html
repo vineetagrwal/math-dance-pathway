@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; base-uri 'self'">
+<title>Math Competitions — By the Numbers</title>
+<style>
+  :root { --blue:#1a73e8; --ink:#1e293b; --muted:#64748b; --border:#e2e8f0; }
+  * { box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--ink); background:#f8fafc; margin:0; }
+  header { background:linear-gradient(135deg,#4285F4,#1a73e8); color:#fff; padding:28px 20px; }
+  .wrap { max-width:960px; margin:0 auto; padding:0 20px; }
+  header h1 { margin:0 0 6px; font-size:1.9rem; letter-spacing:-0.5px; }
+  header p { margin:0; opacity:.95; } header a { color:#fff; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:16px; margin:22px 0; }
+  .stat { background:#fff; border:1px solid var(--border); border-top:4px solid var(--blue); border-radius:14px; padding:20px; box-shadow:0 2px 10px rgba(0,0,0,.04); }
+  .stat .n { font-size:2.1rem; font-weight:800; color:var(--blue); line-height:1.05; letter-spacing:-1px; }
+  .stat .l { margin-top:6px; font-size:.92rem; }
+  .stat .s { margin-top:8px; font-size:.72rem; color:var(--muted); }
+  .gap { background:#fffbeb; border:1px solid #fde68a; border-left:5px solid #d97706; border-radius:12px; padding:18px 20px; margin:20px 0; }
+  .gap h2 { margin:0 0 6px; color:#92400e; font-size:1.2rem; }
+  h2.sec { color:var(--blue); border-bottom:2px solid var(--border); padding-bottom:6px; margin-top:28px; }
+  .note { color:var(--muted); font-size:.82rem; }
+  footer nav { text-align:center; padding:18px 16px; font-size:.86rem; border-top:1px solid var(--border); line-height:2; }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>📊 Math Competitions — By the Numbers</h1>
+  <p>Why the opportunity (and the gap) is so big. <a href="./">🧮 Main Math Hub</a></p>
+</div></header>
+
+<div class="wrap">
+  <div class="grid">
+    <div class="stat"><div class="n">300,000+</div><div class="l">students take the <strong>MAA AMC</strong> every year</div><div class="s">Source: MAA</div></div>
+    <div class="stat"><div class="n">~128,000</div><div class="l">K-12 schools in the U.S. (~98k public + ~30k private)</div><div class="s">Source: NCES (approx.)</div></div>
+    <div class="stat"><div class="n">Grade 8 &amp; under</div><div class="l">eligible for the <strong>AMC 8</strong> — <em>no minimum grade</em></div><div class="s">Source: MAA rules</div></div>
+    <div class="stat"><div class="n">~$2.50</div><div class="l">per-student AMC 8 cost beyond the ~$75 base fee</div><div class="s">Source: MAA 2026–27 fees</div></div>
+    <div class="stat"><div class="n">MIT · Caltech</div><div class="l">applications <strong>ask for AMC / AIME scores</strong></div><div class="s">Source: school applications</div></div>
+    <div class="stat"><div class="n">40 min</div><div class="l">one short session for a school to host the AMC 8</div><div class="s">Source: MAA</div></div>
+  </div>
+
+  <div class="gap">
+    <h2>The visibility gap 🔍</h2>
+    <p>~300,000 students compete each year — yet participation is <strong>barely mapped.</strong> In our <strong>Jersey City pilot</strong>, only <strong>2 of 64 schools (3%)</strong> appear with any contest on the public lists, even though more almost certainly participate. Nationally, the published host lists we've ingested cover a few hundred schools against ~128,000 — a tiny, incomplete slice.</p>
+    <p class="note">That gap — between real participation and what's publicly visible/findable — is exactly what this project exists to close, starting with one city and scaling with the same code.</p>
+  </div>
+
+  <h2 class="sec">From our open dataset</h2>
+  <div class="grid">
+    <div class="stat"><div class="n">643</div><div class="l">schools on the <strong>published AMC host list</strong> we've ingested</div><div class="s">Across 59 states/provinces · likely a floor, not the full count</div></div>
+    <div class="stat"><div class="n">64</div><div class="l">Jersey City schools mapped (public, charter, private, coaching)</div><div class="s">Source: NCES · <a href="jersey-city.html">see the pilot</a></div></div>
+    <div class="stat"><div class="n">3%</div><div class="l">of JC schools currently show a contest on public lists</div><div class="s">Help verify the rest → <a href="jersey-city.html">Jersey City pilot</a></div></div>
+  </div>
+  <p class="note">Numbers are approximate and drawn from public sources (MAA, NCES) and our own ingested data; organizations publish lists, not queryable feeds, so true participation is under-counted. Making it measurable is the goal — see the <a href="data-partnership.html">data-partnership proposal</a>.</p>
+</div>
+
+<footer><nav>
+  <a href="./">🧮 Main Hub</a> · <a href="jersey-city.html">🗽 Jersey City</a> · <a href="cost-calculator.html">💰 Cost Calculator</a> · <a href="stats.html">📊 By the Numbers</a> · <a href="data-partnership.html">🤝 Data Partnership</a> · <a href="security-report.html">🛡️ Security</a> · <a href="connect.html">💬 Connect</a>
+</nav></footer>
+</body>
+</html>
