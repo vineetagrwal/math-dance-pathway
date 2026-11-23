@@ -40,14 +40,11 @@
 <div class="wrap">
 
   <div class="card">
-    <div class="students">
-      <strong style="font-size:1.05rem;">How many students will participate?</strong>
-      <input type="number" id="students" min="1" value="30">
-    </div>
-    <p class="note" style="margin:10px 0 0;">Check the contests you'd offer. Fees are <strong>editable estimates</strong> — always confirm current fees with each organization. Most contests charge a <em>base fee per school</em> plus a <em>per-student</em> amount; there's typically <strong>no equipment cost</strong> (one classroom, one proctor).</p>
+    <p style="margin:0 0 4px;"><strong style="font-size:1.05rem;">Check the contests you'd offer and set the number of students for each.</strong></p>
+    <p class="note" style="margin:0;">Fees are <strong>editable estimates</strong> — confirm current fees with each organization. Most charge a <em>base fee per school</em> plus a <em>per-student</em> amount; there's typically <strong>no equipment cost</strong>.</p>
     <table id="tbl">
       <thead><tr>
-        <th>Offer?</th><th>Contest</th><th class="num">Base $/yr</th><th class="num">$/student</th><th class="num">Subtotal / yr</th>
+        <th>Offer?</th><th>Contest</th><th class="num"># Students</th><th class="num">Base $/yr</th><th class="num">$/student</th><th class="num">Subtotal / yr</th>
       </tr></thead>
       <tbody id="rows"></tbody>
     </table>
@@ -55,7 +52,7 @@
       <div class="tcard"><div class="n" id="t-total">$0</div><div class="l">Total per year</div></div>
       <div class="tcard"><div class="n" id="t-base">$0</div><div class="l">Fixed (base fees)</div></div>
       <div class="tcard"><div class="n" id="t-per">$0</div><div class="l">Scales with students</div></div>
-      <div class="tcard"><div class="n" id="t-each">$0</div><div class="l">Cost per student</div></div>
+      <div class="tcard"><div class="n" id="t-each">$0</div><div class="l">Per student-entry</div></div>
     </div>
   </div>
 
@@ -68,6 +65,7 @@
       <li><strong>Crowdfunding</strong> — students, parents, teachers, or even strangers can chip in. It's a good cause: the money goes <em>directly</em> to help kids take a STEM exam.</li>
     </ul>
     <p class="note" id="fund-line"></p>
+    <p class="note"><strong>How the money reaches the organizer:</strong> this Hub never handles payments. Funds raised go to your <strong>PTA/PTO or the school</strong>, and the school's <strong>Competition Manager pays the organizer directly</strong> (e.g., MAA via the AMC portal, by card/invoice). Routing donations through the PTA (often a 501(c)(3)) is the cleanest path.</p>
     <a class="btn" href="#" id="share-est" style="background:#7c3aed;">📋 Share this estimate</a>
     <a class="btn" href="https://www.donorschoose.org/" target="_blank" rel="noopener noreferrer">Teachers: DonorsChoose</a>
     <a class="btn" href="https://www.gofundme.com/" target="_blank" rel="noopener noreferrer">Start a GoFundMe</a>
@@ -79,18 +77,20 @@
 <script>
   // Editable estimated fees (base $/yr per school, $/student). VERIFY with each org.
   var CONTESTS = [
-    { k:"amc8",  name:"AMC 8",         base:75,  per:2.5, note:"$75 base + $2.50/student (regular reg)" },
-    { k:"amc10", name:"AMC 10 / 12",   base:75,  per:3.0, note:"$75 base + $3.00/student (regular reg)" },
-    { k:"moems", name:"MOEMS",         base:200, per:0,   note:"~$200/team, up to 35 students" },
-    { k:"mc",    name:"MATHCOUNTS",    base:75,  per:0,   note:"team-based (varies by chapter)" },
-    { k:"mk",    name:"Math Kangaroo", base:0,   per:20,  note:"~$20/student (regular reg)" },
-    { k:"ml",    name:"Math League",   base:45,  per:0,   note:"~$45 per grade level" }
+    { k:"amc8",  name:"AMC 8",         base:75,  per:2.5, students:30, note:"$75 base + $2.50/student (regular reg)" },
+    { k:"amc10", name:"AMC 10",        base:75,  per:3.0, students:15, note:"$75 site fee + $3.00/student" },
+    { k:"amc12", name:"AMC 12",        base:0,   per:3.0, students:10, note:"often shares the AMC 10/12 $75 site fee — set base if separate" },
+    { k:"moems", name:"MOEMS",         base:200, per:0,   students:30, note:"~$200/team, up to 35 students" },
+    { k:"mc",    name:"MATHCOUNTS",    base:75,  per:0,   students:10, note:"team-based (varies by chapter)" },
+    { k:"mk",    name:"Math Kangaroo", base:0,   per:20,  students:20, note:"~$20/student (regular reg)" },
+    { k:"ml",    name:"Math League",   base:45,  per:0,   students:30, note:"~$45 per grade level" }
   ];
   var rows = document.getElementById("rows");
   CONTESTS.forEach(function(c){
     var tr = document.createElement("tr");
     tr.innerHTML = '<td><input type="checkbox" data-k="'+c.k+'" class="chk"'+(c.k==="amc8"?" checked":"")+'></td>'
       + '<td><strong>'+c.name+'</strong>'+(c.note?'<br><span class="note">'+c.note+'</span>':'')+'</td>'
+      + '<td class="num"><input class="fee stu" data-k="'+c.k+'" type="number" min="0" value="'+c.students+'"></td>'
       + '<td class="num"><input class="fee base" data-k="'+c.k+'" type="number" min="0" value="'+c.base+'"></td>'
       + '<td class="num"><input class="fee per" data-k="'+c.k+'" type="number" min="0" step="0.5" value="'+c.per+'"></td>'
       + '<td class="num sub" id="sub-'+c.k+'">$0</td>';
@@ -99,28 +99,26 @@
   function val(sel,k){ var el=document.querySelector(sel+'[data-k="'+k+'"]'); return el?parseFloat(el.value)||0:0; }
   function money(n){ return "$"+Math.round(n).toLocaleString(); }
   function calc(){
-    var students = Math.max(0, parseInt(document.getElementById("students").value)||0);
-    var total=0, base=0, per=0;
+    var total=0, base=0, per=0, totStu=0;
     CONTESTS.forEach(function(c){
       var on = document.querySelector('.chk[data-k="'+c.k+'"]').checked;
-      var b = val('.base', c.k), p = val('.per', c.k);
-      var sub = on ? (b + p*students) : 0;
+      var s = val('.stu', c.k), b = val('.base', c.k), p = val('.per', c.k);
+      var sub = on ? (b + p*s) : 0;
       document.getElementById("sub-"+c.k).textContent = money(sub);
-      if(on){ total+=sub; base+=b; per+=p*students; }
+      if(on){ total+=sub; base+=b; per+=p*s; totStu+=s; }
     });
     document.getElementById("t-total").textContent = money(total);
     document.getElementById("t-base").textContent = money(base);
     document.getElementById("t-per").textContent = money(per);
-    document.getElementById("t-each").textContent = students? ("$"+(total/students).toFixed(2)) : "$0";
-    document.getElementById("fund-line").textContent = students && total ? ("Your estimate: "+money(total)+"/year for "+students+" students — about $"+(total/students).toFixed(2)+" per student.") : "";
+    document.getElementById("t-each").textContent = totStu? ("$"+(total/totStu).toFixed(2)) : "$0";
+    document.getElementById("fund-line").textContent = total ? ("Your estimate: "+money(total)+"/year across "+totStu+" student-entries — about $"+(totStu?(total/totStu).toFixed(2):"0")+" per entry.") : "";
   }
   document.getElementById("share-est").addEventListener("click", function(e){
     e.preventDefault();
-    var students=document.getElementById("students").value;
     var total=document.getElementById("t-total").textContent;
-    var each=document.getElementById("t-each").textContent;
-    var names=[]; CONTESTS.forEach(function(c){ if(document.querySelector('.chk[data-k="'+c.k+'"]').checked) names.push(c.name); });
-    var txt="Offering "+(names.join(", ")||"math competitions")+" at our school for "+students+" students is about "+total+"/year (~"+each+"/student). A low-cost STEM boost — help fund it: "+location.href;
+    var totStu=0, names=[];
+    CONTESTS.forEach(function(c){ if(document.querySelector('.chk[data-k="'+c.k+'"]').checked){ names.push(c.name); totStu+=parseFloat(document.querySelector('.stu[data-k="'+c.k+'"]').value)||0; } });
+    var txt="Offering "+(names.join(", ")||"math competitions")+" at our school is about "+total+"/year across "+totStu+" student-entries. A low-cost STEM boost — help fund it: "+location.href;
     if(navigator.share){ navigator.share({title:"Math competition cost estimate", text:txt}).catch(function(){}); }
     else if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(function(){ var b=document.getElementById("share-est"); var o=b.textContent; b.textContent="✓ Copied!"; setTimeout(function(){ b.textContent=o; },2000); }); }
   });
