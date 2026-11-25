@@ -348,7 +348,9 @@
   "contact_source": "Web directory",
   "outreach_status": "Not started",
   "outreach_last": null,
-  "outreach_notes": ""
+  "outreach_notes": "MAA portal lists \"Hamilton Park Montessori\" with no city/state — matched on distinctive name; confirmed as a registered site by Vineet.",
+  "amc_registered": true,
+  "maa_id": "0015f00001aApVzAAK"
  },
  {
   "nces_id": null,
@@ -748,7 +750,9 @@
   "contact_source": "NCES CCD",
   "outreach_status": "Not started",
   "outreach_last": null,
-  "outreach_notes": ""
+  "outreach_notes": "MAA portal lists \"Dr. Ronald McNair Academic High School\" with no city/state — matched on distinctive name; confirmed as a registered site by Vineet.",
+  "amc_registered": true,
+  "maa_id": "0015f00001aAp4tAAC"
  },
  {
   "nces_id": "340783002832",
