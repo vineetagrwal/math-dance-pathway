@@ -55,6 +55,9 @@
   .type-filter { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 16px; }
   .tf-chip { background:#fff; border:2px solid var(--border); border-radius:999px; padding:6px 14px; font-weight:600; font-size:.85rem; cursor:pointer; font-family:inherit; color:var(--text); }
   .tf-chip.active { background:var(--blue); color:#fff; border-color:var(--blue); }
+  .amc-badge { display:inline-block; font-size:.68rem; font-weight:700; color:#166534; background:#dcfce7; border:1px solid #86efac; padding:2px 7px; border-radius:999px; margin-left:6px; white-space:nowrap; vertical-align:middle; }
+  .amc-hint { color:var(--muted); font-size:.85rem; margin:0 0 14px; }
+  .jc-source { text-align:center; color:var(--muted); font-size:.8rem; margin-top:6px; }
 </style>
 </head>
 <body>
@@ -92,6 +95,12 @@
     <button class="tf-chip" type="button" data-level="Middle">Middle</button>
     <button class="tf-chip" type="button" data-level="High">High</button>
   </div>
+  <div class="type-filter" id="amc-filter" role="group" aria-label="Filter by AMC registration">
+    <button class="tf-chip active" type="button" data-amc="">All schools</button>
+    <button class="tf-chip" type="button" data-amc="yes">✓ AMC registered site</button>
+    <button class="tf-chip" type="button" data-amc="no">Not yet registered</button>
+  </div>
+  <p class="amc-hint">AMC site = the school is on the MAA host list (9,163 schools, snapshot Nov 24, 2026). High schools typically host AMC 10/12, middle schools AMC 8 — the exams shown are verified reports only, never guessed. “Not yet registered” is the outreach list: ask your school to register.</p>
 
   <div id="status" class="count">Loading…</div>
   <table id="tbl" hidden>
@@ -190,21 +199,23 @@
       var gl=function(n){return n===-1?"PK":(n===0?"K":n);};
       var grades = (s.grade_low!=null && s.grade_high!=null) ? (gl(s.grade_low)+"–"+gl(s.grade_high)) : "—";
       var band = bandOf(s);
-      var exams = (s.exams&&s.exams.length) ? s.exams.map(function(e){return '<span class="tag '+tagClass(e)+'">'+esc(e)+'</span>';}).join("") : '<span class="none">not verified</span>';
+      var exams = (s.exams&&s.exams.length) ? s.exams.map(function(e){return '<span class="tag '+tagClass(e)+'">'+esc(e)+'</span>';}).join("") : (s.amc_registered ? '<span class="none">AMC site — exams not verified</span>' : '<span class="none">not verified</span>');
       var phone = s.phone ? '<a class="phone" href="tel:'+esc(s.phone)+'">'+esc(s.phone)+'</a>' : '<span class="none">—</span>';
-      return '<tr class="rowc" data-school="'+esc(s.name)+'"><td><strong>'+esc(s.name)+"</strong></td><td>"+esc(s.type||"")+(band?'<br><span class="lvl-tag">'+band+'</span>':'')+"</td><td>"+grades+"</td><td>"+esc(s.zip||"")+"</td><td>"+phone+"</td><td>"+exams+"</td>"
+      return '<tr class="rowc" data-school="'+esc(s.name)+'"><td><strong>'+esc(s.name)+"</strong>"+(s.amc_registered?'<span class="amc-badge">✓ AMC site</span>':'')+"</td><td>"+esc(s.type||"")+(band?'<br><span class="lvl-tag">'+band+'</span>':'')+"</td><td>"+grades+"</td><td>"+esc(s.zip||"")+"</td><td>"+phone+"</td><td>"+exams+"</td>"
         + '<td><button class="verify" type="button" data-school="'+esc(s.name)+'">Verify / add exams</button></td></tr>';
     }).join("");
     document.getElementById("status").textContent = list.length + " schools";
   }
-  var typeFilter = "", levelFilter = "";
+  var typeFilter = "", levelFilter = "", amcFilter = "";
   function applyFilter(){
     var q = document.getElementById("q").value.trim().toLowerCase();
     var list = DATA.filter(function(s){
       if(typeFilter && (s.type||"")!==typeFilter) return false;
       if(levelFilter && bandOf(s).indexOf(levelFilter)<0) return false;
+      if(amcFilter==="yes" && !s.amc_registered) return false;
+      if(amcFilter==="no" && s.amc_registered) return false;
       if(!q) return true;
-      return (s.name+" "+(s.zip||"")+" "+(s.exams||[]).join(" ")+" "+(s.type||"")).toLowerCase().indexOf(q)>=0;
+      return (s.name+" "+(s.zip||"")+" "+(s.exams||[]).join(" ")+" "+(s.type||"")+" "+(s.amc_registered?"AMC registered site":"")).toLowerCase().indexOf(q)>=0;
     });
     render(list); renderStats(list);
   }
@@ -225,6 +236,14 @@
       Array.prototype.forEach.call(lf.querySelectorAll(".tf-chip"), function(x){ x.classList.toggle("active", x.getAttribute("data-level")===v); });
       applyFilter();
     });
+    var af=document.getElementById("amc-filter");
+    if(af) af.addEventListener("click", function(e){
+      var b=e.target.closest("[data-amc]"); if(!b) return;
+      var v=b.getAttribute("data-amc"); if(v && amcFilter===v) v="";
+      amcFilter=v;
+      Array.prototype.forEach.call(af.querySelectorAll(".tf-chip"), function(x){ x.classList.toggle("active", x.getAttribute("data-amc")===v); });
+      applyFilter();
+    });
   })();
   document.getElementById("add-missing").addEventListener("click", function(e){ e.preventDefault(); fillVerify(""); });
   document.getElementById("q").addEventListener("input", applyFilter);
@@ -232,16 +251,19 @@
     var el=document.getElementById("jc-stats"); if(!el) return;
     var total=d.length;
     var hosting=d.filter(function(s){return (s.exams||[]).length>0;}).length;
+    var amc=d.filter(function(s){return !!s.amc_registered;}).length;
     var unverified=total-hosting;
     var pct= total? Math.round(unverified/total*100):0;
     var contests=[["AMC 8","amc"],["AMC 10","amc"],["AMC 12","amc"],["MOEMS","moems"],["MATHCOUNTS","mc"],["Math League","ml"],["Math Kangaroo","mk"]];
     function cnt(name){ return d.filter(function(s){ return (s.exams||[]).some(function(e){ return e.toLowerCase().indexOf(name.toLowerCase())>=0; }); }).length; }
     var cards='<div class="jc-stat"><div class="num">'+total+'</div><div class="lbl">Schools mapped</div></div>'
+      +'<div class="jc-stat"><div class="num">'+amc+'</div><div class="lbl">AMC registered sites</div></div>'
       +'<div class="jc-stat"><div class="num">'+hosting+'</div><div class="lbl">Verified hosting a contest</div></div>'
       +'<div class="jc-stat"><div class="num">'+unverified+'</div><div class="lbl">Still unverified — help!</div></div>';
     var tags=contests.map(function(c){ return '<span class="tag '+c[1]+'">'+c[0]+': '+cnt(c[0])+'</span>'; }).join("");
     el.innerHTML='<div class="jc-headline">🗺️ Jersey City’s math-contest map is '+pct+'% blank — let’s fill it in.</div>'
-      +'<div class="jc-grid">'+cards+'</div><div class="jc-contests">'+tags+'</div>';
+      +'<div class="jc-grid">'+cards+'</div><div class="jc-contests">'+tags+'</div>'
+      +'<div class="jc-source">Sources: school details from the federal NCES directory (CCD); AMC registered sites from the MAA portal host list — 9,163 schools, static snapshot Nov 24, 2026. For the definitive AMC search, use the <a href="https://maa.org/student-programs/amc/" target="_blank" rel="noopener noreferrer">official MAA AMC finder</a>.</div>';
   }
   fetch("data/jersey-city-middle-schools.json", {cache:"no-store"}).then(function(r){return r.json();}).then(function(d){
     DATA = d.sort(function(a,b){return (a.name||"").localeCompare(b.name||"");});

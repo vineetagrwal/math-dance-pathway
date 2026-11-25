@@ -873,6 +873,7 @@
 <nav class="side-nav" aria-label="Section navigation">
   <div class="side-nav-title">Explore</div>
   <a href="#find-site">🔎 Find a School</a>
+  <a href="jersey-city.html">🗽 Jersey City POC</a>
   <a href="#getting-started">🗺️ The Plan</a>
   <a href="#school-hosting">🏫 Host a Contest</a>
   <a href="#mock-tests">📅 Contests &amp; Practice</a>
@@ -926,17 +927,11 @@
   <!-- Find Your School (primary action) -->
   <section class="section-card" id="find-site">
     <h2>🔎 Find Your School</h2>
-    <p class="sub-note">Start typing a ZIP, city, state, or school name — results update live. Each school is tagged with the contests it offers (AMC 8/10/12 today; MOEMS, MATHCOUNTS &amp; Math League being added via our verification effort). Filter by exam for your grade, then click a result to see it on the map.</p>
+    <p class="sub-note">Static snapshot — <strong>9,163 AMC host sites</strong> from the MAA portal, captured <strong>Nov 24, 2026</strong>. Search by school name, city, or state. Which exam each site hosts (AMC 8/10/12), ZIP codes, and map pins aren't in this snapshot yet — they're coming via our verification effort. For the definitive, up-to-date search, use the <a href="https://maa.org/student-programs/amc/" target="_blank" rel="noopener noreferrer">official MAA AMC finder</a>.</p>
     <form class="zip-form" id="zip-form">
-      <input type="text" id="zip-input" placeholder="Your school, ZIP, city, or state — e.g. New York, NY" aria-label="Search by ZIP, city, state, or school name">
+      <input type="text" id="zip-input" placeholder="Your school, city, or state — e.g. New York, NY" aria-label="Search by school name, city, or state">
       <button type="submit" class="cta-btn" data-action="search-site">Search</button>
     </form>
-    <div class="exam-filter" id="exam-filter" role="group" aria-label="Filter by exam">
-      <button type="button" class="exam-chip active" data-exam="">All exams</button>
-      <button type="button" class="exam-chip" data-exam="8">AMC 8</button>
-      <button type="button" class="exam-chip" data-exam="10">AMC 10</button>
-      <button type="button" class="exam-chip" data-exam="12">AMC 12</button>
-    </div>
     <div class="finder-layout">
       <div id="zip-results" class="zip-results" aria-live="polite"></div>
       <div id="site-map" class="site-map"></div>
@@ -1762,11 +1757,13 @@ Best regards,
       results.innerHTML = '<div class="sc-head">' + list.length + ' AMC host school' + (list.length > 1 ? 's' : '') + ' found' + (list.length > 100 ? ', showing 100' : '') + '</div>' +
         shown.map(function (s, i) {
           const loc = [s[1], s[2]].filter(Boolean).join(", ");
+          let meta = loc ? esc(loc) : "";
+          if (s[3]) meta += (meta ? " · " : "") + "ZIP " + esc(s[3]);
           const q = encodeURIComponent(s[0] + " " + loc);
           const geo = (s[5] != null);
           const tags = (s[4] || "").split("/").filter(Boolean).map(function (l) { return '<span class="comp-tag amc">AMC ' + esc(l) + '</span>'; }).join("");
           return '<div class="site-card' + (geo ? ' clickable" data-idx="' + i + '"' : '"') + '><div class="sc-name">' + esc(s[0]) + '</div>' +
-            '<div class="sc-meta">' + (loc ? esc(loc) + " · " : "") + 'ZIP ' + esc(s[3]) + '</div>' +
+            '<div class="sc-meta">' + (meta || "Location not listed in this snapshot") + '</div>' +
             (tags ? '<div class="sc-tags">' + tags + '</div>' : '') +
             '<div class="sc-contact">🔎 <a href="https://www.google.com/search?q=' + q + '" target="_blank" rel="noopener noreferrer">Look up this school’s contact</a></div></div>';
         }).join("");
@@ -1797,7 +1794,7 @@ Best regards,
     function doRun() {
       const q = input.value.trim();
       if (q.length < 2) {
-        results.innerHTML = '<div class="site-card">Type at least 2 characters — a ZIP, city, state, or school name.</div>';
+        results.innerHTML = '<div class="site-card">Type at least 2 characters — a school name, city, or state.</div>';
         if (layer) layer.clearLayers();
         return;
       }
@@ -1883,7 +1880,7 @@ Best regards,
     const box = document.getElementById("site-search-results");
     if (!input) return;
     const INDEX = [
-      { t: "Find your school", d: "Search AMC host schools by ZIP, city, state, or name", a: "#find-site", k: "find school registered site map zip amc host near me" },
+      { t: "Find your school", d: "Search AMC host schools by city, state, or name", a: "#find-site", k: "find school registered site map amc host near me" },
       { t: "The readiness playbook", d: "Register early, build habits, compete (3 phases)", a: "#getting-started", k: "playbook phases plan prepare how to start" },
       { t: "Host AMC 8 at your school", d: "Become a test site + ready-to-send email template", a: "#school-hosting", k: "host register school test site competition manager teacher principal hosting kit email cost fee" },
       { t: "Contest calendar & free practice", d: "AMC, MATHCOUNTS, MOEMS, Kangaroo — deadlines & mock tests", a: "#mock-tests", k: "calendar deadlines practice mock test free amc mathcounts moems kangaroo math league aops alcumus eligibility" },
