@@ -25,7 +25,7 @@ A single, self-contained web page — no build step, no dependencies — that lo
 - 🏫 **Early school test-site registration** & key deadlines
 - 📚 **Weekly preparation habits** and the 3-phase annual cycle
 - 📝 **Free mock-test archives** and a full contest calendar (AMC 8, MATHCOUNTS, MOEMS, Math Kangaroo, Math League, AMC 10/12)
-- 🎯 **The long-term pathway** from middle-school contests to MIT, Stanford, Princeton & Caltech
+- 🎯 **The long-term pathway** from middle-school contests to top STEM universities
 - 🤝 **How to build a local Math Circle** from scratch
 
 ## Who it's for
