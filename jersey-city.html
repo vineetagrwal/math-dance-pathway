@@ -223,8 +223,8 @@
       var band = bandOf(s);
       var exams = (s.exams&&s.exams.length) ? s.exams.map(function(e){return '<span class="tag '+tagClass(e)+'">'+esc(e)+'</span>';}).join("") : (s.amc_registered ? '<span class="none">AMC site — exams not verified</span>' : '<span class="none">not verified</span>');
       var phone = s.phone ? '<a class="phone" href="tel:'+esc(s.phone)+'">'+esc(s.phone)+'</a>' : '<span class="none">—</span>';
-      var pc = s.parent_champion ? esc(s.parent_champion) : '<span class="none">needed</span>';
-      var sc = s.student_champion ? esc(s.student_champion) : '<span class="none">needed</span>';
+      var pc = s.parent_champion ? (s.parent_champion_email ? '<a href="mailto:'+esc(s.parent_champion_email)+'">'+esc(s.parent_champion)+'</a>' : esc(s.parent_champion)) : '<span class="none">needed</span>';
+      var sc = s.student_champion ? (s.student_champion_email ? '<a href="mailto:'+esc(s.student_champion_email)+'">'+esc(s.student_champion)+'</a>' : esc(s.student_champion)) : '<span class="none">needed</span>';
       var champ = '<div class="champ">Parent: '+pc+'<br>Student: '+sc+((s.parent_champion&&s.student_champion)?'':'<br><a href="connect.html#comment">Volunteer →</a>')+'</div>';
       var nameCell = s.page ? '<a href="'+esc(s.page)+'"><strong>'+esc(s.name)+"</strong></a>" : "<strong>"+esc(s.name)+"</strong>";
       return '<tr class="rowc" data-school="'+esc(s.name)+'"><td>'+nameCell+(s.amc_registered?'<span class="amc-badge">✓ AMC site</span>':'')+"</td><td>"+esc(s.type||"")+(band?'<br><span class="lvl-tag">'+band+'</span>':'')+"</td><td>"+grades+"</td><td>"+esc(s.zip||"")+"</td><td>"+phone+"</td><td>"+exams+"</td><td>"+champ+"</td>"
