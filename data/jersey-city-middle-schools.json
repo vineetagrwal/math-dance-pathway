@@ -1389,11 +1389,12 @@
   "contact_title": null,
   "contact_email": null,
   "contact_source": "NCES CCD",
-  "parent_champion": null,
+  "parent_champion": "Kapil Phadnis",
   "student_champion": null,
-  "outreach_status": "Not started",
-  "outreach_last": null,
-  "outreach_notes": ""
+  "outreach_status": "Reaching out",
+  "outreach_last": "2026-11-26",
+  "outreach_notes": "First email to Principal Stellato drafted Nov 26, 2026 (in Gmail drafts, not yet sent). Parent champion Kapil Phadnis on board.",
+  "page": "middle-school-4.html"
  },
  {
   "nces_id": "340783002810",
