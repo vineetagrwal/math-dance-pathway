@@ -73,9 +73,6 @@ Jersey City today has **one known circle, and it is elementary-only**. Track
 - **Program revenue is growing** (+64% from 2022 to 2024). Reported expenses exceed reported
   revenue, but net assets still rose each year, which points to investment gains reported
   outside revenue.
-- **What this means for us:** each additional host school is direct program revenue for MAA, so
-  helping more schools register is good for both the mission and MAA's finances. When we pitch MAA,
-  we lead with growth: more registrations, more students, and new communities reached.
 
 ## Sources
 - https://mathcircles.org/about/ · https://mathcircles.org/organizers/
