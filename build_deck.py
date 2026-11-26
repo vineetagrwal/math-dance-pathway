@@ -211,7 +211,7 @@ feats = [
     ("3-phase annual playbook", "Register → prepare → compete, on a clear yearly cycle"),
     ("School hosting guide", "Steps + a ready-to-send email template to recruit a manager"),
     ("Contest calendar", "AMC 8, MATHCOUNTS, MOEMS, Kangaroo — with free practice links"),
-    ("6→12 university pathway", "From middle-school contests to MIT / Stanford / Caltech"),
+    ("6→12 university pathway", "From middle-school contests to top STEM universities"),
     ("Math-circle starter", "How parents launch a local peer community"),
     ("Share & spread tools", "One-tap sharing so it travels school-to-school"),
 ]
