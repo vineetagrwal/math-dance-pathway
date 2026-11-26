@@ -87,8 +87,9 @@
   // Set to a Formspree ("https://formspree.io/f/xxxx") endpoint for silent submit; blank = email.
   var FORM_ENDPOINT = "";
   // ---- Zoho Desk intake (see goal hidden_files/zoho-desk-setup.md) ----
-  // Fill in the values below after the Desk org is created. Until then the
-  // forms behave exactly as today (mailto to Vineet's Gmail).
+  // Desk org created Nov 26, 2026 (portal mathreadinesshub, Org ID
+  // 948849063). Visitor emails go to the Zoho support address, so each
+  // one becomes a Desk ticket; Gmail remains the fallback if blanked.
   // 1) ZOHO_SUPPORT_EMAIL: Setup > Channels > Email — the default support
   //    address, e.g. support@<portal>.zohodesk.com. When set, visitor emails
   //    go there instead of Gmail, so each one becomes a Desk ticket.
@@ -96,7 +97,7 @@
   //    inside the #comment section below (Setup > Channels > Web Forms >
   //    Advanced Web Forms > Embed Code). It lets visitors submit without
   //    opening their email app; the mailto form stays as the fallback.
-  var ZOHO_SUPPORT_EMAIL = "";
+  var ZOHO_SUPPORT_EMAIL = "support@mathreadinesshub.zohodesk.com";
   var OWNER = ZOHO_SUPPORT_EMAIL || "vineetagrwal@gmail.com";
   function submitForm(form, msgEl, subject, buildBody, store, required){
     form.addEventListener("submit", function(e){
