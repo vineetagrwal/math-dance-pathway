@@ -57,6 +57,12 @@
   <section class="card" id="comment">
     <h2>💬 Questions, comments &amp; offers to help</h2>
     <p class="sub">Ask a question, leave a comment, or tell us how you'd like to help — it opens your email app with everything filled in, so we can act on it.</p>
+    <!-- ZOHO ADVANCED WEB FORM (optional, after the Desk org exists):
+         paste the generated embed code here (Setup > Channels > Web Forms >
+         Advanced Web Forms > Embed Code) to let visitors submit without
+         opening their email app. Keep the mailto form below as the fallback.
+         If the embed uses an iframe, add https://desk.zoho.com to frame-src
+         in the Content-Security-Policy meta tag in <head>. -->
     <form id="comment-form">
       <select name="type"><option value="Question">❓ Question</option><option value="Comment">💬 Comment</option><option value="I'd like to help">🙋 I'd like to help</option></select>
       <input name="topic" placeholder="Topic / subject (short) *" required>
@@ -80,7 +86,18 @@
 <script>
   // Set to a Formspree ("https://formspree.io/f/xxxx") endpoint for silent submit; blank = email.
   var FORM_ENDPOINT = "";
-  var OWNER = "vineetagrwal@gmail.com";
+  // ---- Zoho Desk intake (see goal hidden_files/zoho-desk-setup.md) ----
+  // Fill in the values below after the Desk org is created. Until then the
+  // forms behave exactly as today (mailto to Vineet's Gmail).
+  // 1) ZOHO_SUPPORT_EMAIL: Setup > Channels > Email — the default support
+  //    address, e.g. support@<portal>.zohodesk.com. When set, visitor emails
+  //    go there instead of Gmail, so each one becomes a Desk ticket.
+  // 2) The optional Advanced Web Form embed goes in the placeholder comment
+  //    inside the #comment section below (Setup > Channels > Web Forms >
+  //    Advanced Web Forms > Embed Code). It lets visitors submit without
+  //    opening their email app; the mailto form stays as the fallback.
+  var ZOHO_SUPPORT_EMAIL = "";
+  var OWNER = ZOHO_SUPPORT_EMAIL || "vineetagrwal@gmail.com";
   function submitForm(form, msgEl, subject, buildBody, store, required){
     form.addEventListener("submit", function(e){
       e.preventDefault();
