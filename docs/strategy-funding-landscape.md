@@ -1,6 +1,6 @@
-# Strategy notes: funding landscape & partners (internal)
+# Strategy notes: funding landscape & partners
 
-_Researched 2026-11-24. Figures are from public sources linked below. Re-verify before quoting externally._
+_Researched 2026-11-24. All figures come from the public sources linked below. Re-verify them before quoting._
 
 ## Thesis
 Contests measure talent; **math circles grow it**. The more parent-, teacher-, and
@@ -70,12 +70,12 @@ Jersey City today has **one known circle, and it is elementary-only**. Track
   | 2023 | $8.60M | $2.75M | $4.12M | $0.65M | $10.05M | $24.0M |
   | 2022 | $8.99M | $4.35M | $2.99M | $0.89M | $9.86M | $22.3M |
 
-- **Program revenue is growing** (+64% from 2022 to 2024), but expenses run about $2M/year above
-  reported revenue. Net assets still rose, which points to investment gains reported outside
-  revenue. This matters for our pitch: **each additional host school is direct revenue for MAA**.
-  The "more registrations" argument in `data-partnership.html` is MAA's economic interest, not
-  just a mission claim.
-- Keep these figures internal. Don't put "MAA runs a deficit" in a proposal addressed to MAA.
+- **Program revenue is growing** (+64% from 2022 to 2024). Reported expenses exceed reported
+  revenue, but net assets still rose each year, which points to investment gains reported
+  outside revenue.
+- **What this means for us:** each additional host school is direct program revenue for MAA, so
+  helping more schools register is good for both the mission and MAA's finances. When we pitch MAA,
+  we lead with growth: more registrations, more students, and new communities reached.
 
 ## Sources
 - https://mathcircles.org/about/ · https://mathcircles.org/organizers/
