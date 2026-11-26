@@ -252,7 +252,9 @@
   "contact_source": "MAA data",
   "outreach_status": "Not started",
   "outreach_last": null,
-  "outreach_notes": ""
+  "outreach_notes": "",
+  "amc_registered": true,
+  "maa_id": "001Vm00000kPIotIAG"
  },
  {
   "nces_id": null,
@@ -321,7 +323,9 @@
   "contact_source": "Web directory",
   "outreach_status": "Not started",
   "outreach_last": null,
-  "outreach_notes": ""
+  "outreach_notes": "",
+  "amc_registered": true,
+  "maa_id": "0015f00001aApUEAA0"
  },
  {
   "nces_id": null,
@@ -344,7 +348,9 @@
   "contact_source": "Web directory",
   "outreach_status": "Not started",
   "outreach_last": null,
-  "outreach_notes": ""
+  "outreach_notes": "MAA portal lists \"Hamilton Park Montessori\" with no city/state — matched on distinctive name; confirmed as a registered site by Vineet.",
+  "amc_registered": true,
+  "maa_id": "0015f00001aApVzAAK"
  },
  {
   "nces_id": null,
@@ -367,7 +373,9 @@
   "contact_source": "privateschoolreview.com (web)",
   "outreach_status": "Not started",
   "outreach_last": null,
-  "outreach_notes": ""
+  "outreach_notes": "",
+  "amc_registered": true,
+  "maa_id": "001Vm000007hMUmIAM"
  },
  {
   "nces_id": null,
@@ -393,7 +401,9 @@
   "contact_source": "privateschoolreview.com (web)",
   "outreach_status": "Not started",
   "outreach_last": null,
-  "outreach_notes": "Reported by owner — pending confirmation"
+  "outreach_notes": "Reported by owner — pending confirmation",
+  "amc_registered": true,
+  "maa_id": "001Vm00000SpQ0MIAV"
  },
  {
   "nces_id": null,
@@ -715,7 +725,9 @@
   "contact_source": "NCES CCD",
   "outreach_status": "Not started",
   "outreach_last": null,
-  "outreach_notes": ""
+  "outreach_notes": "",
+  "amc_registered": true,
+  "maa_id": "001Vm00001GNimcIAD"
  },
  {
   "nces_id": "340783002778",
@@ -738,7 +750,9 @@
   "contact_source": "NCES CCD",
   "outreach_status": "Not started",
   "outreach_last": null,
-  "outreach_notes": ""
+  "outreach_notes": "MAA portal lists \"Dr. Ronald McNair Academic High School\" with no city/state — matched on distinctive name; confirmed as a registered site by Vineet.",
+  "amc_registered": true,
+  "maa_id": "0015f00001aAp4tAAC"
  },
  {
   "nces_id": "340783002832",
@@ -991,7 +1005,9 @@
   "contact_source": "NCES CCD",
   "outreach_status": "Not started",
   "outreach_last": null,
-  "outreach_notes": ""
+  "outreach_notes": "",
+  "amc_registered": true,
+  "maa_id": "001Vm00000PL9BZIA1"
  },
  {
   "nces_id": "340783003378",
@@ -1475,5 +1491,55 @@
   "outreach_status": "Not started",
   "outreach_last": null,
   "outreach_notes": ""
+ },
+ {
+  "nces_id": null,
+  "name": "Pinnacle Math Center",
+  "type": "Coaching Center",
+  "level": "Other",
+  "grade_low": null,
+  "grade_high": null,
+  "zip": null,
+  "phone": null,
+  "lat": null,
+  "lon": null,
+  "exams": [],
+  "start_grade": null,
+  "rating": null,
+  "verify_status": "To verify",
+  "contact_name": null,
+  "contact_title": null,
+  "contact_email": null,
+  "contact_source": "MAA AMC host list",
+  "outreach_status": "Not started",
+  "outreach_last": null,
+  "outreach_notes": "Added from MAA AMC host list (portal) — grades/ZIP/contact to verify.",
+  "amc_registered": true,
+  "maa_id": "001Vm00000NF5OlIAL"
+ },
+ {
+  "nces_id": null,
+  "name": "Waldo International School",
+  "type": "Private",
+  "level": "Other",
+  "grade_low": null,
+  "grade_high": null,
+  "zip": null,
+  "phone": null,
+  "lat": null,
+  "lon": null,
+  "exams": [],
+  "start_grade": null,
+  "rating": null,
+  "verify_status": "To verify",
+  "contact_name": null,
+  "contact_title": null,
+  "contact_email": null,
+  "contact_source": "MAA AMC host list",
+  "outreach_status": "Not started",
+  "outreach_last": null,
+  "outreach_notes": "Added from MAA AMC host list (portal) — grades/ZIP/contact to verify.",
+  "amc_registered": true,
+  "maa_id": "001Vm00000peJxrIAE"
  }
 ]

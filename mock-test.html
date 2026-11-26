@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; base-uri 'self'">
+<title>AMC 8-Style Mock Test — 25 Questions, 40 Minutes</title>
+<meta name="description" content="Free AMC 8-style practice test for grades 6–8: 25 original multiple-choice questions, a 40-minute timer, instant scoring and a full answer key.">
+<style>
+  :root { --blue:#1a73e8; --blue2:#4285F4; --ink:#1e293b; --muted:#64748b; --border:#e2e8f0; --ok:#16a34a; --bad:#dc2626; }
+  * { box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--ink); background:#f8fafc; margin:0; }
+  header { background:linear-gradient(135deg,#4285F4,#1a73e8); color:#fff; padding:28px 20px; }
+  .wrap { max-width:860px; margin:0 auto; padding:0 20px; }
+  header h1 { margin:0 0 6px; font-size:1.9rem; letter-spacing:-0.5px; }
+  header p { margin:0; opacity:.95; } header a { color:#fff; }
+  main { padding:22px 0 30px; }
+  .card { background:#fff; border:1px solid var(--border); border-radius:14px; padding:24px; box-shadow:0 2px 10px rgba(0,0,0,.04); margin-bottom:18px; }
+  .card h2 { margin-top:0; color:var(--blue); }
+  .muted { color:var(--muted); }
+  .hidden { display:none !important; }
+  ul.rules { padding-left:20px; line-height:1.7; }
+  .btn { font:inherit; font-weight:700; border:1px solid var(--blue); background:var(--blue); color:#fff; border-radius:10px; padding:11px 20px; cursor:pointer; transition:background .15s ease, transform .1s ease; }
+  .btn:hover { background:#1557b0; }
+  .btn:active { transform:translateY(1px); }
+  .btn.alt { background:#fff; color:var(--blue); }
+  .btn.alt:hover { background:#e8f0fe; }
+  .btn:disabled { opacity:.45; cursor:default; }
+  .btn.big { font-size:1.1rem; padding:14px 30px; }
+
+  /* Quiz bar */
+  .qbar { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+  .counter { font-weight:700; color:var(--blue); }
+  .timer { font-variant-numeric:tabular-nums; font-weight:800; font-size:1.25rem; background:#e8f0fe; color:var(--blue); border-radius:10px; padding:6px 14px; }
+  .timer.low { background:#fef2f2; color:var(--bad); }
+  .qtext { font-size:1.08rem; line-height:1.6; margin:0 0 16px; }
+  .choices { display:grid; gap:10px; }
+  .choice { display:flex; align-items:center; gap:12px; width:100%; text-align:left; font:inherit; background:#fff; border:1px solid var(--border); border-radius:12px; padding:12px 14px; cursor:pointer; transition:border-color .15s ease, background .15s ease; }
+  .choice:hover { border-color:var(--blue2); background:#f5f9ff; }
+  .choice .letter { flex:0 0 32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; border:2px solid var(--border); color:var(--muted); }
+  .choice.selected { border-color:var(--blue); background:#e8f0fe; }
+  .choice.selected .letter { background:var(--blue); border-color:var(--blue); color:#fff; }
+  .navrow { display:flex; justify-content:space-between; gap:10px; margin-top:20px; flex-wrap:wrap; }
+
+  /* Overview grid */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(40px,1fr)); gap:8px; margin-top:10px; }
+  .grid button { font:inherit; font-weight:700; height:40px; border-radius:10px; border:1px solid var(--border); background:#fff; color:var(--muted); cursor:pointer; }
+  .grid button.answered { background:#e8f0fe; border-color:var(--blue2); color:var(--blue); }
+  .grid button.current { outline:3px solid var(--blue); outline-offset:1px; }
+  .legend { font-size:.8rem; color:var(--muted); margin-top:10px; }
+
+  /* Results */
+  .score { font-size:3rem; font-weight:800; color:var(--blue); letter-spacing:-1px; line-height:1; }
+  .band { margin:14px 0 18px; padding:14px 16px; border-radius:12px; border-left:5px solid var(--blue); background:#f5f9ff; }
+  .key-item { border-top:1px solid var(--border); padding:14px 0; }
+  .key-item:first-of-type { border-top:none; }
+  .key-item .kq { margin:0 0 6px; line-height:1.55; }
+  .tag { display:inline-block; font-size:.78rem; font-weight:700; border-radius:999px; padding:2px 10px; margin-right:6px; }
+  .tag.ok { background:#dcfce7; color:#166534; }
+  .tag.bad { background:#fee2e2; color:#991b1b; }
+  .tag.skip { background:#f1f5f9; color:var(--muted); }
+  .key-item .sol { color:#475569; font-size:.92rem; margin:6px 0 0; }
+
+  .disclaimer { font-size:.8rem; color:var(--muted); text-align:center; margin:6px 0 0; }
+  footer nav { text-align:center; padding:18px 16px; font-size:.86rem; border-top:1px solid var(--border); line-height:2; }
+  footer a, main a { color:var(--blue); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>📝 AMC 8-Style Mock Test</h1>
+  <p>25 original practice questions · 40 minutes · grades 6–8 · <a href="./">← Back to the Main Hub</a></p>
+</div></header>
+
+<main class="wrap">
+
+  <!-- Start screen -->
+  <section id="start-screen" class="card">
+    <h2>Ready to practice?</h2>
+    <ul class="rules">
+      <li><strong>25 questions</strong>, multiple choice, in the style of the AMC 8.</li>
+      <li><strong>40 minutes</strong> — the timer starts when you press Start, and the test submits automatically at 0:00.</li>
+      <li>Each question has <strong>5 choices (A–E)</strong> and exactly one correct answer.</li>
+      <li><strong>No calculator needed.</strong> Keep scratch paper and a pencil handy.</li>
+      <li>Move with Previous / Next or jump to any question using the overview grid. You can change answers until you submit.</li>
+      <li>There is no penalty for guessing — your score is the number of correct answers.</li>
+    </ul>
+    <button id="start-btn" class="btn big" type="button">Start Test</button>
+  </section>
+
+  <!-- Quiz screen -->
+  <section id="quiz-screen" class="hidden">
+    <div class="card">
+      <div class="qbar">
+        <span id="counter" class="counter">Question 1 of 25</span>
+        <span id="timer" class="timer" aria-live="off" title="Time remaining">40:00</span>
+      </div>
+      <p id="qtext" class="qtext"></p>
+      <div id="choices" class="choices" role="group" aria-label="Answer choices"></div>
+      <div class="navrow">
+        <button id="prev-btn" class="btn alt" type="button">← Previous</button>
+        <button id="next-btn" class="btn" type="button">Next →</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="qbar" style="margin-bottom:0;">
+        <strong>Overview</strong>
+        <button id="submit-btn" class="btn" type="button">Submit Test</button>
+      </div>
+      <div id="grid" class="grid" aria-label="Jump to question"></div>
+      <div id="legend" class="legend"></div>
+    </div>
+  </section>
+
+  <!-- Results screen -->
+  <section id="results-screen" class="hidden">
+    <div class="card">
+      <h2>Your Results</h2>
+      <div class="score"><span id="score">0</span> / 25</div>
+      <p id="time-used" class="muted" style="margin:8px 0 0;"></p>
+      <div id="band" class="band"></div>
+      <button id="retake-btn" class="btn" type="button">Retake Test</button>
+    </div>
+    <div class="card">
+      <h2>Answer Key &amp; Solutions</h2>
+      <div id="answer-key"></div>
+    </div>
+  </section>
+
+  <p class="disclaimer">These are original practice problems written for this site. They are not official AMC problems and are not affiliated with or endorsed by the MAA.</p>
+</main>
+
+<footer><nav>
+  <a href="./">🧮 Main Hub</a> · <a href="jersey-city.html">🗽 Jersey City</a> · <a href="cost-calculator.html">💰 Cost Calculator</a> · <a href="stats.html">📊 By the Numbers</a> · <a href="mock-test.html">📝 Mock Test</a> · <a href="data-partnership.html">🤝 Data Partnership</a> · <a href="security-report.html">🛡️ Security</a> · <a href="connect.html">💬 Connect</a>
+</nav></footer>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Question bank (original problems) ----------
+  // answer = index into choices (0 = A ... 4 = E)
+  const QUESTIONS = [
+    { q: "What is the value of 2026 − 2025 + 2024 − 2023 + … + 4 − 3 + 2 − 1?",
+      choices: ["1012", "1013", "1014", "2025", "2026"], answer: 1,
+      solution: "Group the terms in pairs: (2026 − 2025) + (2024 − 2023) + … + (2 − 1). There are 2026 ÷ 2 = 1013 pairs, each equal to 1, so the total is 1013." },
+    { q: "What is the value of (1/2 + 1/3) ÷ (1/2 − 1/3)?",
+      choices: ["1/6", "5/6", "1", "5", "6"], answer: 3,
+      solution: "1/2 + 1/3 = 5/6 and 1/2 − 1/3 = 1/6. Then (5/6) ÷ (1/6) = 5." },
+    { q: "A video game costs $60. Its price is raised by 50%, and later the new price is lowered by 50%. What is the final price?",
+      choices: ["$30", "$45", "$50", "$60", "$75"], answer: 1,
+      solution: "After the increase the price is 60 × 1.5 = $90. Half of $90 is $45 — the two 50% changes do not cancel because they apply to different amounts." },
+    { q: "A class of 40 students has a boy-to-girl ratio of 3 : 5. Then 8 more boys join the class. What is the new ratio of boys to girls?",
+      choices: ["3 : 5", "1 : 1", "23 : 25", "4 : 5", "23 : 40"], answer: 2,
+      solution: "Originally there are 40 × 3/8 = 15 boys and 25 girls. After 8 boys join there are 23 boys and 25 girls, a ratio of 23 : 25." },
+    { q: "If 3x + 7 = 25, what is the value of 6x − 4?",
+      choices: ["26", "28", "30", "32", "36"], answer: 3,
+      solution: "3x = 18, so x = 6. Then 6x − 4 = 36 − 4 = 32. (Shortcut: 6x = 2 × 18 = 36.)" },
+    { q: "A rectangle has perimeter 30 cm, and its length is twice its width. What is its area, in square centimeters?",
+      choices: ["18", "25", "36", "45", "50"], answer: 4,
+      solution: "If the width is w, the perimeter is 2(w + 2w) = 6w = 30, so w = 5 and the length is 10. The area is 5 × 10 = 50." },
+    { q: "The three angles of a triangle are in the ratio 2 : 3 : 4. What is the measure, in degrees, of the smallest angle?",
+      choices: ["40", "45", "50", "60", "80"], answer: 0,
+      solution: "The angles add to 180°, which is split into 2 + 3 + 4 = 9 equal parts of 20°. The smallest angle is 2 × 20° = 40°." },
+    { q: "How many three-digit positive integers have only odd digits?",
+      choices: ["125", "150", "225", "250", "500"], answer: 0,
+      solution: "Each of the three digits can be 1, 3, 5, 7, or 9 (zero is even, so the leading-digit issue never arises). That gives 5 × 5 × 5 = 125." },
+    { q: "Two fair six-sided dice are rolled. What is the probability that the sum of the two numbers is at least 10?",
+      choices: ["1/36", "1/12", "1/6", "5/18", "1/3"], answer: 2,
+      solution: "The winning rolls are (4,6), (6,4), (5,5), (5,6), (6,5), (6,6): 6 of the 36 equally likely outcomes. 6/36 = 1/6." },
+    { q: "What is the units digit of 7 raised to the power 2026?",
+      choices: ["1", "3", "5", "7", "9"], answer: 4,
+      solution: "Units digits of powers of 7 repeat in the cycle 7, 9, 3, 1 (length 4). Since 2026 leaves remainder 2 when divided by 4, the units digit matches 7², which is 9." },
+    { q: "Ana, Ben, and Cy each either always tell the truth or always lie. Ana says, “Ben is a liar.” Ben says, “Cy is a liar.” Cy says, “Ana and Ben are both liars.” Who tells the truth?",
+      choices: ["Only Ana", "Only Ben", "Only Cy", "Ana and Cy", "None of them"], answer: 1,
+      solution: "If Cy were truthful, Ana would be a liar, making Ben truthful — contradicting Cy. So Cy lies, which makes Ben's statement true, so Ben is truthful and Ana (who calls Ben a liar) lies. Only Ben tells the truth." },
+    { q: "The average of five numbers is 12. When one of the numbers is removed, the average of the remaining four numbers is 10. What number was removed?",
+      choices: ["10", "12", "15", "18", "20"], answer: 4,
+      solution: "The five numbers sum to 5 × 12 = 60, and the remaining four sum to 4 × 10 = 40. The removed number is 60 − 40 = 20." },
+    { q: "A square has a diagonal of length 10. What is the area of the square?",
+      choices: ["25", "50", "75", "100", "200"], answer: 1,
+      solution: "A square's area equals half the product of its diagonals: (10 × 10) ÷ 2 = 50. (Equivalently, the side is 10/√2 and (10/√2)² = 50.)" },
+    { q: "Maya walks to school at 3 miles per hour and bikes home along the same route at 12 miles per hour. The round trip takes 1 hour 15 minutes in total. How many miles is it from Maya's home to school?",
+      choices: ["3", "3.5", "4", "4.5", "5"], answer: 0,
+      solution: "With distance d, the total time is d/3 + d/12 = 5d/12 hours. Setting 5d/12 = 5/4 gives d = 3 miles." },
+    { q: "How many different arrangements of the letters in the word NOON are there?",
+      choices: ["4", "6", "12", "16", "24"], answer: 1,
+      solution: "There are 4! = 24 orderings of four letters, but the two N's and two O's are identical, so divide by 2! × 2! = 4 to get 6." },
+    { q: "What is the sum of all prime numbers between 20 and 40?",
+      choices: ["90", "97", "113", "115", "120"], answer: 4,
+      solution: "The primes between 20 and 40 are 23, 29, 31, and 37. Their sum is 23 + 29 + 31 + 37 = 120." },
+    { q: "A school play sold 20 tickets for a total of $130. Adult tickets cost $8 and student tickets cost $5. How many adult tickets were sold?",
+      choices: ["6", "7", "8", "9", "10"], answer: 4,
+      solution: "If all 20 were student tickets the total would be $100. Each adult ticket adds $3 more, and $130 − $100 = $30, so 30 ÷ 3 = 10 adult tickets." },
+    { q: "What is the measure, in degrees, of the smaller angle formed by the hour hand and minute hand of a clock at 2:30?",
+      choices: ["75", "90", "100", "105", "120"], answer: 3,
+      solution: "At 2:30 the minute hand points at 6 (180°). The hour hand is halfway between 2 and 3, at 60° + 15° = 75°. The angle between them is 180° − 75° = 105°." },
+    { q: "What is the smallest whole number greater than 1 that leaves a remainder of 1 when divided by each of 2, 3, 4, 5, and 6?",
+      choices: ["31", "59", "61", "121", "301"], answer: 2,
+      solution: "The number minus 1 must be a multiple of 2, 3, 4, 5, and 6. The least common multiple of these is 60, so the answer is 60 + 1 = 61." },
+    { q: "The sequence 5, 9, 13, 17, … increases by 4 each time. What is the 50th term of the sequence?",
+      choices: ["197", "199", "201", "203", "205"], answer: 2,
+      solution: "The nth term is 5 + 4(n − 1). For n = 50 this is 5 + 4 × 49 = 5 + 196 = 201." },
+    { q: "In a class, 60% of the students are girls. If 25% of the girls and 50% of the boys wear glasses, what percent of the whole class wears glasses?",
+      choices: ["35%", "37.5%", "40%", "45%", "50%"], answer: 0,
+      solution: "Girls with glasses: 25% of 60% = 15% of the class. Boys are 40% of the class, and half of them wear glasses: 20%. Total 15% + 20% = 35%." },
+    { q: "A 3 × 3 × 3 cube is painted on all six faces and then cut into 27 unit cubes. How many of the unit cubes have paint on exactly two faces?",
+      choices: ["6", "8", "12", "18", "24"], answer: 2,
+      solution: "Cubes with exactly two painted faces sit in the middle of an edge (not a corner). A cube has 12 edges with one such cube each, giving 12." },
+    { q: "A bag contains 3 red marbles and 2 blue marbles. Two marbles are drawn at random without replacement. What is the probability that both marbles are the same color?",
+      choices: ["1/10", "3/10", "1/3", "2/5", "1/2"], answer: 3,
+      solution: "P(both red) = 3/5 × 2/4 = 3/10 and P(both blue) = 2/5 × 1/4 = 1/10. The total is 3/10 + 1/10 = 4/10 = 2/5." },
+    { q: "How many positive integers less than 100 are divisible by 3 or by 5, but not by both?",
+      choices: ["40", "46", "52", "58", "66"], answer: 0,
+      solution: "There are 33 multiples of 3 and 19 multiples of 5 below 100, and 6 of them are multiples of 15. Numbers divisible by exactly one: 33 + 19 − 2 × 6 = 40." },
+    { q: "What is the sum of the digits of the number 10^25 − 25 (that is, 1 followed by 25 zeros, minus 25)?",
+      choices: ["210", "212", "216", "219", "225"], answer: 3,
+      solution: "Try smaller cases: 10³ − 25 = 975 and 10⁴ − 25 = 9975. In general 10ⁿ − 25 is (n − 2) nines followed by 75. For n = 25 the digit sum is 23 × 9 + 7 + 5 = 219." }
+  ];
+
+  const LETTERS = ["A", "B", "C", "D", "E"];
+  const TOTAL_SECONDS = 40 * 60;
+
+  // ---------- State ----------
+  let current = 0;
+  let answers = [];          // selected choice index per question, or null
+  let endTime = 0;           // timestamp (ms) when time runs out
+  let timerId = null;
+  let startedAt = 0;
+
+  // ---------- Elements ----------
+  const $ = function (id) { return document.getElementById(id); };
+  const screens = { start: $("start-screen"), quiz: $("quiz-screen"), results: $("results-screen") };
+
+  function show(name) {
+    Object.keys(screens).forEach(function (k) { screens[k].classList.toggle("hidden", k !== name); });
+    window.scrollTo(0, 0);
+  }
+
+  function formatTime(sec) {
+    const m = Math.floor(sec / 60), s = sec % 60;
+    return m + ":" + (s < 10 ? "0" : "") + s;
+  }
+
+  // ---------- Timer ----------
+  function tick() {
+    const left = Math.max(0, Math.round((endTime - Date.now()) / 1000));
+    const el = $("timer");
+    el.textContent = formatTime(left);
+    el.classList.toggle("low", left <= 300);
+    if (left <= 0) submit(true);
+  }
+
+  function stopTimer() { if (timerId) { clearInterval(timerId); timerId = null; } }
+
+  // ---------- Rendering ----------
+  function renderQuestion() {
+    const item = QUESTIONS[current];
+    $("counter").textContent = "Question " + (current + 1) + " of " + QUESTIONS.length;
+    $("qtext").textContent = (current + 1) + ". " + item.q;
+
+    const box = $("choices");
+    box.innerHTML = "";
+    item.choices.forEach(function (text, i) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "choice" + (answers[current] === i ? " selected" : "");
+      btn.setAttribute("aria-pressed", answers[current] === i ? "true" : "false");
+      const letter = document.createElement("span");
+      letter.className = "letter";
+      letter.textContent = LETTERS[i];
+      const label = document.createElement("span");
+      label.textContent = text;
+      btn.appendChild(letter);
+      btn.appendChild(label);
+      btn.addEventListener("click", function () { select(i); });
+      box.appendChild(btn);
+    });
+
+    $("prev-btn").disabled = current === 0;
+    $("next-btn").disabled = current === QUESTIONS.length - 1;
+    renderGrid();
+  }
+
+  function renderGrid() {
+    const grid = $("grid");
+    grid.innerHTML = "";
+    let answered = 0;
+    QUESTIONS.forEach(function (_, i) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.textContent = i + 1;
+      const isAnswered = answers[i] !== null;
+      if (isAnswered) answered++;
+      b.className = (isAnswered ? "answered" : "") + (i === current ? " current" : "");
+      b.setAttribute("aria-label", "Question " + (i + 1) + (isAnswered ? " (answered)" : " (not answered)"));
+      b.addEventListener("click", function () { goTo(i); });
+      grid.appendChild(b);
+    });
+    $("legend").textContent = answered + " of " + QUESTIONS.length + " answered · shaded = answered · outlined = current";
+  }
+
+  // ---------- Actions ----------
+  function select(i) {
+    answers[current] = i;
+    renderQuestion();
+  }
+
+  function goTo(i) {
+    if (i < 0 || i >= QUESTIONS.length) return;
+    current = i;
+    renderQuestion();
+  }
+
+  function start() {
+    current = 0;
+    answers = QUESTIONS.map(function () { return null; });
+    startedAt = Date.now();
+    endTime = startedAt + TOTAL_SECONDS * 1000;
+    show("quiz");
+    renderQuestion();
+    stopTimer();
+    tick();
+    timerId = setInterval(tick, 250);
+  }
+
+  function submit(auto) {
+    if (!timerId) return; // already submitted
+    if (!auto) {
+      const blank = answers.filter(function (a) { return a === null; }).length;
+      const msg = blank > 0
+        ? "You have " + blank + " unanswered question" + (blank === 1 ? "" : "s") + ". Submit anyway?"
+        : "Submit your test?";
+      if (!window.confirm(msg)) return;
+    }
+    stopTimer();
+    renderResults(auto);
+    show("results");
+  }
+
+  function scoreBand(score) {
+    if (score >= 21) return "🏆 <strong>Excellent!</strong> This is top-tier AMC 8 performance. Keep challenging yourself with harder past problems and consider AMC 10 practice.";
+    if (score >= 15) return "💪 <strong>Strong work!</strong> You have a solid foundation. Review the questions you missed and practice timed sets to push into the top range.";
+    if (score >= 8) return "📈 <strong>Keep practicing.</strong> You're on your way. Focus on the topics you missed, read each solution carefully, and try another timed test in a week or two.";
+    return "🌱 <strong>Building foundations.</strong> Every contest mathlete starts here. Work through the solutions below, strengthen fractions, ratios and basic geometry, and try again — progress comes fast with steady practice.";
+  }
+
+  function renderResults(auto) {
+    let score = 0;
+    answers.forEach(function (a, i) { if (a === QUESTIONS[i].answer) score++; });
+    $("score").textContent = score;
+
+    const used = Math.min(TOTAL_SECONDS, Math.round((Date.now() - startedAt) / 1000));
+    $("time-used").textContent = (auto ? "Time's up — your test was submitted automatically. " : "") +
+      "Time used: " + formatTime(used) + " of 40:00.";
+    $("band").innerHTML = scoreBand(score);
+
+    const key = $("answer-key");
+    key.innerHTML = "";
+    QUESTIONS.forEach(function (item, i) {
+      const a = answers[i];
+      const div = document.createElement("div");
+      div.className = "key-item";
+
+      const tag = document.createElement("span");
+      if (a === null) { tag.className = "tag skip"; tag.textContent = "Skipped"; }
+      else if (a === item.answer) { tag.className = "tag ok"; tag.textContent = "✓ Correct"; }
+      else { tag.className = "tag bad"; tag.textContent = "✗ You chose " + LETTERS[a]; }
+
+      const q = document.createElement("p");
+      q.className = "kq";
+      const num = document.createElement("strong");
+      num.textContent = (i + 1) + ". ";
+      q.appendChild(tag);
+      q.appendChild(num);
+      q.appendChild(document.createTextNode(item.q));
+
+      const ans = document.createElement("p");
+      ans.style.margin = "0";
+      const strong = document.createElement("strong");
+      strong.textContent = "Answer: (" + LETTERS[item.answer] + ") " + item.choices[item.answer];
+      ans.appendChild(strong);
+
+      const sol = document.createElement("p");
+      sol.className = "sol";
+      sol.textContent = item.solution;
+
+      div.appendChild(q);
+      div.appendChild(ans);
+      div.appendChild(sol);
+      key.appendChild(div);
+    });
+  }
+
+  // ---------- Wiring ----------
+  $("start-btn").addEventListener("click", start);
+  $("prev-btn").addEventListener("click", function () { goTo(current - 1); });
+  $("next-btn").addEventListener("click", function () { goTo(current + 1); });
+  $("submit-btn").addEventListener("click", function () { submit(false); });
+  $("retake-btn").addEventListener("click", function () { show("start"); });
+
+  window.addEventListener("beforeunload", function (e) {
+    if (timerId) { e.preventDefault(); e.returnValue = ""; }
+  });
+})();
+</script>
+</body>
+</html>
