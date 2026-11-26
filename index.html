@@ -119,6 +119,43 @@
   .chain li::before { content: counter(c); display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--primary); color: #fff; font-size: 0.8rem; font-weight: 700; margin-right: 8px; }
   .chain p { color: var(--muted); margin: 12px 0 0; font-size: 0.95rem; }
 
+  /* Journey timeline: baby → college */
+  .journey { padding: 30px 0 10px; }
+  .journey h2 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 900; letter-spacing: -0.025em; line-height: 1.05; margin: 0 0 8px; }
+  .journey .sub { color: var(--muted); margin: 0 0 10px; font-size: 1.05rem; font-weight: 600; max-width: 760px; }
+  .legend { font-size: 0.88rem; color: var(--muted); margin: 0 0 16px; }
+  .badge { display: inline-block; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; margin-left: 6px; vertical-align: 1px; white-space: nowrap; }
+  .badge-rec { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+  .badge-avail { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+  .grade-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 8px; }
+  .gf-label { font-weight: 800; font-size: 0.95rem; margin-right: 2px; }
+  .gf-btn { font: inherit; font-size: 0.88rem; font-weight: 700; padding: 8px 14px; border-radius: 999px; border: 2px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+  .gf-btn:hover { border-color: #818cf8; }
+  .gf-btn.is-on { background: #0b1026; border-color: #0b1026; color: #fff; }
+  .gf-status { font-size: 0.9rem; color: var(--muted); margin: 0 0 18px; font-weight: 600; }
+  .tl { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  .tl::before { content: ""; position: absolute; top: 34px; left: 5%; right: 5%; height: 3px; background: #bfdbfe; border-radius: 2px; }
+  .tl-stage { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 54px 14px 16px; transition: opacity .2s; }
+  .tl-stage.dimmed { opacity: 0.35; }
+  .tl-stage.spot { border-color: var(--primary-2); box-shadow: 0 0 0 2px #bfdbfe; }
+  .tl-dot { position: absolute; top: 26px; left: 50%; transform: translateX(-50%); width: 20px; height: 20px; border-radius: 50%; background: var(--primary-2); border: 3px solid #fff; box-shadow: 0 0 0 2px #bfdbfe; }
+  .tl-fig { display: block; margin: 0 auto 4px; }
+  .tl-stage h3 { font-size: 1rem; font-weight: 900; margin: 0 0 2px; text-align: center; letter-spacing: -0.01em; }
+  .tl-age { display: block; text-align: center; font-size: 0.78rem; font-weight: 700; color: var(--muted); margin-bottom: 10px; }
+  .tl-note { font-size: 0.88rem; color: var(--muted); margin: 0 0 8px; }
+  .tl-focus { font-size: 0.88rem; margin: 0 0 8px; }
+  .tl-comps { list-style: none; margin: 0 0 4px; padding: 0; font-size: 0.88rem; }
+  .tl-comps li { margin: 0 0 8px; }
+  .tl-comps a { font-weight: 700; }
+  .tl-comps .c-note { color: var(--muted); font-size: 0.82rem; }
+  .tl-more { font-size: 0.85rem; margin: 10px 0 0; }
+  .tl-dreams { font-size: 0.92rem; margin: 0 0 8px; line-height: 1.7; }
+  .tl-tip { margin-top: 14px; background: var(--amber-bg); border: 1px solid #fde68a; border-left: 4px solid var(--amber); border-radius: 10px; padding: 14px 18px; font-size: 0.93rem; }
+  .tl-tip b { display: block; margin-bottom: 4px; }
+  .tl-fine { display: block; margin-top: 10px; font-size: 0.82rem; color: var(--muted); }
+  @media (max-width: 900px) { .tl { grid-template-columns: repeat(3, 1fr); } .tl::before, .tl-dot { display: none; } .tl-stage { padding-top: 16px; } }
+  @media (max-width: 560px) { .tl { grid-template-columns: 1fr; } }
+
   /* Go deeper */
   .deeper { padding: 32px 0 48px; }
   .deeper h2 { font-size: 1.15rem; margin: 0 0 12px; }
@@ -254,11 +291,113 @@
   </div>
 </section>
 
-<!-- 4. Go deeper -->
+<!-- 4. The journey: baby → college -->
+<section class="journey" id="journey">
+  <div class="wrap">
+    <h2>Growing with math competitions — from baby to college</h2>
+    <p class="sub">A simple timeline for parents: what your child can do at each age — even if their school doesn't offer it. The dream at the end is theirs: MIT, Stanford, Caltech, Princeton, or wherever their path leads.</p>
+    <p class="legend"><span class="badge badge-rec">Recommended</span> the typical age for that contest &nbsp;·&nbsp; <span class="badge badge-avail">Available</span> technically open at this age too, but not the usual age</p>
+
+    <div class="grade-filter" role="group" aria-label="Filter the timeline by grade">
+      <span class="gf-label">My child is in grade…</span>
+      <button type="button" class="gf-btn is-on" data-filter="all" aria-pressed="true">Show all</button>
+      <button type="button" class="gf-btn" data-filter="early" aria-pressed="false">Baby &amp; Pre-K</button>
+      <button type="button" class="gf-btn" data-filter="elem" aria-pressed="false">Grades 1–5</button>
+      <button type="button" class="gf-btn" data-filter="mid" aria-pressed="false">Grades 6–8</button>
+      <button type="button" class="gf-btn" data-filter="high" aria-pressed="false">Grades 9–12</button>
+      <button type="button" class="gf-btn" data-filter="college" aria-pressed="false">College</button>
+    </div>
+    <p class="gf-status" id="gf-status" aria-live="polite">Showing the whole journey — baby to college.</p>
+
+    <div class="tl">
+      <article class="tl-stage" data-stage="early">
+        <span class="tl-dot" aria-hidden="true"></span>
+        <svg class="tl-fig" width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><g stroke="#0f172a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="30" cy="12" r="8"/><path d="M30 20 V36"/><path d="M30 25 L22 31"/><path d="M30 25 L38 31"/><path d="M30 36 L22 44"/><path d="M30 36 L38 44"/><rect x="44" y="42" width="11" height="11" rx="1"/><circle cx="13" cy="47" r="5"/></g></svg>
+        <h3>Baby</h3>
+        <span class="tl-age">Ages 0–2</span>
+        <p class="tl-note">No contests yet — just play &amp; curiosity.</p>
+        <p class="tl-focus">Focus: counting, shapes, patterns through play.</p>
+        <p class="tl-more"><a href="guide.html#getting-started">Start with the playbook →</a></p>
+      </article>
+
+      <article class="tl-stage" data-stage="early">
+        <span class="tl-dot" aria-hidden="true"></span>
+        <svg class="tl-fig" width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><g stroke="#0f172a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="30" cy="12" r="8"/><path d="M30 20 V40"/><path d="M30 25 L21 31"/><path d="M30 25 L39 28"/><path d="M30 40 L24 52"/><path d="M30 40 L36 52"/><rect x="43" y="18" width="12" height="12" rx="2"/><circle cx="49" cy="18" r="3"/></g></svg>
+        <h3>Pre-K / Preschool</h3>
+        <span class="tl-age">Ages 3–5</span>
+        <p class="tl-note">No formal contests yet — early math play.</p>
+        <p class="tl-focus">Focus: counting, shapes, puzzles, problem play.</p>
+        <p class="tl-more"><a href="guide.html#challenge">Play a problem →</a></p>
+      </article>
+
+      <article class="tl-stage" data-stage="elem">
+        <span class="tl-dot" aria-hidden="true"></span>
+        <svg class="tl-fig" width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><g stroke="#0f172a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="30" cy="12" r="8"/><path d="M30 20 V40"/><path d="M30 25 L21 31"/><path d="M30 25 L40 31"/><path d="M30 40 L24 52"/><path d="M30 40 L36 52"/><path d="M43 26 L48 38"/><path d="M48 38 L49 42 L45 41 Z"/><rect x="8" y="44" width="15" height="10" rx="1"/><path d="M15 44 V54"/></g></svg>
+        <h3>Elementary</h3>
+        <span class="tl-age">Grades 1–5</span>
+        <ul class="tl-comps">
+          <li><a href="https://mathkangaroo.org/" target="_blank" rel="noopener noreferrer">Math Kangaroo</a><span class="badge badge-rec">Recommended</span><br><span class="c-note">Fun worldwide contest</span></li>
+          <li><a href="https://moems.org/" target="_blank" rel="noopener noreferrer">MOEMS</a><span class="badge badge-rec">Recommended</span><br><span class="c-note">Grades 4–6 · problem solving</span></li>
+          <li><a href="https://maa.org/student-programs/amc/" target="_blank" rel="noopener noreferrer">AMC 8</a><span class="badge badge-avail">Available</span><br><span class="c-note">No minimum grade · typical grades 4–8</span></li>
+        </ul>
+        <p class="tl-more"><a href="mock-test.html">Try a free mock →</a> · <a href="guide.html#find-site">Find a host school →</a></p>
+      </article>
+
+      <article class="tl-stage" data-stage="mid">
+        <span class="tl-dot" aria-hidden="true"></span>
+        <svg class="tl-fig" width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><g stroke="#0f172a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="30" cy="12" r="8"/><path d="M30 20 V40"/><path d="M30 25 L21 31"/><path d="M30 25 L39 31"/><path d="M30 40 L24 52"/><path d="M30 40 L36 52"/><rect x="37" y="22" width="11" height="16" rx="4"/><rect x="9" y="42" width="14" height="11" rx="1"/><path d="M16 42 V53"/></g></svg>
+        <h3>Middle School</h3>
+        <span class="tl-age">Grades 6–8</span>
+        <ul class="tl-comps">
+          <li><a href="https://maa.org/student-programs/amc/" target="_blank" rel="noopener noreferrer">AMC 8</a><span class="badge badge-rec">Recommended</span><br><span class="c-note">Foundations &amp; logic</span></li>
+          <li><a href="https://www.mathcounts.org/" target="_blank" rel="noopener noreferrer">MATHCOUNTS</a><span class="badge badge-rec">Recommended</span><br><span class="c-note">Team &amp; individual</span></li>
+          <li><a href="https://mathkangaroo.org/" target="_blank" rel="noopener noreferrer">Math Kangaroo</a><span class="badge badge-rec">Recommended</span><br><span class="c-note">National contest</span></li>
+          <li><a href="https://maa.org/student-programs/amc/" target="_blank" rel="noopener noreferrer">AMC 10</a><span class="badge badge-avail">Available</span><br><span class="c-note">Grade 10 &amp; under · typical grades 8–10</span></li>
+        </ul>
+        <p class="tl-more"><a href="mock-test.html">Try a free mock →</a></p>
+      </article>
+
+      <article class="tl-stage" data-stage="high">
+        <span class="tl-dot" aria-hidden="true"></span>
+        <svg class="tl-fig" width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><g stroke="#0f172a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="30" cy="12" r="8"/><path d="M30 20 V40"/><path d="M30 25 L21 31"/><path d="M30 25 L39 30"/><path d="M30 40 L24 52"/><path d="M30 40 L36 52"/><rect x="42" y="30" width="13" height="18" rx="2"/><circle cx="46" cy="35" r="1" fill="#0f172a"/><circle cx="51" cy="35" r="1" fill="#0f172a"/><circle cx="46" cy="40" r="1" fill="#0f172a"/><circle cx="51" cy="40" r="1" fill="#0f172a"/></g></svg>
+        <h3>High School</h3>
+        <span class="tl-age">Grades 9–12</span>
+        <ul class="tl-comps">
+          <li><a href="https://maa.org/student-programs/amc/" target="_blank" rel="noopener noreferrer">AMC 10</a><span class="badge badge-rec">Recommended</span><br><span class="c-note">Grades 8–10</span></li>
+          <li><a href="https://maa.org/student-programs/amc/" target="_blank" rel="noopener noreferrer">AMC 12</a><span class="badge badge-rec">Recommended</span><br><span class="c-note">Grades 10–12</span></li>
+          <li><a href="https://maa.org/maa-invitational-competitions/" target="_blank" rel="noopener noreferrer">AIME</a><span class="badge badge-rec">Recommended</span><br><span class="c-note">By qualification · for top AMC scorers</span></li>
+          <li><a href="https://www.usamts.org/" target="_blank" rel="noopener noreferrer">USAMTS</a><span class="badge badge-rec">Recommended</span><br><span class="c-note">Proof-based · open to all</span></li>
+          <li><a href="https://maa.org/maa-invitational-competitions/" target="_blank" rel="noopener noreferrer">USAJMO / USAMO</a><span class="badge badge-rec">Recommended</span><br><span class="c-note">By qualification · USA Math Olympiad</span></li>
+        </ul>
+        <p class="tl-more"><a href="guide.html#pathway">See the pathway →</a> · <a href="guide.html#aime-2027">AIME 2027 →</a></p>
+      </article>
+
+      <article class="tl-stage" data-stage="college">
+        <span class="tl-dot" aria-hidden="true"></span>
+        <svg class="tl-fig" width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><g stroke="#0f172a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="18,4 46,4 32,12" fill="#0f172a" stroke="none"/><path d="M46 4 V14"/><circle cx="46" cy="16" r="1.5" fill="#0f172a" stroke="none"/><circle cx="30" cy="16" r="8"/><path d="M30 24 V42"/><path d="M30 29 L21 35"/><path d="M30 29 L39 34"/><path d="M30 42 L24 54"/><path d="M30 42 L36 54"/><rect x="43" y="38" width="13" height="7" rx="2"/><path d="M49 45 L49 48"/></g></svg>
+        <h3>College</h3>
+        <span class="tl-age">Your dream path</span>
+        <p class="tl-note">Dream big — your path awaits.</p>
+        <p class="tl-dreams"><a href="https://www.mit.edu/" target="_blank" rel="noopener noreferrer">MIT</a> · <a href="https://www.stanford.edu/" target="_blank" rel="noopener noreferrer">Stanford</a> · <a href="https://www.caltech.edu/" target="_blank" rel="noopener noreferrer">Caltech</a> · <a href="https://www.princeton.edu/" target="_blank" rel="noopener noreferrer">Princeton</a> &amp; beyond!</p>
+        <p class="tl-focus">Explore: research, STEM competitions, further study.</p>
+        <p class="tl-more"><a href="guide.html#pathway">See the university pathway →</a></p>
+      </article>
+    </div>
+
+    <div class="tl-tip">
+      <b>💡 You don't need the school to start.</b>
+      Many contests allow independent registration even if your child's school doesn't offer them — check the official rules and register directly (for example, <a href="https://mathkangaroo.org/" target="_blank" rel="noopener noreferrer">Math Kangaroo</a>), or find a nearby AMC test site at a college: <a href="https://amc-reg.maa.org/amc_external/amc_higher_education_sites.aspx?ContestType=AMC" target="_blank" rel="noopener noreferrer">AMC test sites at colleges</a>. Focus on curiosity and fun first — competition second.
+      <span class="tl-fine">Eligibility note: the MAA sets only a maximum grade and age for each AMC — AMC 8: grade 8 &amp; under (under 15.5); AMC 10: grade 10 &amp; under (under 17.5); AMC 12: grade 12 &amp; under (under 19.5). No minimum age or grade is published, so a younger child can technically sit any of them — "Available" above means exactly that. Dates, fees, and rules change; verify them on the official sites.</span>
+    </div>
+  </div>
+</section>
+
+<!-- 5. Go deeper -->
 <section class="deeper">
   <div class="wrap">
     <h2>Go deeper</h2>
     <div class="links">
+      <a href="#journey">👶→🎓 Baby to college<span>What to do at each age</span></a>
       <a href="jersey-city.html">🗽 Jersey City pilot<span>Every school, verified by locals</span></a>
       <a href="guide.html">📘 The full guide<span>Every contest, deadline, and step</span></a>
       <a href="guide.html#find-site">🔎 Find a host school<span>Search by school name, city, or state</span></a>
@@ -443,6 +582,35 @@
   document.addEventListener("click", function (e) {
     var el = e.target.closest("[data-action]");
     if (el) track(el.getAttribute("data-action"));
+  });
+})();
+</script>
+<script>
+/* Journey timeline grade filter: highlight one stage, dim the rest. No backend. */
+(function () {
+  "use strict";
+  var btns = Array.prototype.slice.call(document.querySelectorAll(".gf-btn"));
+  var stages = Array.prototype.slice.call(document.querySelectorAll(".tl-stage"));
+  var status = document.getElementById("gf-status");
+  var labels = {
+    all: "Showing the whole journey — baby to college.",
+    early: "Showing: Baby & Pre-K (ages 0–5) — play first, no contests yet.",
+    elem: "Showing: Elementary (grades 1–5) — Math Kangaroo, MOEMS, AMC 8.",
+    mid: "Showing: Middle school (grades 6–8) — AMC 8, MATHCOUNTS, Math Kangaroo.",
+    high: "Showing: High school (grades 9–12) — AMC 10/12, AIME, USAMTS, Olympiads.",
+    college: "Showing: College — the dream path."
+  };
+  btns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var f = b.getAttribute("data-filter");
+      btns.forEach(function (x) { var on = x === b; x.classList.toggle("is-on", on); x.setAttribute("aria-pressed", String(on)); });
+      stages.forEach(function (s) {
+        var match = f === "all" || s.getAttribute("data-stage") === f;
+        s.classList.toggle("dimmed", !match);
+        s.classList.toggle("spot", f !== "all" && match);
+      });
+      if (status) status.textContent = labels[f] || labels.all;
+    });
   });
 })();
 </script>
