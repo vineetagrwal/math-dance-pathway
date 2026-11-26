@@ -56,6 +56,8 @@
   .tf-chip { background:#fff; border:2px solid var(--border); border-radius:999px; padding:6px 14px; font-weight:600; font-size:.85rem; cursor:pointer; font-family:inherit; color:var(--text); }
   .tf-chip.active { background:var(--blue); color:#fff; border-color:var(--blue); }
   .amc-badge { display:inline-block; font-size:.68rem; font-weight:700; color:#166534; background:#dcfce7; border:1px solid #86efac; padding:2px 7px; border-radius:999px; margin-left:6px; white-space:nowrap; vertical-align:middle; }
+  .champ { font-size:.8rem; line-height:1.55; }
+  .champ a { color:var(--blue); font-weight:600; text-decoration:none; }
   .amc-hint { color:var(--muted); font-size:.85rem; margin:0 0 14px; }
   .jc-source { text-align:center; color:var(--muted); font-size:.8rem; margin-top:6px; }
 </style>
@@ -72,6 +74,10 @@
 <div class="wrap">
   <div class="note">
     <strong>Why this matters:</strong> the official published lists badly under-count real participation (e.g. <strong>OLC runs the AMC 8 but isn't listed anywhere</strong>). A trusted, complete registry is built from <em>your</em> knowledge + school outreach. Contact info (phone) below comes from the federal NCES directory.
+  </div>
+
+  <div class="note">
+    <strong>🏆 Three champions per school:</strong> a school keeps hosting year after year when three people step up — a staff <em>Competition Manager</em> (registers and proctors), a <em>parent champion</em> (keeps it going, recruits families), and a <em>student champion</em> (spreads the word, helps run practice). The Champions column shows which schools still need one — <a href="connect.html#comment">volunteer for your school</a>.
   </div>
 
   <div class="note">
@@ -105,11 +111,16 @@
     <button class="tf-chip" type="button" data-amc="yes">✓ AMC registered site</button>
     <button class="tf-chip" type="button" data-amc="no">Not yet registered</button>
   </div>
+  <div class="type-filter" id="champ-filter" role="group" aria-label="Filter by champions">
+    <button class="tf-chip active" type="button" data-champ="">All schools</button>
+    <button class="tf-chip" type="button" data-champ="parent">Needs a parent champion</button>
+    <button class="tf-chip" type="button" data-champ="student">Needs a student champion</button>
+  </div>
   <p class="amc-hint">AMC site = the school is on the MAA host list (9,163 schools, snapshot Nov 24, 2026). High schools typically host AMC 10/12, middle schools AMC 8 — the exams shown are verified reports only, never guessed. “Not yet registered” is the outreach list: ask your school to register.</p>
 
   <div id="status" class="count">Loading…</div>
   <table id="tbl" hidden>
-    <thead><tr><th>School</th><th>Type</th><th>Grades</th><th>ZIP</th><th>Contact</th><th>Hosts</th><th></th></tr></thead>
+    <thead><tr><th>School</th><th>Type</th><th>Grades</th><th>ZIP</th><th>Contact</th><th>Hosts</th><th>Champions</th><th></th></tr></thead>
     <tbody id="rows"></tbody>
   </table>
 </div>
@@ -210,12 +221,15 @@
       var band = bandOf(s);
       var exams = (s.exams&&s.exams.length) ? s.exams.map(function(e){return '<span class="tag '+tagClass(e)+'">'+esc(e)+'</span>';}).join("") : (s.amc_registered ? '<span class="none">AMC site — exams not verified</span>' : '<span class="none">not verified</span>');
       var phone = s.phone ? '<a class="phone" href="tel:'+esc(s.phone)+'">'+esc(s.phone)+'</a>' : '<span class="none">—</span>';
-      return '<tr class="rowc" data-school="'+esc(s.name)+'"><td><strong>'+esc(s.name)+"</strong>"+(s.amc_registered?'<span class="amc-badge">✓ AMC site</span>':'')+"</td><td>"+esc(s.type||"")+(band?'<br><span class="lvl-tag">'+band+'</span>':'')+"</td><td>"+grades+"</td><td>"+esc(s.zip||"")+"</td><td>"+phone+"</td><td>"+exams+"</td>"
+      var pc = s.parent_champion ? esc(s.parent_champion) : '<span class="none">needed</span>';
+      var sc = s.student_champion ? esc(s.student_champion) : '<span class="none">needed</span>';
+      var champ = '<div class="champ">Parent: '+pc+'<br>Student: '+sc+((s.parent_champion&&s.student_champion)?'':'<br><a href="connect.html#comment">Volunteer →</a>')+'</div>';
+      return '<tr class="rowc" data-school="'+esc(s.name)+'"><td><strong>'+esc(s.name)+"</strong>"+(s.amc_registered?'<span class="amc-badge">✓ AMC site</span>':'')+"</td><td>"+esc(s.type||"")+(band?'<br><span class="lvl-tag">'+band+'</span>':'')+"</td><td>"+grades+"</td><td>"+esc(s.zip||"")+"</td><td>"+phone+"</td><td>"+exams+"</td><td>"+champ+"</td>"
         + '<td><button class="verify" type="button" data-school="'+esc(s.name)+'">Verify / add exams</button></td></tr>';
     }).join("");
     document.getElementById("status").textContent = list.length + " schools";
   }
-  var typeFilter = "", levelFilter = "", amcFilter = "";
+  var typeFilter = "", levelFilter = "", amcFilter = "", champFilter = "";
   function applyFilter(){
     var q = document.getElementById("q").value.trim().toLowerCase();
     var list = DATA.filter(function(s){
@@ -223,8 +237,10 @@
       if(levelFilter && bandOf(s).indexOf(levelFilter)<0) return false;
       if(amcFilter==="yes" && !s.amc_registered) return false;
       if(amcFilter==="no" && s.amc_registered) return false;
+      if(champFilter==="parent" && s.parent_champion) return false;
+      if(champFilter==="student" && s.student_champion) return false;
       if(!q) return true;
-      return (s.name+" "+(s.zip||"")+" "+(s.exams||[]).join(" ")+" "+(s.type||"")+" "+(s.amc_registered?"AMC registered site":"")).toLowerCase().indexOf(q)>=0;
+      return (s.name+" "+(s.zip||"")+" "+(s.exams||[]).join(" ")+" "+(s.type||"")+" "+(s.parent_champion||"")+" "+(s.student_champion||"")+" "+(s.amc_registered?"AMC registered site":"")).toLowerCase().indexOf(q)>=0;
     });
     render(list); renderStats(list);
   }
@@ -251,6 +267,14 @@
       var v=b.getAttribute("data-amc"); if(v && amcFilter===v) v="";
       amcFilter=v;
       Array.prototype.forEach.call(af.querySelectorAll(".tf-chip"), function(x){ x.classList.toggle("active", x.getAttribute("data-amc")===v); });
+      applyFilter();
+    });
+    var cf=document.getElementById("champ-filter");
+    if(cf) cf.addEventListener("click", function(e){
+      var b=e.target.closest("[data-champ]"); if(!b) return;
+      var v=b.getAttribute("data-champ"); if(v && champFilter===v) v="";
+      champFilter=v;
+      Array.prototype.forEach.call(cf.querySelectorAll(".tf-chip"), function(x){ x.classList.toggle("active", x.getAttribute("data-champ")===v); });
       applyFilter();
     });
   })();
