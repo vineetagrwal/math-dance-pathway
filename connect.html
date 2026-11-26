@@ -54,6 +54,20 @@
       <button type="submit">Submit</button>
     </form>
     <p class="msg" id="feedback-msg" aria-live="polite"></p>
+  <section class="card" id="comment">
+    <h2>💬 Questions, comments &amp; offers to help</h2>
+    <p class="sub">Ask a question, leave a comment, or tell us how you'd like to help — it opens your email app with everything filled in, so we can act on it.</p>
+    <form id="comment-form">
+      <select name="type"><option value="Question">❓ Question</option><option value="Comment">💬 Comment</option><option value="I'd like to help">🙋 I'd like to help</option></select>
+      <input name="topic" placeholder="Topic / subject (short) *" required>
+      <textarea name="message" rows="5" placeholder="Write your question, comment, or how you'd like to help. Be specific — which page, school, or exam is this about? *" required></textarea>
+      <input name="name" placeholder="Your name" autocomplete="name">
+      <input name="contact" placeholder="Email, phone, or WhatsApp *" required>
+      <select name="role"><option value="">I am a…</option><option>Parent</option><option>Student</option><option>Teacher</option></select>
+      <input name="zip" inputmode="numeric" maxlength="5" placeholder="ZIP (optional)">
+      <button type="submit">Send</button>
+    </form>
+    <p class="msg" id="comment-msg" aria-live="polite"></p>
   </section>
 
 </div>
@@ -62,19 +76,22 @@
   // Set to a Formspree ("https://formspree.io/f/xxxx") endpoint for silent submit; blank = email.
   var FORM_ENDPOINT = "";
   var OWNER = "vineetagrwal@gmail.com";
-  function submitForm(form, msgEl, subject, buildBody, store){
+  function submitForm(form, msgEl, subject, buildBody, store, required){
     form.addEventListener("submit", function(e){
       e.preventDefault();
       var data = {}; Array.prototype.forEach.call(form.elements, function(el){ if(el.name) data[el.name]=el.value.trim(); });
-      if(store==="contact" && !data.contact){ msgEl.textContent="Please add your email, phone, or WhatsApp."; return; }
-      if(store==="message" && !data.message){ msgEl.textContent="Please add a short message."; return; }
+      var req = required || (store==="contact" ? ["contact"] : store==="message" ? ["message"] : []);
+      var labels = {contact:"your email, phone, or WhatsApp", message:"a short message", topic:"a short topic / subject"};
+      for(var i=0;i<req.length;i++){ if(!data[req[i]]){ msgEl.textContent="Please add "+(labels[req[i]]||req[i])+"."; return; } }
       try{ var a=JSON.parse(localStorage.getItem("mh_"+store)||"[]"); a.push(Object.assign({t:Date.now()},data)); localStorage.setItem("mh_"+store,JSON.stringify(a)); }catch(_){}
+      var subj = (typeof subject==="function") ? subject(data) : subject;
       if(FORM_ENDPOINT){
+        data._subject = subj;
         fetch(FORM_ENDPOINT,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},body:JSON.stringify(data)})
           .then(function(){ msgEl.textContent="✓ Thank you! Sent."; form.reset(); })
           .catch(function(){ msgEl.textContent="Couldn't send — please try again shortly."; });
       } else {
-        window.location.href = "mailto:"+OWNER+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(buildBody(data));
+        window.location.href = "mailto:"+OWNER+"?subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(buildBody(data));
         msgEl.innerHTML="✓ Thanks! Your email app should open — just hit send.";
         form.reset();
       }
@@ -84,6 +101,10 @@
     function(d){ return "Name: "+d.name+"\nContact: "+d.contact+"\nRole: "+d.role+"\nZIP: "+d.zip; }, "contact");
   submitForm(document.getElementById("feedback-form"), document.getElementById("feedback-msg"), "Math Hub — feedback",
     function(d){ return "Type: "+d.kind+"\nMessage: "+d.message+"\nFrom: "+d.contact; }, "message");
+  submitForm(document.getElementById("comment-form"), document.getElementById("comment-msg"),
+    function(d){ return "[Math site] "+d.type+": "+(d.topic||""); },
+    function(d){ return "Type: "+d.type+"\nTopic: "+d.topic+"\nMessage: "+d.message+"\nName: "+d.name+"\nContact: "+d.contact+"\nRole: "+d.role+"\nZIP: "+d.zip+"\nPage: "+location.href+"\nSent: "+new Date().toLocaleString(); },
+    "comment", ["topic","message","contact"]);
   if(location.hash){ var t=document.querySelector(location.hash); if(t) t.scrollIntoView(); }
 </script>
 <nav class="xnav" style="text-align:center;padding:18px 16px;font-size:.86rem;border-top:1px solid #e2e8f0;line-height:2;"><a href="./">🏠 Home</a> · <a href="guide.html">📘 Full guide</a> · <a href="jersey-city.html">🗽 Jersey City</a> · <a href="cost-calculator.html">💰 Cost Calculator</a> · <a href="stats.html">📊 By the Numbers</a> · <a href="mock-test.html">📝 Mock Test</a> · <a href="data-partnership.html">🤝 Data Partnership</a> · <a href="security-report.html">🛡️ Security</a> · <a href="connect.html">💬 Connect</a></nav>
