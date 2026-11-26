@@ -62,6 +62,17 @@
   .src { margin: 18px 0 0; font-size: 0.82rem; color: #94a3b8; }
   .src a { color: #e2e8f0; }
 
+  /* Jersey City pilot band */
+  .pilot { padding: 28px 0 0; }
+  .pilot a.pilot-card { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; text-decoration: none; color: var(--ink); background: var(--card); border: 2px solid #f59e0b; border-left-width: 8px; border-radius: 16px; padding: 20px 24px; box-shadow: 0 4px 16px rgba(217,119,6,0.12); transition: transform .15s, box-shadow .15s; }
+  .pilot a.pilot-card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(217,119,6,0.2); }
+  .pilot .p-text { flex: 1 1 420px; }
+  .pilot .p-kicker { display: block; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); }
+  .pilot .p-title { display: block; font-size: clamp(1.4rem, 3.6vw, 2rem); font-weight: 900; letter-spacing: -0.025em; line-height: 1.1; margin: 4px 0 6px; }
+  .pilot .p-sub { display: block; color: var(--muted); font-weight: 600; }
+  .pilot .p-cta { background: var(--amber); color: #fff; font-weight: 800; padding: 12px 20px; border-radius: 10px; white-space: nowrap; }
+  @media (max-width: 520px) { .pilot .p-cta { width: 100%; text-align: center; } }
+
   /* Persona picker */
   .who { padding: 44px 0 12px; }
   .who h2 { font-size: clamp(2rem, 5.5vw, 3.2rem); font-weight: 900; letter-spacing: -0.03em; line-height: 1; margin: 0 0 8px; }
@@ -131,6 +142,7 @@
   <div class="wrap">
     <a class="brand" href="./">🧮 Math Competition Readiness Hub</a>
     <nav aria-label="Main">
+      <a href="jersey-city.html">Jersey City pilot</a>
       <a href="guide.html">Full guide</a>
       <a href="guide.html#find-site">Find a school</a>
       <a href="stats.html">The numbers</a>
@@ -195,6 +207,20 @@
   </div>
 </section>
 
+<!-- Main goal: the Jersey City pilot -->
+<section class="pilot">
+  <div class="wrap">
+    <a class="pilot-card" href="jersey-city.html" data-action="lp-jc-pilot">
+      <span class="p-text">
+        <span class="p-kicker">🗽 Live now · Jersey City pilot</span>
+        <span class="p-title">Every Jersey City school, checked one by one.</span>
+        <span class="p-sub" id="jc-line">Is your school on the list? Help us verify which schools offer math contests.</span>
+      </span>
+      <span class="p-cta">See your school →</span>
+    </a>
+  </div>
+</section>
+
 <!-- 2. Who are you? -->
 <section class="who">
   <div class="wrap">
@@ -233,13 +259,12 @@
   <div class="wrap">
     <h2>Go deeper</h2>
     <div class="links">
+      <a href="jersey-city.html">🗽 Jersey City pilot<span>Every school, verified by locals</span></a>
       <a href="guide.html">📘 The full guide<span>Every contest, deadline, and step</span></a>
       <a href="guide.html#find-site">🔎 Find a host school<span>Search by school name, city, or state</span></a>
       <a href="mock-test.html">⏱️ Take a mock AMC 8<span>25 questions, 40-minute timer</span></a>
       <a href="guide.html#mock-tests">📝 Free practice tests<span>AMC 8, MATHCOUNTS, MOEMS, Kangaroo</span></a>
       <a href="guide.html#community">🤝 Start a math circle<span>Free toolkits and grants</span></a>
-      <a href="guide.html#aime-2027">📢 AIME 2027 news<span>New Pearson testing centers</span></a>
-      <a href="jersey-city.html">🗽 Jersey City pilot<span>Every school, verified by locals</span></a>
     </div>
   </div>
 </section>
@@ -392,6 +417,14 @@
   if (!PERSONAS[start]) { try { start = localStorage.getItem("lp_persona"); } catch (e) { start = null; } }
   if (PERSONAS[start]) render(start, false);
   window.addEventListener("hashchange", function () { var k = location.hash.slice(1); if (PERSONAS[k]) render(k, false); });
+
+  // Jersey City pilot counts, read live from the pilot data
+  fetch("data/jersey-city-middle-schools.json").then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+    if (!Array.isArray(d) || !d.length) return;
+    var amc = d.filter(function (x) { return x && x.amc_registered; }).length;
+    var el = document.getElementById("jc-line");
+    if (el) el.textContent = d.length + " schools mapped, " + amc + " confirmed AMC test sites so far. Is your school on the list?";
+  }).catch(function () {});
 
   // Privacy-friendly analytics (GoatCounter), same account as the guide.
   var GC_CODE = "vin7de";
