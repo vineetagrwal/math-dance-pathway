@@ -86,6 +86,8 @@
 
   <div id="jc-stats"></div>
 
+  <div class="reg-banner">🎯 <strong>Pilot school:</strong> <a href="middle-school-4.html">Middle School #4 has its own outreach page</a> — school facts, live outreach status, champions, and a signup to support its AMC 8 enrollment.</div>
+
   <div class="reg-banner"><strong>🎉 Just registered your school as a test site?</strong> <a href="#verify-form-wrap">Report it →</a> Every new registration is our measure of success.</div>
 
   <div class="controls">
@@ -224,7 +226,8 @@
       var pc = s.parent_champion ? esc(s.parent_champion) : '<span class="none">needed</span>';
       var sc = s.student_champion ? esc(s.student_champion) : '<span class="none">needed</span>';
       var champ = '<div class="champ">Parent: '+pc+'<br>Student: '+sc+((s.parent_champion&&s.student_champion)?'':'<br><a href="connect.html#comment">Volunteer →</a>')+'</div>';
-      return '<tr class="rowc" data-school="'+esc(s.name)+'"><td><strong>'+esc(s.name)+"</strong>"+(s.amc_registered?'<span class="amc-badge">✓ AMC site</span>':'')+"</td><td>"+esc(s.type||"")+(band?'<br><span class="lvl-tag">'+band+'</span>':'')+"</td><td>"+grades+"</td><td>"+esc(s.zip||"")+"</td><td>"+phone+"</td><td>"+exams+"</td><td>"+champ+"</td>"
+      var nameCell = s.page ? '<a href="'+esc(s.page)+'"><strong>'+esc(s.name)+"</strong></a>" : "<strong>"+esc(s.name)+"</strong>";
+      return '<tr class="rowc" data-school="'+esc(s.name)+'"><td>'+nameCell+(s.amc_registered?'<span class="amc-badge">✓ AMC site</span>':'')+"</td><td>"+esc(s.type||"")+(band?'<br><span class="lvl-tag">'+band+'</span>':'')+"</td><td>"+grades+"</td><td>"+esc(s.zip||"")+"</td><td>"+phone+"</td><td>"+exams+"</td><td>"+champ+"</td>"
         + '<td><button class="verify" type="button" data-school="'+esc(s.name)+'">Verify / add exams</button></td></tr>';
     }).join("");
     document.getElementById("status").textContent = list.length + " schools";
