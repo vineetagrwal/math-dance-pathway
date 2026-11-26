@@ -68,7 +68,7 @@
   .who .sub { color: var(--muted); margin: 0 0 22px; font-size: 1.1rem; font-weight: 600; }
   .chips { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
   @media (min-width: 640px) { .chips { grid-template-columns: repeat(3, 1fr); } }
-  @media (min-width: 960px) { .chips { grid-template-columns: repeat(6, 1fr); } .chip { padding: 16px 14px; } }
+  @media (min-width: 960px) { .chips { grid-template-columns: repeat(5, 1fr); } .chip { padding: 16px 14px; } }
   .chip { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; text-align: left; padding: 16px 18px; border-radius: 14px; border: 2px solid var(--line); background: var(--card); cursor: pointer; font: inherit; color: var(--ink); transition: border-color .15s, transform .15s, box-shadow .15s; }
   .chip:hover { border-color: #818cf8; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(30,58,138,0.12); }
   .chip[aria-pressed="true"] { border-color: #0b1026; background: #0b1026; color: #fff; }
@@ -206,7 +206,6 @@
       <button class="chip" type="button" data-p="teacher" aria-pressed="false"><span class="ico">🍎</span><span class="lbl">Teacher</span><span class="hint">Math or any subject</span></button>
       <button class="chip" type="button" data-p="school" aria-pressed="false"><span class="ico">🏫</span><span class="lbl">School leader</span><span class="hint">Principal or district</span></button>
       <button class="chip" type="button" data-p="maa" aria-pressed="false"><span class="ico">🏆</span><span class="lbl">MAA &amp; contest orgs</span><span class="hint">AMC, MATHCOUNTS…</span></button>
-      <button class="chip" type="button" data-p="partner" aria-pressed="false"><span class="ico">🤝</span><span class="lbl">Partner or funder</span><span class="hint">Nonprofits, universities, companies</span></button>
     </div>
 
     <div class="panel" id="panel" aria-live="polite">
@@ -257,8 +256,8 @@
 
   var PERSONAS = {
     parent: {
-      problem: "Your child can only take the AMC 8 if their school hosts it, and fewer than 2 in 100 schools do.",
-      why: "It isn't about talent. Most schools simply never register, so most kids never find out what they can do. A parent asking is often all it takes.",
+      problem: "Most parents never hear about math contests, and a child can only take one if the school hosts it.",
+      why: "No one tells families these contests exist. Fewer than 2 in 100 schools host the AMC 8, often simply because no one asked. A parent asking is often all it takes.",
       stat: "Only ~1 in 150 middle schoolers take the AMC 8 today.",
       step: "Ask your child's school to register as an AMC 8 site.",
       primary: { label: "📋 Copy an email to your school", copy: true, action: "lp-parent-copy" },
@@ -303,25 +302,14 @@
       ]
     },
     maa: {
-      problem: "Families can't find who hosts your contests. You publish how many schools host, not which ones.",
-      why: "Every school a family can't find is a student who misses out. A public, school-level host list, keyed to NCES school IDs, lets families find sites and shows schools that their neighbors already take part.",
-      stat: "Our Jersey City pilot: only 2 of 64 schools show a contest, and at least one real host isn't listed anywhere.",
-      step: "Share a school-level host list (even a CSV) for a one-city pilot.",
+      problem: "Most schools never hear about your contests. Registration waits for a teacher to find you, so fewer than 2% of schools take part.",
+      why: "Reaching every school takes outreach no one runs today: a yearly note from state education departments to principals, messages to principals and parents where they already are, and a public list of host schools so families can find one.",
+      stat: "2,129 schools host the AMC 8, out of ~128,000 U.S. schools.",
+      step: "Partner with us on a one-city pilot: share a host list and help reach every principal.",
       primary: { label: "Read the data-partnership proposal", href: "data-partnership.html", action: "lp-maa-proposal" },
       links: [
         { label: "See the Jersey City pilot", href: "jersey-city.html", action: "lp-maa-pilot" },
         { label: "Contact us", href: "connect.html", action: "lp-maa-contact" }
-      ]
-    },
-    partner: {
-      problem: "Math talent goes undiscovered wherever there's no contest to take and no math circle to grow it.",
-      why: "Contests measure talent; math circles grow it. Jersey City has just one known math circle, and it's for elementary students only. Small grants for host fees and new circles go a long way.",
-      stat: "Fewer than 2% of U.S. schools host the AMC 8.",
-      step: "Sponsor a city: fund host-school fees and help start math circles.",
-      primary: { label: "Get in touch", href: "connect.html", action: "lp-partner-contact" },
-      links: [
-        { label: "Math Circle Network (AIM) ↗", href: "https://mathcircles.org/about/", action: "lp-partner-mcn" },
-        { label: "Our data-partnership proposal", href: "data-partnership.html", action: "lp-partner-proposal" }
       ]
     }
   };
@@ -355,7 +343,7 @@
           p.links.map(function (l) { return linkHtml(l, "btn-ghost"); }).join("") +
         '</div>' +
         (p.script ? '<details class="script"><summary>Read the message first</summary><pre>' + esc(p.script) + '</pre></details>' : "") +
-        (key !== "maa" && key !== "partner" ? '<p class="deadline">⏳ AMC 8 school registration closes <b>' + DEADLINE + '</b> (<span id="days"></span>). Confirm on maa.org.</p>' : "") +
+        (key !== "maa" ? '<p class="deadline">⏳ AMC 8 school registration closes <b>' + DEADLINE + '</b> (<span id="days"></span>). Confirm on maa.org.</p>' : "") +
       '</div>';
     panel.innerHTML = html;
     var d = document.getElementById("days");
